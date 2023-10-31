@@ -144,7 +144,7 @@ private:
 
   // TODO: Add more functions / fields here as necessary.
 public:
-  std::vector<std::string> method_names_in_order;
+  std::vector<std::string> method_names_in_order; // starts at vtable index 4
   std::map<std::string, op_func_type> method_types_in_COOL;
   std::map<std::string, std::string> global_method_name_map;
   std::map<std::string, int> vtable_index_of_method;

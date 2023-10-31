@@ -354,6 +354,7 @@ void CgenClassTable::code_module() {
 #ifdef MP3
 void CgenClassTable::code_classes(CgenNode *c) {
   // TODO: add code here
+
 }
 #endif
 
@@ -492,6 +493,7 @@ void CgenNode::setup(int tag, int depth) {
 
   // TODO: add code here
   ValuePrinter vp(*get_ctstream());
+  std::string class_name = get_type_name();
 
   // Special initialization function for Int and Bool
   if (get_type_name() == "Int") {
@@ -499,10 +501,10 @@ void CgenNode::setup(int tag, int depth) {
   } else if (get_type_name() == "Bool") {
     vp.declare(op_type(VOID), "Bool_init", {op_type(get_type_name()+"*"), INT1});
   }
-
+  // Declare a new function for class new
+  vp.declare(op_type(class_name).get_ptr_type(), get_init_function_name(), {});
 
   //* 1. Declare Class Record
-  std::string class_name = get_type_name();
   // declare function name as a string
   vp.init_constant("str."+class_name, const_value(op_arr_type(INT8, class_name.size()+1), class_name+"\00", true)); 
   std::vector<op_type> attributes_types = { op_type(get_vtable_type_name()).get_ptr_type() };
@@ -535,6 +537,15 @@ void CgenNode::setup(int tag, int depth) {
   //* 2. Declare Class VTable
   std::vector<op_type> vtable_types = {INT32, INT32, INT8_PTR};
   int vtable_index = 3;
+  // Insert special new function in Vtable
+  op_func_type new_func_type(op_type(class_name).get_ptr_type(), {});
+  vtable_types.push_back(new_func_type);
+  global_method_name_map["new"] = get_init_function_name();
+  method_types_in_LLVM["new"] = new_func_type;
+  method_types_in_COOL["new"] = new_func_type;
+  method_types_earliest["new"] = new_func_type;
+  vtable_index_of_method["new"] = vtable_index;
+  vtable_index++;
 
   // Inherit Parent's methods
   std::vector<std::string> inherited_method_in_order;
@@ -615,8 +626,8 @@ void CgenNode::setup(int tag, int depth) {
   std::string temp = "ptrtoint (%"+ self_ptr +" getelementptr (%"+class_name+", %"+self_ptr+" null, i32 1) to i32)";
   init_values.push_back(const_value(INT32, temp, true));
   std::string temp_name_length = std::to_string(class_name.size() + 1);
-  // temp = "getelementptr (["+ temp_name_length +" x i8], ["+ temp_name_length +" x i8]* @str."+class_name+", i32 0, i32 0)";
   init_values.push_back(const_value(op_arr_type(INT8, class_name.size()+1), "@str."+class_name, true));
+  init_values.push_back(const_value(INT32, "@"+get_init_function_name(), true));
 
   for (std::string& method_name : method_names_in_order) {
     op_func_type ty = method_types_in_COOL[method_name];
