@@ -361,6 +361,7 @@ void CgenClassTable::code_classes(CgenNode *c) {
 void CgenClassTable::code_constants() {
 #ifdef MP3
   // TODO: add code here
+  stringtable.code_string_table(*ct_stream, this);  
 #endif
 }
 
@@ -450,6 +451,21 @@ void StrTable::code_string_table(std::ostream &s, CgenClassTable *ct) {
 void StringEntry::code_def(std::ostream &s, CgenClassTable *ct) {
 #ifdef MP3
   // TODO: add code here
+  ValuePrinter vp(s);
+  const std::string& str_const = get_string();
+  std::string vreg_name = "global_str."+std::to_string(get_index());
+  vp.init_constant(vreg_name, const_value(op_arr_type(INT8, str_const.size()+1), str_const+"\00", true)); 
+
+  // Inititialize a String Object
+  operand op(op_type("String"), "@String."+std::to_string(get_index()));
+  op.set_name(op.get_name().substr(1));
+
+  std::vector<op_type> string_struct_types = { op_type("_String_vtable*"), op_type(INT8_PTR) };
+  std::vector<const_value> string_struct_values = { const_value(EMPTY, "@_String_vtable_prototype", true) };
+  string_struct_values.push_back(const_value(op_arr_type(INT8, str_const.size()+1), "@"+vreg_name, true));
+  vp.init_struct_constant(op, string_struct_types, string_struct_values);
+
+  ct->string_literal_vreg_names[str_const] = "@String." + std::to_string(get_index());
 #endif
 }
 

@@ -57,6 +57,7 @@
         "set": "cpp",
         "ratio": "cpp",
         "*.def": "cpp",
-        "*.inc": "cpp"
+        "*.inc": "cpp",
+        "unordered_set": "cpp"
     }
 }

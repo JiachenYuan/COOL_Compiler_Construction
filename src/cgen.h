@@ -74,6 +74,8 @@ private:
 public:
   // The ostream where we are emitting code
   std::ostream *ct_stream;
+  // mapping from global string to virtual register name that stores the corresponding String object in LLVM
+  std::unordered_map<std::string, std::string> string_literal_vreg_names;
 };
 
 // Each CgenNode corresponds to a Cool class. As such, it is responsible for

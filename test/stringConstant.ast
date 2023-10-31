@@ -1,0 +1,25 @@
+#7
+_program
+  #7
+  _class
+    Main
+    Object
+    "stringConstant.cl"
+    (
+    #2
+    _attr
+      b
+      String
+      #2
+      _string
+        "hello world"
+      : String
+    #6
+    _method
+      main
+      String
+      #6
+      _object
+        b
+      : String
+    )
