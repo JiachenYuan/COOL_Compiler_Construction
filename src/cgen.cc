@@ -355,6 +355,13 @@ void CgenClassTable::code_module() {
 void CgenClassTable::code_classes(CgenNode *c) {
   // TODO: add code here
 
+  // Code itself, then call children's code_class recursively
+  c->code_class();
+
+  for (CgenNode* child : c->get_children()) {
+    child->code_class();
+  }
+
 }
 #endif
 
@@ -677,6 +684,15 @@ void CgenNode::code_class() {
     return;
   }
   // TODO: add code here
+  for (int i=features->first(); features->more(i); i=features->next(i)) {
+    method_class* method = (method_class *)features->nth(i);
+    CgenEnvironment env(*ct_stream, this);
+    method->code(&env);
+  }
+  // Recursively call code class for children classes
+  for (CgenNode* child : get_children()) {
+    child->code_class();
+  }
 }
 
 void CgenNode::code_init_function(CgenEnvironment *env) {
@@ -746,13 +762,44 @@ void method_class::code(CgenEnvironment *env) {
 
   ValuePrinter vp(*env->cur_stream);
   // /TODO: add code here
-  vp.define(INT32, "Main_main", {});
+  CgenNode* current_cls = env->get_class();
+  std::string cur_class_name_in_COOL = name->get_string();
+  std::string cur_class_name_in_LLVM = current_cls->global_method_name_map[cur_class_name_in_COOL]; 
+  op_func_type curr_method_type = current_cls->method_types_in_LLVM[cur_class_name_in_COOL];
+  op_type cur_method_res_type = curr_method_type.res;
+  
+  std::vector<op_type> cur_method_args_types = curr_method_type.args;
+  std::vector<std::string> args_names = {"self"  };
+
+  for (int i=formals->first(); formals->more(i); i=formals->next(i)) {
+    Formal param = formals->nth(i);
+    args_names.push_back(param->get_name()->get_string());
+  }
+
+  // if (cgen_debug) {
+  //   using namespace std;
+  //   cerr << "method " << cur_class_name_in_LLVM << "'s num of args and num of arg names is the same if 1 or else 0" << endl;
+  //   cerr << (cur_method_args_types.size() == args_names.size()) << endl;
+  // }
+
+  // Zip the argument names and their LLVM types together to create the argument list for LLVM function definition
+  if (cur_method_args_types.size() != args_names.size()) {
+    std::cerr << "Trying to zip argument names with their LLVM types, but the length of the two arrays are not the same" << std::endl;
+    abort(); 
+  }
+  std::vector<operand> cur_method_args;
+  for (int i=0; i<cur_method_args_types.size(); i++) {
+    cur_method_args.push_back(operand(cur_method_args_types[i], args_names[i]));
+  }
+
+  
+  vp.define(cur_method_res_type, cur_class_name_in_LLVM, cur_method_args);
   vp.begin_block("entry");
   // Make alloca recursively
-  expr->make_alloca(env);
+  // expr->make_alloca(env);
   // Recursively emit code for expressions contained in the main method
-  operand ret = expr->code(env);
-  vp.ret(ret);
+  // operand ret = expr->code(env);
+  // vp.ret(ret);
 
   // Abort section (for any runtime error exception handling)
   vp.begin_block("abort");

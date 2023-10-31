@@ -214,3 +214,12 @@ define i32 @main() {
 
 entry:
 	%vtpm.0 = call i32 @Main_main(  )
+define %String* @Main_main(%Main* %self) {
+
+entry:
+
+abort:
+	call void @abort(  )
+	unreachable
+}
+
