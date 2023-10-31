@@ -1,0 +1,82 @@
+Comparing add.out and add_ref.out
+
+Comparing anot3.out and anot3_ref.out
+
+Comparing arith.out and arith_ref.out
+
+Comparing block2.out and block2_ref.out
+
+Comparing block.out and block_ref.out
+
+Comparing comp0.out and comp0_ref.out
+
+Comparing comp1.out and comp1_ref.out
+
+Comparing condfalse.out and condfalse_ref.out
+
+Comparing condtrue.out and condtrue_ref.out
+
+Comparing div.out and div_ref.out
+
+Comparing eqfalse.out and eqfalse_ref.out
+
+Comparing eqtrue.out and eqtrue_ref.out
+
+Comparing leqfalse.out and leqfalse_ref.out
+
+Comparing leqtrue.out and leqtrue_ref.out
+
+Comparing letbool.out and letbool_ref.out
+
+Comparing letinittrap.out and letinittrap_ref.out
+
+Comparing letint.out and letint_ref.out
+
+Comparing letmultiple2.out and letmultiple2_ref.out
+
+Comparing letmultiple.out and letmultiple_ref.out
+
+Comparing letnestedx.out and letnestedx_ref.out
+
+Comparing letnestedy.out and letnestedy_ref.out
+
+Comparing letsame.out and letsame_ref.out
+
+Comparing letshad.out and letshad_ref.out
+
+Comparing local1let.out and local1let_ref.out
+
+Comparing local2ifelse.out and local2ifelse_ref.out
+
+Comparing local31whileeq.out and local31whileeq_ref.out
+
+Comparing local3while.out and local3while_ref.out
+
+Comparing local41booleq.out and local41booleq_ref.out
+
+Comparing local4bool.out and local4bool_ref.out
+
+Comparing loop2.out and loop2_ref.out
+
+Comparing loop3.out and loop3_ref.out
+
+Comparing loop.out and loop_ref.out
+
+Comparing ltfalse.out and ltfalse_ref.out
+
+Comparing lttrue.out and lttrue_ref.out
+
+Comparing mul.out and mul_ref.out
+
+Comparing notfalse.out and notfalse_ref.out
+
+Comparing nottrue.out and nottrue_ref.out
+
+Comparing ret20.out and ret20_ref.out
+
+Comparing sub.out and sub_ref.out
+
+Comparing testCodeMain.out and testCodeMain_ref.out
+
+Comparing zerodivabort.out and zerodivabort_ref.out
+
