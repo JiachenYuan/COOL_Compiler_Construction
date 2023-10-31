@@ -161,9 +161,64 @@ declare void @Bool_init(%Bool*, i1)
 	i32 (%IO*) * @IO_in_int
 }
 
+@str.A = internal constant [2 x i8] c"A\00"
+%A = type {
+	%_A_vtable*,
+	%String*,
+	i1
+}
+
+%_A_vtable = type {
+	i32,
+	i32,
+	i8*,
+	%A* () *,
+	%Object* (%A*) *,
+	%String* (%A*) *,
+	%A* (%A*) *,
+	i1 (%A*,i32,i1) *
+}
+
+@_A_vtable_prototype = constant %_A_vtable {
+	i32 5,
+	i32 ptrtoint (%A* getelementptr (%A, %A* null, i32 1) to i32),
+	i8* getelementptr ([2 x i8], [2 x i8]* @str.A, i32 0, i32 0),
+	%A* () * @A_new,
+	%Object* (%A*) * bitcast (%Object* (%Object*) * @Object_abort to %Object* (%A*) *),
+	%String* (%A*) * bitcast (%String* (%Object*) * @Object_type_name to %String* (%A*) *),
+	%A* (%A*) * bitcast (%Object* (%Object*) * @Object_copy to %A* (%A*) *),
+	i1 (%A*,i32,i1) * @A.test1
+}
+
+@str.B = internal constant [2 x i8] c"B\00"
+%B = type {
+	%_B_vtable*
+}
+
+%_B_vtable = type {
+	i32,
+	i32,
+	i8*,
+	%B* () *,
+	%Object* (%B*) *,
+	%String* (%B*) *,
+	%B* (%B*) *
+}
+
+@_B_vtable_prototype = constant %_B_vtable {
+	i32 6,
+	i32 ptrtoint (%B* getelementptr (%B, %B* null, i32 1) to i32),
+	i8* getelementptr ([2 x i8], [2 x i8]* @str.B, i32 0, i32 0),
+	%B* () * @B_new,
+	%Object* (%B*) * bitcast (%Object* (%Object*) * @Object_abort to %Object* (%B*) *),
+	%String* (%B*) * bitcast (%String* (%Object*) * @Object_type_name to %String* (%B*) *),
+	%B* (%B*) * bitcast (%Object* (%Object*) * @Object_copy to %B* (%B*) *)
+}
+
 @str.Main = internal constant [5 x i8] c"Main\00"
 %Main = type {
 	%_Main_vtable*,
+	%B*,
 	%String*
 }
 
@@ -179,7 +234,7 @@ declare void @Bool_init(%Bool*, i1)
 }
 
 @_Main_vtable_prototype = constant %_Main_vtable {
-	i32 5,
+	i32 7,
 	i32 ptrtoint (%Main* getelementptr (%Main, %Main* null, i32 1) to i32),
 	i8* getelementptr ([5 x i8], [5 x i8]* @str.Main, i32 0, i32 0),
 	%Main* () * @Main_new,
@@ -208,13 +263,83 @@ entry:
 	ret i32 0
 }
 
+define i1 @A.test1(%A* %self, i32 %a, i1 %b) {
+
+entry:
+	%tmp.0 = alloca %A*
+	%tmp.1 = alloca i32
+	%tmp.2 = alloca i1
+	store %A* %self, %A** %tmp.0
+	store i32 %a, i32* %tmp.1
+	store i1 %b, i1* %tmp.2
+	ret i1 false
+
+abort:
+	call void @abort(  )
+	unreachable
+}
+
+define %A* @A_new() {
+
+entry:
+	%tmp.3 = alloca %A*
+	%tmp.4 = getelementptr %_A_vtable, %_A_vtable* @_A_vtable_prototype, i32 0, i32 1
+	%tmp.5 = load i32, i32* %tmp.4
+	%tmp.6 = call i8*(i32 ) @malloc( i32 %tmp.5 )
+	%tmp.7 = bitcast i8* %tmp.6 to %A*
+	%malloc.null = icmp eq %A* %tmp.7, null
+	br i1 %malloc.null, label %abort, label %okay
+
+okay:
+	%tmp.8 = getelementptr %A, %A* %tmp.7, i32 0, i32 0
+	store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %tmp.8
+	store %A* %tmp.7, %A** %tmp.3
+	%tmp.9 = getelementptr %A, %A* %tmp.7, i32 0, i32 1
+	%tmp.10 = call %String* @String_new(  )
+	store %String* %tmp.10, %String** %tmp.9
+	%tmp.11 = getelementptr %A, %A* %tmp.7, i32 0, i32 2
+	store i1 false, i1* %tmp.11
+	%tmp.12 = getelementptr %A, %A* %tmp.7, i32 0, i32 1
+	%tmp.13 = call %String* @String_new(  )
+	store %String* %tmp.13, %String** %tmp.12
+	%tmp.14 = getelementptr %A, %A* %tmp.7, i32 0, i32 2
+	store i1 false, i1* %tmp.14
+	ret %A* %tmp.7
+
+abort:
+	call void @abort(  )
+	unreachable
+}
+
+define %B* @B_new() {
+
+entry:
+	%tmp.0 = alloca %B*
+	%tmp.1 = getelementptr %_B_vtable, %_B_vtable* @_B_vtable_prototype, i32 0, i32 1
+	%tmp.2 = load i32, i32* %tmp.1
+	%tmp.3 = call i8*(i32 ) @malloc( i32 %tmp.2 )
+	%tmp.4 = bitcast i8* %tmp.3 to %B*
+	%malloc.null = icmp eq %B* %tmp.4, null
+	br i1 %malloc.null, label %abort, label %okay
+
+okay:
+	%tmp.5 = getelementptr %B, %B* %tmp.4, i32 0, i32 0
+	store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %tmp.5
+	store %B* %tmp.4, %B** %tmp.0
+	ret %B* %tmp.4
+
+abort:
+	call void @abort(  )
+	unreachable
+}
+
 define %String* @Main.main(%Main* %self) {
 
 entry:
 	%tmp.0 = alloca %Main*
 	store %Main* %self, %Main** %tmp.0
 	%tmp.1 = load %Main*, %Main** %tmp.0
-	%tmp.2 = getelementptr %Main, %Main* %tmp.1, i32 0, i32 1
+	%tmp.2 = getelementptr %Main, %Main* %tmp.1, i32 0, i32 2
 	%tmp.3 = load %String*, %String** %tmp.2
 	ret %String* %tmp.3
 
@@ -239,11 +364,15 @@ okay:
 	store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %tmp.9
 	store %Main* %tmp.8, %Main** %tmp.4
 	%tmp.10 = getelementptr %Main, %Main* %tmp.8, i32 0, i32 1
-	%tmp.11 = call %String* @String_new(  )
-	store %String* %tmp.11, %String** %tmp.10
-	%tmp.12 = getelementptr %Main, %Main* %tmp.8, i32 0, i32 1
-	%tmp.13 = call %String* @String_new(  )
-	store %String* %tmp.13, %String** %tmp.12
+	store %B* null, %B** %tmp.10
+	%tmp.11 = getelementptr %Main, %Main* %tmp.8, i32 0, i32 2
+	%tmp.12 = call %String* @String_new(  )
+	store %String* %tmp.12, %String** %tmp.11
+	%tmp.13 = getelementptr %Main, %Main* %tmp.8, i32 0, i32 1
+	store %B* null, %B** %tmp.13
+	%tmp.14 = getelementptr %Main, %Main* %tmp.8, i32 0, i32 2
+	%tmp.15 = call %String* @String_new(  )
+	store %String* %tmp.15, %String** %tmp.14
 	ret %Main* %tmp.8
 
 abort:

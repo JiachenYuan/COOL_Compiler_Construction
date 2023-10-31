@@ -1,10 +1,10 @@
-#21
+#23
 _program
-  #8
+  #9
   _class
     A
     Object
-    "codeMainmain.cl"
+    "self_type_inheritance.cl"
     (
     #2
     _attr
@@ -15,8 +15,8 @@ _program
       : _no_type
     #3
     _attr
-      m_bool
-      Bool
+      m_self_type
+      SELF_TYPE
       #3
       _no_expr
       : _no_type
@@ -31,44 +31,44 @@ _program
       _formal
         b
         Bool
-      Bool
-      #6
-      _bool
-        0
-      : Bool
+      SELF_TYPE
+      #7
+      _object
+        m_self_type
+      : SELF_TYPE
     )
-  #12
+  #14
   _class
     B
-    Object
-    "codeMainmain.cl"
+    A
+    "self_type_inheritance.cl"
     (
     )
-  #21
+  #23
   _class
     Main
     Object
-    "codeMainmain.cl"
+    "self_type_inheritance.cl"
     (
-    #15
+    #17
     _attr
       a
       B
-      #15
+      #17
       _no_expr
       : _no_type
-    #16
+    #18
     _attr
       b
       String
-      #16
+      #18
       _no_expr
       : _no_type
-    #20
+    #22
     _method
       main
       String
-      #20
+      #22
       _object
         b
       : String

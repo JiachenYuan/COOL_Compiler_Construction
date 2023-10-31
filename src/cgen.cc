@@ -508,7 +508,11 @@ void CgenNode::setup(int tag, int depth) {
 
   for (std::string k : attr_names_in_order) {
     op_type v = attr_list[k];
-    attributes_types.push_back(v);
+    if (v.get_name().find("SELF_TYPE") != std::string::npos) {
+      attributes_types.push_back(op_type(class_name).get_ptr_type());
+    } else {
+      attributes_types.push_back(v);
+    }
   }
   vp.type_define(class_name, attributes_types);
 
@@ -518,6 +522,7 @@ void CgenNode::setup(int tag, int depth) {
 
   // Inherit Parent's methods
   std::vector<std::string> inherited_method_in_order;
+  std::unordered_set<std::string> inherited_methods_set;
   for (std::string& method_name : parentnd->method_names_in_order) {
     op_func_type ty = parentnd->method_types_in_COOL[method_name];
     op_type method_ret_type;
@@ -532,36 +537,36 @@ void CgenNode::setup(int tag, int depth) {
     method_param_types.insert(method_param_types.begin(), op_type(class_name).get_ptr_type());
     // Reserve a slot in the vtable of the class
     op_func_type method_type = op_func_type(method_ret_type, method_param_types);
-    vtable_types.push_back(method_type);
-    method_types_in_LLVM[method_name] = method_type;
+
+    // vtable_types.push_back(method_type);
+    // Inherited method's earliest type should be its parent's
+    method_types_earliest[method_name] = parentnd->method_types_earliest[method_name];
     method_types_in_COOL[method_name] = parentnd->method_types_in_COOL[method_name];
+
     auto it = std::find(method_names_in_order.begin(), method_names_in_order.end(), method_name);
     if(it != method_names_in_order.end()) {
       method_names_in_order.erase(it);
+      // Overriding method should have its own name and type
+      global_method_name_map[method_name] = local_method_to_global_func(method_name);
+      method_types_earliest[method_name] = method_type;
+    } else {
+      // Inheritanced methods should have the same global name as its parent's
+      global_method_name_map[method_name] = parentnd->global_method_name_map[method_name];
     }
     inherited_method_in_order.push_back(method_name);
+    inherited_methods_set.insert(method_name);
     // method_names_in_order.insert(method_names_in_order.begin(), method_name);
-    vtable_index_of_method[method_name] = vtable_index;
-    vtable_index ++;
+    
   }
   // Add inherited_method_in_order into current method's method list
   for (int i=inherited_method_in_order.size()-1; i>=0; i--) {
     method_names_in_order.insert(method_names_in_order.begin(), inherited_method_in_order[i]);
   }
-
-
-  
   for (std::string& method_name : method_names_in_order) {
     op_func_type ty = method_types_in_COOL[method_name];
     op_type method_ret_type;
     std::vector<op_type> method_param_types;
-    // check if override of parent method
-    if (parentnd->method_types_in_COOL.find(method_name) != parentnd->method_types_in_COOL.end()) {
-      // op_func_type parent_method_type = parentnd->method_types_in_COOL[method_name];
-      // method_ret_type = parent_method_type.res;
-      // method_param_types = parent_method_type.args;
-      continue;
-    }
+    
     method_ret_type = ty.res;
     method_param_types = ty.args;
       
@@ -575,6 +580,10 @@ void CgenNode::setup(int tag, int depth) {
     // Reserve a slot in the vtable of the class
     op_func_type method_type = op_func_type(method_ret_type, method_param_types);
     vtable_types.push_back(method_type);
+    // Only record LLVM type of non-inherited or non-overriding method
+    if (parentnd->method_types_in_COOL.find(method_name) == parentnd->method_types_in_COOL.end()) {
+      method_types_earliest[method_name] = method_type;
+    }
     method_types_in_LLVM[method_name] = method_type;
     vtable_index_of_method[method_name] = vtable_index;
     vtable_index ++;
@@ -593,14 +602,13 @@ void CgenNode::setup(int tag, int depth) {
   // temp = "getelementptr (["+ temp_name_length +" x i8], ["+ temp_name_length +" x i8]* @str."+class_name+", i32 0, i32 0)";
   init_values.push_back(const_value(op_arr_type(INT8, class_name.size()+1), "@str."+class_name, true));
 
-  // Reserve vtable slot for methods
   for (std::string& method_name : method_names_in_order) {
     op_func_type ty = method_types_in_COOL[method_name];
   // for (auto& [method_name, ty] : method_types_in_COOL) {
     std::string method_name_in_llvm = global_method_name_map[method_name];
     // If this method is a override method, use bitcast
     if (parentnd->method_types_in_COOL.find(method_name) != parentnd->method_types_in_COOL.end()) {
-      op_func_type parent_method_type = parentnd->method_types_in_LLVM[method_name];
+      op_func_type parent_method_type = parentnd->method_types_earliest[method_name];
       operand op1(parent_method_type, parentnd->global_method_name_map[method_name]);
       op_type curr_method_type = method_types_in_LLVM[method_name]; 
       std::string temp = "bitcast (" + op1.get_typename() + " "
@@ -617,9 +625,9 @@ void CgenNode::setup(int tag, int depth) {
 
   // if (cgen_debug) {
   //   using namespace std;
-  //   cerr << "num of methods in LLVM=" << method_types_in_LLVM.size() << endl;
+  //   cerr << "num of methods in LLVM=" << method_types_earliest.size() << endl;
   //   cerr << "num of methods in COOL=" << method_types_in_COOL.size() << endl;
-  //   cerr << (method_types_in_LLVM.size() == method_types_in_COOL.size()) << endl;
+  //   cerr << (method_types_earliest.size() == method_types_in_COOL.size()) << endl;
   // }
 #endif
 }

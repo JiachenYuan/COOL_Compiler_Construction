@@ -146,12 +146,12 @@ declare i32 @IO_in_int(%IO*)
 	i32 (%IO*) * @IO_in_int
 }
 
-declare i1 @A_test1(%A*, i32, i1)
+declare %A* @A_test1(%A*, i32, i1)
 @str.A = internal constant [2 x i8] c"A\00"
 %A = type {
 	%_A_vtable*,
 	%String*,
-	i1
+	%A*
 }
 
 %_A_vtable = type {
@@ -161,7 +161,7 @@ declare i1 @A_test1(%A*, i32, i1)
 	%Object* (%A*) *,
 	%String* (%A*) *,
 	%A* (%A*) *,
-	i1 (%A*,i32,i1) *
+	%A* (%A*,i32,i1) *
 }
 
 @_A_vtable_prototype = constant %_A_vtable {
@@ -171,12 +171,14 @@ declare i1 @A_test1(%A*, i32, i1)
 	%Object* (%A*) * bitcast (%Object* (%Object*) * @Object_abort to %Object* (%A*) *),
 	%String* (%A*) * bitcast (%String* (%Object*) * @Object_type_name to %String* (%A*) *),
 	%A* (%A*) * bitcast (%Object* (%Object*) * @Object_copy to %A* (%A*) *),
-	i1 (%A*,i32,i1) * @A_test1
+	%A* (%A*,i32,i1) * @A_test1
 }
 
 @str.B = internal constant [2 x i8] c"B\00"
 %B = type {
-	%_B_vtable*
+	%_B_vtable*,
+	%String*,
+	%B*
 }
 
 %_B_vtable = type {
@@ -185,7 +187,8 @@ declare i1 @A_test1(%A*, i32, i1)
 	i8*,
 	%Object* (%B*) *,
 	%String* (%B*) *,
-	%B* (%B*) *
+	%B* (%B*) *,
+	%B* (%B*,i32,i1) *
 }
 
 @_B_vtable_prototype = constant %_B_vtable {
@@ -194,7 +197,8 @@ declare i1 @A_test1(%A*, i32, i1)
 	i8* getelementptr ([2 x i8], [2 x i8]* @str.B, i32 0, i32 0),
 	%Object* (%B*) * bitcast (%Object* (%Object*) * @Object_abort to %Object* (%B*) *),
 	%String* (%B*) * bitcast (%String* (%Object*) * @Object_type_name to %String* (%B*) *),
-	%B* (%B*) * bitcast (%Object* (%Object*) * @Object_copy to %B* (%B*) *)
+	%B* (%B*) * bitcast (%Object* (%Object*) * @Object_copy to %B* (%B*) *),
+	%B* (%B*,i32,i1) * bitcast (%A* (%A*,i32,i1) * @A_test1 to %B* (%B*,i32,i1) *)
 }
 
 declare %String* @Main_main(%Main*)

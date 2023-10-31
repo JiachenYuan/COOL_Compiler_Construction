@@ -19,6 +19,7 @@
 #include <map>
 #include <limits>
 #include <algorithm>
+#include <unordered_set>
 
 class CgenNode;
 
@@ -145,6 +146,7 @@ public:
   std::map<std::string, op_func_type> method_types_in_COOL;
   std::map<std::string, std::string> global_method_name_map;
   std::map<std::string, int> vtable_index_of_method;
+  std::map<std::string, op_func_type> method_types_earliest;
   std::map<std::string, op_func_type> method_types_in_LLVM;
 
   std::vector<std::string> attr_names_in_order;
