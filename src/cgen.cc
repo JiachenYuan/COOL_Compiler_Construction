@@ -514,8 +514,11 @@ void CgenNode::setup(int tag, int depth) {
   //* 1. Declare Class Record
   // declare function name as a string
   vp.init_constant("str."+class_name, const_value(op_arr_type(INT8, class_name.size()+1), class_name+"\00", true)); 
+  int obj_record_attr_index = 0;
   std::vector<op_type> attributes_types = { op_type(get_vtable_type_name()).get_ptr_type() };
-
+  obj_record_index_of_attributes[get_vtable_name()] = obj_record_attr_index;
+  obj_record_attr_index++;
+  
   // append all parent's attributes types
   if (parentnd) {
     for (std::string& k: parentnd->attr_names_in_order) {
@@ -528,6 +531,8 @@ void CgenNode::setup(int tag, int depth) {
       } else {
         attributes_types.push_back(v);
       }
+      obj_record_index_of_attributes[k] = obj_record_attr_index;
+      obj_record_attr_index++;
     }
   }
 
@@ -538,13 +543,15 @@ void CgenNode::setup(int tag, int depth) {
     } else {
       attributes_types.push_back(v);
     }
+    obj_record_index_of_attributes[k] = obj_record_attr_index;
+    obj_record_attr_index++;
   }
   vp.type_define(class_name, attributes_types);
 
   //* 2. Declare Class VTable
   std::vector<op_type> vtable_types = {INT32, INT32, INT8_PTR};
   int vtable_index = 3;
-  // Insert special new function in Vtable
+  // Insert special NEW function in Vtable
   op_func_type new_func_type(op_type(class_name).get_ptr_type(), {});
   vtable_types.push_back(new_func_type);
   global_method_name_map["new"] = get_init_function_name();
@@ -761,7 +768,7 @@ void method_class::code(CgenEnvironment *env) {
   }
 
   ValuePrinter vp(*env->cur_stream);
-  // /TODO: add code here
+  // TODO: add code here
   CgenNode* current_cls = env->get_class();
   std::string cur_class_name_in_COOL = name->get_string();
   std::string cur_class_name_in_LLVM = current_cls->global_method_name_map[cur_class_name_in_COOL]; 
@@ -775,20 +782,13 @@ void method_class::code(CgenEnvironment *env) {
     Formal param = formals->nth(i);
     args_names.push_back(param->get_name()->get_string());
   }
-
-  // if (cgen_debug) {
-  //   using namespace std;
-  //   cerr << "method " << cur_class_name_in_LLVM << "'s num of args and num of arg names is the same if 1 or else 0" << endl;
-  //   cerr << (cur_method_args_types.size() == args_names.size()) << endl;
-  // }
-
   // Zip the argument names and their LLVM types together to create the argument list for LLVM function definition
   if (cur_method_args_types.size() != args_names.size()) {
     std::cerr << "Trying to zip argument names with their LLVM types, but the length of the two arrays are not the same" << std::endl;
     abort(); 
   }
   std::vector<operand> cur_method_args;
-  for (int i=0; i<cur_method_args_types.size(); i++) {
+  for (std::size_t i=0; i<cur_method_args_types.size(); i++) {
     cur_method_args.push_back(operand(cur_method_args_types[i], args_names[i]));
   }
 
@@ -1061,7 +1061,53 @@ operand static_dispatch_class::code(CgenEnvironment *env) {
   assert(0 && "Unsupported case for phase 1");
 #else
   // TODO: add code here and replace `return operand()`
-  return operand();
+  ValuePrinter vp(*env->cur_stream);
+  /*  
+  Expression expr;
+  Symbol type_name;
+  Symbol name;
+  Expressions actual;
+  */
+
+  // 1. Prepare parameters
+  std::vector<operand> param_list;
+  int first = actual->first();
+  int second = actual->next(first);
+  for (int i=second; actual->more(i); i=actual->next(i)) {
+    Expression param = actual->nth(i);
+    param_list.push_back(param->code(env));
+  }
+  operand expr_code = expr->code(env);
+  param_list.insert(param_list.begin(), expr_code);
+
+  operand isNull = vp.icmp(EQ, expr_code, null_value(EMPTY));
+  std::string new_ok_label = env->new_ok_label();
+  vp.branch_cond(isNull, "abort", new_ok_label);
+  
+  vp.begin_block(new_ok_label);
+
+  // 2. get function ptr from correct vtable
+  CgenNode* designated_class = env->get_class()->get_classtable()->find_in_scopes(type_name);
+  std::string method_name = name->get_string();
+  int method_index_in_vtable = designated_class->vtable_index_of_method[method_name];
+  std::string vtable_type_name = designated_class->get_vtable_type_name();
+  std::string vtable_name = designated_class->get_vtable_name();
+  op_func_type method_type = designated_class->method_types_in_LLVM[method_name];
+  operand ptr_to_method = vp.getelementptr(
+    op_type(vtable_type_name), 
+    operand(op_type(vtable_type_name).get_ptr_type(), vtable_name),
+    int_value(0),
+    int_value(method_index_in_vtable),
+    method_type.get_ptr_type());  
+  vp.load(method_type, ptr_to_method);
+  // 3. Conform parameters (excluding the first implicit parameter)
+  for (std::size_t i=1; i<param_list.size(); i++) {
+    operand conformed = conform(param_list[i], method_type.args[i], env);
+    param_list[i] = conformed;
+  }
+  // 4. call
+  operand ret = vp.call(method_type.args, method_type.res, ptr_to_method.get_name(), false, param_list);
+  return ret;
 #endif
 }
 
@@ -1121,7 +1167,7 @@ operand isvoid_class::code(CgenEnvironment *env) {
 #endif
 }
 
-op_type Box_COOL_type(std::string type_str) {
+op_type convert_to_COOL_type(std::string type_str) {
   op_type ret_type_COOL;
   if (type_str == "Int" || type_str == "int") {
     ret_type_COOL = op_type(INT32);
@@ -1143,7 +1189,7 @@ void method_class::layout_feature(CgenNode *cls) {
   // TODO: add code here
   // Get return type as LLVM type
   std::string ret_type_str = return_type->get_string();
-  op_type ret_type_COOL = Box_COOL_type(ret_type_str);
+  op_type ret_type_COOL = convert_to_COOL_type(ret_type_str);
   // Replcae self type with current type
   // if (ret_type_COOL.get_name().find("SELF_TYPE") != std::string::npos) {
   //   ret_type_COOL = op_type(cls->get_type_name()).get_ptr_type();
@@ -1159,7 +1205,7 @@ void method_class::layout_feature(CgenNode *cls) {
   for (int i=formals->first(); formals->more(i); i=formals->next(i)) {
     Formal arg = formals->nth(i);
     std::string formal_type_str_repr = arg->get_type_decl()->get_string();
-    formal_COOL_type_list.push_back(Box_COOL_type(formal_type_str_repr));
+    formal_COOL_type_list.push_back(convert_to_COOL_type(formal_type_str_repr));
   }
 
   // !Record it in CgenNode's data structure, USING FUNCTION_NAME AS KEY
@@ -1206,7 +1252,7 @@ void attr_class::layout_feature(CgenNode *cls) {
   // TODO: add code here
   std::string attr_name = name->get_string();
   std::string type_str = type_decl->get_string();
-  op_type attr_type = Box_COOL_type(type_str);
+  op_type attr_type = convert_to_COOL_type(type_str);
   // Insert into current class's attribute list
   cls->attr_list[attr_name] = attr_type;
   cls->attr_names_in_order.push_back(attr_name);
@@ -1489,6 +1535,24 @@ void attr_class::make_alloca(CgenEnvironment *env) {
 // (It's needed by the supplied code for typecase)
 operand conform(operand src, op_type type, CgenEnvironment *env) {
   // TODO: add code here
+  // ValuePrinter vp(*env->cur_stream);
+  // if (src.get_typename() == type.get_name()) {
+  //   return src;
+  // } else if (src.get_type().get_name() == "%Int**" && type.get_name() == "i32") {
+  //   // Unbox Int to i32
+  //   operand i32_ptr = vp.getelementptr()
+  // } else if (src.get_type().get_name() == "i32" && type.get_name() == "%Int**") {
+  //   // Box i32 to Int. Need allocation
+
+  // } else if (src.get_type().get_name() == "%Bool**" && type.get_name() == "i1") {
+  //   // Unbox Bool to i1
+  // } else if (src.get_type().get_name() == "i1" && type.get_name() == "%Bool**") {
+  //   // Box i1 to Bool. Need allocation
+  // } else {
+  //   // If not conversion about Int and Bool, then just bitcast
+
+  // }
+
   return operand();
 }
 

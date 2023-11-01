@@ -1,0 +1,77 @@
+#14
+_program
+  #14
+  _class
+    Main
+    Object
+    "static_dispatch.cl"
+    (
+    #3
+    _attr
+      b
+      String
+      #3
+      _no_expr
+      : _no_type
+    #4
+    _attr
+      a
+      Bool
+      #4
+      _no_expr
+      : _no_type
+    #5
+    _attr
+      c
+      Int
+      #5
+      _no_expr
+      : _no_type
+    #9
+    _method
+      test1
+      #7
+      _formal
+        arg1
+        Bool
+      #7
+      _formal
+        arg2
+        String
+      #7
+      _formal
+        arg3
+        Int
+      String
+      #9
+      _object
+        b
+      : String
+    #13
+    _method
+      main
+      String
+      #12
+      _static_dispatch
+        #12
+        _object
+          self
+        : SELF_TYPE
+        Main
+        test1
+        (
+        #12
+        _object
+          a
+        : Bool
+        #12
+        _object
+          b
+        : String
+        #12
+        _int
+          3
+        : Int
+        )
+      : String
+    )

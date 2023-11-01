@@ -153,6 +153,7 @@ public:
 
   std::vector<std::string> attr_names_in_order;
   std::map<std::string, op_type> attr_list;
+  std::map<std::string, int> obj_record_index_of_attributes;
 
 };
 
