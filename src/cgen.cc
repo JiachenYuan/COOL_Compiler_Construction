@@ -1581,25 +1581,58 @@ void attr_class::make_alloca(CgenEnvironment *env) {
 // (It's needed by the supplied code for typecase)
 operand conform(operand src, op_type type, CgenEnvironment *env) {
   // TODO: add code here
-  // ValuePrinter vp(*env->cur_stream);
-  // if (src.get_typename() == type.get_name()) {
-  //   return src;
-  // } else if (src.get_type().get_name() == "%Int**" && type.get_name() == "i32") {
-  //   // Unbox Int to i32
-  //   operand i32_ptr = vp.getelementptr()
-  // } else if (src.get_type().get_name() == "i32" && type.get_name() == "%Int**") {
-  //   // Box i32 to Int. Need allocation
+  ValuePrinter vp(*env->cur_stream);
+  if (src.get_typename() == type.get_name()) {
+    return src;
+  } else if (src.get_type().get_name() == "%Int*" && type.get_name() == "i32") {
+    // Unbox Int to i32
+    operand i32_ptr = vp.getelementptr(
+      op_type("Int"),
+      src,
+      int_value(0),
+      int_value(1),
+      op_type(INT32).get_ptr_type()
+    );
+    operand i32_val = vp.load(op_type(INT32), i32_ptr);
+    return i32_val;
+  } else if (src.get_type().get_name() == "i32" && type.get_name() == "%Int*") {
+    // Box i32 to Int. Need allocation
+    operand Int_obj = vp.call({}, op_type(INT32).get_ptr_type(), "Int_new", true, {});
+    vp.call(
+      {op_type("INT").get_ptr_type(), op_type(INT32)}, 
+      op_type(VOID), 
+      "Int_init", 
+      true, 
+      {Int_obj, src}
+    );
+    return Int_obj;
+  } else if (src.get_type().get_name() == "%Bool*" && type.get_name() == "i1") {
+    // Unbox Bool to i1
+    operand i1_ptr = vp.getelementptr(
+      op_type("Bool"),
+      src,
+      int_value(0),
+      int_value(1),
+      op_type(INT1).get_ptr_type()
+    );
+    operand i1_val = vp.load(op_type(INT1), i1_ptr);
+    return i1_val;
 
-  // } else if (src.get_type().get_name() == "%Bool**" && type.get_name() == "i1") {
-  //   // Unbox Bool to i1
-  // } else if (src.get_type().get_name() == "i1" && type.get_name() == "%Bool**") {
-  //   // Box i1 to Bool. Need allocation
-  // } else {
-  //   // If not conversion about Int and Bool, then just bitcast
-
-  // }
-
-  return operand();
+  } else if (src.get_type().get_name() == "i1" && type.get_name() == "%Bool*") {
+    // Box i1 to Bool. Need allocation
+    operand Bool_obj = vp.call({}, op_type(INT1).get_ptr_type(), "Bool_new", true, {});
+    vp.call(
+      {op_type("Bool").get_ptr_type(), op_type(INT1)},
+      op_type(VOID),
+      "Bool_init",
+      true,
+      {Bool_obj, src}
+    );
+    return Bool_obj;
+  } else {
+    // If not conversion about Int and Bool, then just bitcast
+    return vp.bitcast(src, type);
+  }
 }
 
 
