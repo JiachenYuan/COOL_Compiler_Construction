@@ -1087,7 +1087,7 @@ operand static_dispatch_class::code(CgenEnvironment *env) {
   vp.begin_block(new_ok_label);
 
   // 2. get function ptr from correct vtable
-  CgenNode* designated_class = env->get_class()->get_classtable()->find_in_scopes(type_name);
+  CgenNode* designated_class = env->type_to_class(type_name);
   std::string method_name = name->get_string();
   int method_index_in_vtable = designated_class->vtable_index_of_method[method_name];
   std::string vtable_type_name = designated_class->get_vtable_type_name();
@@ -1129,7 +1129,53 @@ operand dispatch_class::code(CgenEnvironment *env) {
   assert(0 && "Unsupported case for phase 1");
 #else
   // TODO: add code here and replace `return operand()`
-  return operand();
+ ValuePrinter vp(*env->cur_stream);
+  /*  
+  Expression expr;
+  Symbol name;
+  Expressions actual;
+  */
+
+  // 1. Prepare parameters
+  std::vector<operand> param_list;
+  int first = actual->first();
+  int second = actual->next(first);
+  for (int i=second; actual->more(i); i=actual->next(i)) {
+    Expression param = actual->nth(i);
+    param_list.push_back(param->code(env));
+  }
+  operand expr_code = expr->code(env);
+  param_list.insert(param_list.begin(), expr_code);
+
+  operand isNull = vp.icmp(EQ, expr_code, null_value(EMPTY));
+  std::string new_ok_label = env->new_ok_label();
+  vp.branch_cond(isNull, "abort", new_ok_label);
+  
+  vp.begin_block(new_ok_label);
+
+  // 2. get function ptr from correct vtable
+  Symbol target_type_name = expr->get_type();
+  CgenNode* designated_class = env->type_to_class(target_type_name);
+  std::string method_name = name->get_string();
+  int method_index_in_vtable = designated_class->vtable_index_of_method[method_name];
+  std::string vtable_type_name = designated_class->get_vtable_type_name();
+  std::string vtable_name = designated_class->get_vtable_name();
+  op_func_type method_type = designated_class->method_types_in_LLVM[method_name];
+  operand ptr_to_method = vp.getelementptr(
+    op_type(vtable_type_name), 
+    operand(op_type(vtable_type_name).get_ptr_type(), vtable_name),
+    int_value(0),
+    int_value(method_index_in_vtable),
+    method_type.get_ptr_type());  
+  vp.load(method_type, ptr_to_method);
+  // 3. Conform parameters (excluding the first implicit parameter)
+  for (std::size_t i=1; i<param_list.size(); i++) {
+    operand conformed = conform(param_list[i], method_type.args[i], env);
+    param_list[i] = conformed;
+  }
+  // 4. call
+  operand ret = vp.call(method_type.args, method_type.res, ptr_to_method.get_name(), false, param_list);
+  return ret; 
 #endif
 }
 
