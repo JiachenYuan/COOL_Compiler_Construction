@@ -217,6 +217,7 @@ entry:
 	%tmp.2 = load i32, i32* %tmp.1
 	%tmp.4 = call %Int* @Int_new(  )
 	call void(%Int*, i32 ) @Int_init( %Int* %tmp.4, i32 %tmp.2 )
+	
 	%tmp.5 = getelementptr %Int, %Int* %tmp.4, i32 0, i32 0
 	%tmp.6 = load %_Int_vtable*, %_Int_vtable** %tmp.5
 	%tmp.7 = getelementptr %_Int_vtable, %_Int_vtable* %tmp.6, i32 0, i32 5

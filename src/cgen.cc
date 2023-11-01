@@ -1100,8 +1100,8 @@ operand static_dispatch_class::code(CgenEnvironment *env) {
     int_value(method_index_in_vtable),
     method_type.get_ptr_type());  
   vp.load(method_type, ptr_to_method);
-  // 3. Conform parameters (excluding the first implicit parameter)
-  for (std::size_t i=1; i<param_list.size(); i++) {
+  // 3. Conform parameters 
+  for (std::size_t i=0; i<param_list.size(); i++) {
     operand conformed = conform(param_list[i], method_type.args[i], env);
     param_list[i] = conformed;
   }
@@ -1145,6 +1145,10 @@ operand dispatch_class::code(CgenEnvironment *env) {
     param_list.push_back(param->code(env));
   }
   operand expr_code = expr->code(env);
+  if(expr_code.get_type().get_name() == op_type(INT32).get_name() ){
+    expr_code = conform(expr_code, op_type("Int*"), env);
+  }else if(expr_code.get_type().get_name() == op_type(INT1).get_name() ){
+    expr_code = conform(expr_code, op_type("Bool*"), env);
   param_list.insert(param_list.begin(), expr_code);
 
   operand isNull = vp.icmp(EQ, expr_code, null_value(EMPTY));
@@ -1155,6 +1159,11 @@ operand dispatch_class::code(CgenEnvironment *env) {
 
   // 2. get function ptr from correct vtable
   Symbol target_type_name = expr->get_type();
+  if(expr_code.get_type().get_name() == op_type(INT32).get_name() ){
+    target_type_name = Symbol("Int");
+  }else if(expr_code.get_type().get_name() == op_type(INT1).get_name() ){
+    target_type_name = Symbol("Bool");
+  
   CgenNode* designated_class = env->type_to_class(target_type_name);
   std::string method_name = name->get_string();
   int method_index_in_vtable = designated_class->vtable_index_of_method[method_name];
@@ -1169,7 +1178,7 @@ operand dispatch_class::code(CgenEnvironment *env) {
     method_type.get_ptr_type());  
   vp.load(method_type, ptr_to_method);
   // 3. Conform parameters (excluding the first implicit parameter)
-  for (std::size_t i=1; i<param_list.size(); i++) {
+  for (std::size_t i=0; i<param_list.size(); i++) {
     operand conformed = conform(param_list[i], method_type.args[i], env);
     param_list[i] = conformed;
   }
