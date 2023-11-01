@@ -1129,7 +1129,7 @@ operand dispatch_class::code(CgenEnvironment *env) {
   assert(0 && "Unsupported case for phase 1");
 #else
   // TODO: add code here and replace `return operand()`
- ValuePrinter vp(*env->cur_stream);
+  ValuePrinter vp(*env->cur_stream);
   /*  
   Expression expr;
   Symbol name;
@@ -1149,6 +1149,7 @@ operand dispatch_class::code(CgenEnvironment *env) {
     expr_code = conform(expr_code, op_type("Int*"), env);
   }else if(expr_code.get_type().get_name() == op_type(INT1).get_name() ){
     expr_code = conform(expr_code, op_type("Bool*"), env);
+  }
   param_list.insert(param_list.begin(), expr_code);
 
   operand isNull = vp.icmp(EQ, expr_code, null_value(EMPTY));
@@ -1163,7 +1164,7 @@ operand dispatch_class::code(CgenEnvironment *env) {
     target_type_name = Symbol("Int");
   }else if(expr_code.get_type().get_name() == op_type(INT1).get_name() ){
     target_type_name = Symbol("Bool");
-  
+  }
   CgenNode* designated_class = env->type_to_class(target_type_name);
   std::string method_name = name->get_string();
   int method_index_in_vtable = designated_class->vtable_index_of_method[method_name];
