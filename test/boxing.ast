@@ -1,0 +1,33 @@
+#6
+_program
+  #6
+  _class
+    Main
+    Object
+    "boxing.cl"
+    (
+    #5
+    _method
+      main
+      String
+      #5
+      _let
+        x
+        Int
+        #4
+        _int
+          1
+        : Int
+        #4
+        _static_dispatch
+          #4
+          _object
+            x
+          : Int
+          Int
+          type_name
+          (
+          )
+        : String
+      : String
+    )

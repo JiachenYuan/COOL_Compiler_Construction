@@ -161,72 +161,11 @@ declare %IO* @IO_new()
 	i32 (%IO*) * @IO_in_int
 }
 
-declare %A* @A_new()
-@str.A = internal constant [2 x i8] c"A\00"
-%A = type {
-	%_A_vtable*
-}
-
-%_A_vtable = type {
-	i32,
-	i32,
-	i8*,
-	%A* () *,
-	%Object* (%A*) *,
-	%String* (%A*) *,
-	%A* (%A*) *
-}
-
-@_A_vtable_prototype = constant %_A_vtable {
-	i32 5,
-	i32 ptrtoint (%A* getelementptr (%A, %A* null, i32 1) to i32),
-	i8* getelementptr ([2 x i8], [2 x i8]* @str.A, i32 0, i32 0),
-	%A* () * @A_new,
-	%Object* (%A*) * bitcast (%Object* (%Object*) * @Object_abort to %Object* (%A*) *),
-	%String* (%A*) * bitcast (%String* (%Object*) * @Object_type_name to %String* (%A*) *),
-	%A* (%A*) * bitcast (%Object* (%Object*) * @Object_copy to %A* (%A*) *)
-}
-
-declare %B* @B_test1(%B*, %A*, i32)
-declare %B* @B_new()
-@str.B = internal constant [2 x i8] c"B\00"
-%B = type {
-	%_B_vtable*,
-	%String*,
-	i1,
-	%B*
-}
-
-%_B_vtable = type {
-	i32,
-	i32,
-	i8*,
-	%B* () *,
-	%Object* (%B*) *,
-	%String* (%B*) *,
-	%B* (%B*) *,
-	%B* (%B*,%A*,i32) *
-}
-
-@_B_vtable_prototype = constant %_B_vtable {
-	i32 6,
-	i32 ptrtoint (%B* getelementptr (%B, %B* null, i32 1) to i32),
-	i8* getelementptr ([2 x i8], [2 x i8]* @str.B, i32 0, i32 0),
-	%B* () * @B_new,
-	%Object* (%B*) * bitcast (%Object* (%Object*) * @Object_abort to %Object* (%B*) *),
-	%String* (%B*) * bitcast (%String* (%Object*) * @Object_type_name to %String* (%B*) *),
-	%B* (%B*) * bitcast (%Object* (%Object*) * @Object_copy to %B* (%B*) *),
-	%B* (%B*,%A*,i32) * @B_test1
-}
-
 declare %String* @Main_main(%Main*)
 declare %Main* @Main_new()
 @str.Main = internal constant [5 x i8] c"Main\00"
 %Main = type {
-	%_Main_vtable*,
-	%String*,
-	i1,
-	%B*
+	%_Main_vtable*
 }
 
 %_Main_vtable = type {
@@ -237,38 +176,30 @@ declare %Main* @Main_new()
 	%Object* (%Main*) *,
 	%String* (%Main*) *,
 	%Main* (%Main*) *,
-	%Main* (%Main*,%A*,i32) *,
 	%String* (%Main*) *
 }
 
 @_Main_vtable_prototype = constant %_Main_vtable {
-	i32 7,
+	i32 5,
 	i32 ptrtoint (%Main* getelementptr (%Main, %Main* null, i32 1) to i32),
 	i8* getelementptr ([5 x i8], [5 x i8]* @str.Main, i32 0, i32 0),
 	%Main* () * @Main_new,
 	%Object* (%Main*) * bitcast (%Object* (%Object*) * @Object_abort to %Object* (%Main*) *),
 	%String* (%Main*) * bitcast (%String* (%Object*) * @Object_type_name to %String* (%Main*) *),
 	%Main* (%Main*) * bitcast (%Object* (%Object*) * @Object_copy to %Main* (%Main*) *),
-	%Main* (%Main*,%A*,i32) * bitcast (%B* (%B*,%A*,i32) * @B_test1 to %Main* (%Main*,%A*,i32) *),
 	%String* (%Main*) * @Main_main
 }
 
-@global_str.2 = internal constant [14 x i8] c"<basic class>\00"
-@String.2 = constant %String {
-	%_String_vtable* @_String_vtable_prototype,
-	i8* getelementptr ([14 x i8], [14 x i8]* @global_str.2, i32 0, i32 0)
-}
-
-@global_str.1 = internal constant [6 x i8] c"Hello\00"
+@global_str.1 = internal constant [14 x i8] c"<basic class>\00"
 @String.1 = constant %String {
 	%_String_vtable* @_String_vtable_prototype,
-	i8* getelementptr ([6 x i8], [6 x i8]* @global_str.1, i32 0, i32 0)
+	i8* getelementptr ([14 x i8], [14 x i8]* @global_str.1, i32 0, i32 0)
 }
 
-@global_str.0 = internal constant [19 x i8] c"static_dispatch.cl\00"
+@global_str.0 = internal constant [10 x i8] c"boxing.cl\00"
 @String.0 = constant %String {
 	%_String_vtable* @_String_vtable_prototype,
-	i8* getelementptr ([19 x i8], [19 x i8]* @global_str.0, i32 0, i32 0)
+	i8* getelementptr ([10 x i8], [10 x i8]* @global_str.0, i32 0, i32 0)
 }
 
 @.str = internal constant [25 x i8] c"Main.main() returned %d\0A\00"
@@ -276,26 +207,23 @@ define i32 @main() {
 
 entry:
 	%vtpm.0 = call i32 @Main_main(  )
-define %B* @B_test1(%B* %self, %A* %arg1, i32 %arg2) {
+define %String* @Main_main(%Main* %self) {
 
 entry:
-	%vtpm.1 = alloca %B*
-	%vtpm.2 = alloca %A*
-	%vtpm.3 = alloca i32
-	store %B* %self, %B** %vtpm.1
-	store %A* %arg1, %A** %vtpm.2
-	store i32 %arg2, i32* %vtpm.3
-	%vtpm.4 = load %B*, %B** %vtpm.1
-	ret %B* %vtpm.4
+	%vtpm.1 = alloca i32
+	%vtpm.2 = alloca %Main*
+	store %Main* %self, %Main** %vtpm.2
+	store i32 1, i32* %vtpm.1
+	%vtpm.3 = load i32, i32* %vtpm.1
+	%vtpm.4 = call %Int* @Int_new(  )
+	call void(%INT*, i32 ) @Int_init( %Int* %vtpm.4, i32 %vtpm.3 )
+	%vtpm.6 = getelementptr %_Int_vtable, %_Int_vtable* @_Int_vtable_prototype, i32 0, i32 5
+	%vtpm.7 = load %String* (%Int*) *, %String* (%Int*) ** %vtpm.6
+	%vtpm.8 = call %String*(%Int* ) %vtpm.6( %Int* %vtpm.4 )
+	ret %String* %vtpm.8
 
 abort:
 	call void @abort(  )
 	unreachable
 }
 
-define %String* @Main_main(%Main* %self) {
-
-entry:
-	%vtpm.6 = alloca %Main*
-	store %Main* %self, %Main** %vtpm.6
-	store  ,  

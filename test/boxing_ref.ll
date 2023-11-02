@@ -217,13 +217,10 @@ entry:
 	%tmp.2 = load i32, i32* %tmp.1
 	%tmp.4 = call %Int* @Int_new(  )
 	call void(%Int*, i32 ) @Int_init( %Int* %tmp.4, i32 %tmp.2 )
-	
-	%tmp.5 = getelementptr %Int, %Int* %tmp.4, i32 0, i32 0
-	%tmp.6 = load %_Int_vtable*, %_Int_vtable** %tmp.5
-	%tmp.7 = getelementptr %_Int_vtable, %_Int_vtable* %tmp.6, i32 0, i32 5
-	%tmp.8 = load %String* (%Int*) *, %String* (%Int*) ** %tmp.7
-	%tmp.9 = call %String*(%Int* ) %tmp.8( %Int* %tmp.4 )
-	ret %String* %tmp.9
+	%tmp.5 = getelementptr %_Int_vtable, %_Int_vtable* @_Int_vtable_prototype, i32 0, i32 5
+	%tmp.6 = load %String* (%Int*) *, %String* (%Int*) ** %tmp.5
+	%tmp.7 = call %String*(%Int* ) %tmp.6( %Int* %tmp.4 )
+	ret %String* %tmp.7
 
 abort:
 	call void @abort(  )
@@ -233,19 +230,19 @@ abort:
 define %Main* @Main_new() {
 
 entry:
-	%tmp.10 = alloca %Main*
-	%tmp.11 = getelementptr %_Main_vtable, %_Main_vtable* @_Main_vtable_prototype, i32 0, i32 1
-	%tmp.12 = load i32, i32* %tmp.11
-	%tmp.13 = call i8*(i32 ) @malloc( i32 %tmp.12 )
-	%tmp.14 = bitcast i8* %tmp.13 to %Main*
-	%malloc.null = icmp eq %Main* %tmp.14, null
+	%tmp.8 = alloca %Main*
+	%tmp.9 = getelementptr %_Main_vtable, %_Main_vtable* @_Main_vtable_prototype, i32 0, i32 1
+	%tmp.10 = load i32, i32* %tmp.9
+	%tmp.11 = call i8*(i32 ) @malloc( i32 %tmp.10 )
+	%tmp.12 = bitcast i8* %tmp.11 to %Main*
+	%malloc.null = icmp eq %Main* %tmp.12, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%tmp.15 = getelementptr %Main, %Main* %tmp.14, i32 0, i32 0
-	store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %tmp.15
-	store %Main* %tmp.14, %Main** %tmp.10
-	ret %Main* %tmp.14
+	%tmp.13 = getelementptr %Main, %Main* %tmp.12, i32 0, i32 0
+	store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %tmp.13
+	store %Main* %tmp.12, %Main** %tmp.8
+	ret %Main* %tmp.12
 
 abort:
 	call void @abort(  )

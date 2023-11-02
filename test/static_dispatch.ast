@@ -1,77 +1,102 @@
-#14
+#27
 _program
-  #14
+  #3
   _class
-    Main
+    A
     Object
     "static_dispatch.cl"
     (
-    #3
+    )
+  #13
+  _class
+    B
+    A
+    "static_dispatch.cl"
+    (
+    #6
     _attr
       b
       String
-      #3
+      #6
       _no_expr
       : _no_type
-    #4
+    #7
     _attr
       a
       Bool
-      #4
+      #7
       _no_expr
       : _no_type
-    #5
+    #8
     _attr
       c
-      Int
-      #5
+      B
+      #8
       _no_expr
       : _no_type
-    #9
+    #12
     _method
       test1
-      #7
+      #10
       _formal
         arg1
-        Bool
-      #7
+        A
+      #10
       _formal
         arg2
-        String
-      #7
-      _formal
-        arg3
         Int
-      String
-      #9
+      SELF_TYPE
+      #12
       _object
-        b
-      : String
-    #13
+        self
+      : SELF_TYPE
+    )
+  #27
+  _class
+    Main
+    B
+    "static_dispatch.cl"
+    (
+    #26
     _method
       main
       String
-      #12
-      _static_dispatch
-        #12
-        _object
-          self
-        : SELF_TYPE
-        Main
-        test1
-        (
-        #12
-        _object
-          a
-        : Bool
-        #12
-        _object
-          b
+      #24
+      _block
+        #22
+        _let
+          test_obj
+          B
+          #20
+          _new
+            B
+          : B
+          #22
+          _block
+            #21
+            _static_dispatch
+              #21
+              _object
+                test_obj
+              : B
+              B
+              test1
+              (
+              #21
+              _object
+                c
+              : B
+              #21
+              _int
+                3
+              : Int
+              )
+            : B
+          : B
+        : B
+        #23
+        _string
+          "Hello"
         : String
-        #12
-        _int
-          3
-        : Int
-        )
       : String
     )

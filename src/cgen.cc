@@ -795,11 +795,42 @@ void method_class::code(CgenEnvironment *env) {
   
   vp.define(cur_method_res_type, cur_class_name_in_LLVM, cur_method_args);
   vp.begin_block("entry");
-  // Make alloca recursively
-  // expr->make_alloca(env);
+  // Make alloca on expr recursively
+  expr->make_alloca(env);
+  // Make alloca for method parameters and store parameters into them
+  std::vector<operand> allocated_ptr_to_args;
+  for (op_type arg_type : cur_method_args_types) {
+    operand ptr_to_arg = vp.alloca_mem(arg_type);
+    allocated_ptr_to_args.push_back(ptr_to_arg);
+  }
+  env->open_scope();
+  if (allocated_ptr_to_args.size() != cur_method_args.size()) {
+    std::cerr << "number of args allocas does not match the number of args" << std::endl;
+    abort(); 
+  }
+  for (std::size_t i=0; i<cur_method_args.size(); i++) {
+    vp.store(cur_method_args[i], allocated_ptr_to_args[i]);
+  }
+  // Also record them in symbol table
+  env->add_binding(self, &allocated_ptr_to_args[0]);
+  int temp_index = 1;
+  for (int i=formals->first(); formals->more(i); i=formals->next(i)) {
+    Formal param = formals->nth(i);
+    Symbol param_symbol = param->get_name();
+    env->add_binding(param_symbol, &allocated_ptr_to_args[temp_index]);
+    temp_index++;
+  }
+
+
   // Recursively emit code for expressions contained in the main method
   // operand ret = expr->code(env);
   // vp.ret(ret);
+
+  // Recursively call code on expr
+  operand ret = expr->code(env);
+  vp.ret(ret);
+
+  env->close_scope();
 
   // Abort section (for any runtime error exception handling)
   vp.begin_block("abort");
@@ -1037,6 +1068,9 @@ operand object_class::code(CgenEnvironment *env) {
   // /TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
   operand ret = *env->find_in_scopes(name);
+  if (cgen_debug) {
+    std::cerr << "  " << ret.get_type().get_deref_type().get_name() << std::endl;
+  }
   return vp.load(ret.get_type().get_deref_type(), ret);
 }
 
@@ -1078,13 +1112,18 @@ operand static_dispatch_class::code(CgenEnvironment *env) {
     param_list.push_back(param->code(env));
   }
   operand expr_code = expr->code(env);
+  if(expr_code.get_type().get_name() == op_type(INT32).get_name() ){
+    expr_code = conform(expr_code, op_type("Int*"), env);
+  }else if(expr_code.get_type().get_name() == op_type(INT1).get_name() ){
+    expr_code = conform(expr_code, op_type("Bool*"), env);
+  }
   param_list.insert(param_list.begin(), expr_code);
 
-  operand isNull = vp.icmp(EQ, expr_code, null_value(EMPTY));
-  std::string new_ok_label = env->new_ok_label();
-  vp.branch_cond(isNull, "abort", new_ok_label);
+  // operand isNull = vp.icmp(EQ, expr_code, null_value(EMPTY));
+  // std::string new_ok_label = env->new_ok_label();
+  // vp.branch_cond(isNull, "abort", new_ok_label);
   
-  vp.begin_block(new_ok_label);
+  // vp.begin_block(new_ok_label);
 
   // 2. get function ptr from correct vtable
   CgenNode* designated_class = env->type_to_class(type_name);
@@ -1095,10 +1134,10 @@ operand static_dispatch_class::code(CgenEnvironment *env) {
   op_func_type method_type = designated_class->method_types_in_LLVM[method_name];
   operand ptr_to_method = vp.getelementptr(
     op_type(vtable_type_name), 
-    operand(op_type(vtable_type_name).get_ptr_type(), vtable_name),
+    global_value(op_type(vtable_type_name, 1), vtable_name),
     int_value(0),
     int_value(method_index_in_vtable),
-    method_type.get_ptr_type());  
+    op_type(method_type.get_name().substr(1), 1));  
   vp.load(method_type, ptr_to_method);
   // 3. Conform parameters 
   for (std::size_t i=0; i<param_list.size(); i++) {
@@ -1106,7 +1145,7 @@ operand static_dispatch_class::code(CgenEnvironment *env) {
     param_list[i] = conformed;
   }
   // 4. call
-  operand ret = vp.call(method_type.args, method_type.res, ptr_to_method.get_name(), false, param_list);
+  operand ret = vp.call(method_type.args, method_type.res, ptr_to_method.get_name().substr(1), false, param_list);
   return ret;
 #endif
 }
@@ -1152,13 +1191,14 @@ operand dispatch_class::code(CgenEnvironment *env) {
   }
   param_list.insert(param_list.begin(), expr_code);
 
-  operand isNull = vp.icmp(EQ, expr_code, null_value(EMPTY));
-  std::string new_ok_label = env->new_ok_label();
-  vp.branch_cond(isNull, "abort", new_ok_label);
+  // operand isNull = vp.icmp(EQ, expr_code, null_value(EMPTY));
+  // std::string new_ok_label = env->new_ok_label();
+  // vp.branch_cond(isNull, "abort", new_ok_label);
   
-  vp.begin_block(new_ok_label);
+  // vp.begin_block(new_ok_label);
 
   // 2. get function ptr from correct vtable
+
   Symbol target_type_name = expr->get_type();
   if(expr_code.get_type().get_name() == op_type(INT32).get_name() ){
     target_type_name = Symbol("Int");
@@ -1171,20 +1211,48 @@ operand dispatch_class::code(CgenEnvironment *env) {
   std::string vtable_type_name = designated_class->get_vtable_type_name();
   std::string vtable_name = designated_class->get_vtable_name();
   op_func_type method_type = designated_class->method_types_in_LLVM[method_name];
+
+  if (cgen_debug) {
+    using namespace std;
+    // cerr << method_type.get_id() << endl;
+    cerr << op_type(method_type.get_ptr_type_name().substr(1)).get_name() << endl;
+    
+  }
+
+  // op_type gep_type = expr_code.get_type();
+  // op_type gep_op1
+  // if (expr_code.get_type().get_name() == "i32*") {
+    
+  // }  
+  // GEP to get vtable ptr from the object record
+  operand vtable_ptr_ptr = vp.getelementptr(
+    expr_code.get_type().get_deref_type(),
+    expr_code,
+    int_value(0),
+    int_value(0),
+    op_type(vtable_type_name, 2)
+  );
+
+  // Load vtable
+  operand vtable_ptr = vp.load(op_type(vtable_type_name, 1), vtable_ptr_ptr);
+
+  // Load method pointer pointer
   operand ptr_to_method = vp.getelementptr(
     op_type(vtable_type_name), 
-    operand(op_type(vtable_type_name).get_ptr_type(), vtable_name),
+    vtable_ptr,
     int_value(0),
     int_value(method_index_in_vtable),
-    method_type.get_ptr_type());  
+    op_type(method_type.get_name().substr(1), 1));  
+  
   vp.load(method_type, ptr_to_method);
+
   // 3. Conform parameters (excluding the first implicit parameter)
   for (std::size_t i=0; i<param_list.size(); i++) {
     operand conformed = conform(param_list[i], method_type.args[i], env);
     param_list[i] = conformed;
   }
   // 4. call
-  operand ret = vp.call(method_type.args, method_type.res, ptr_to_method.get_name(), false, param_list);
+  operand ret = vp.call(method_type.args, method_type.res, ptr_to_method.get_name().substr(1), false, param_list);
   return ret; 
 #endif
 }
@@ -1607,7 +1675,7 @@ operand conform(operand src, op_type type, CgenEnvironment *env) {
     return i32_val;
   } else if (src.get_type().get_name() == "i32" && type.get_name() == "%Int*") {
     // Box i32 to Int. Need allocation
-    operand Int_obj = vp.call({}, op_type(INT32).get_ptr_type(), "Int_new", true, {});
+    operand Int_obj = vp.call({}, op_type("Int").get_ptr_type(), "Int_new", true, {});
     vp.call(
       {op_type("INT").get_ptr_type(), op_type(INT32)}, 
       op_type(VOID), 
@@ -1630,7 +1698,7 @@ operand conform(operand src, op_type type, CgenEnvironment *env) {
 
   } else if (src.get_type().get_name() == "i1" && type.get_name() == "%Bool*") {
     // Box i1 to Bool. Need allocation
-    operand Bool_obj = vp.call({}, op_type(INT1).get_ptr_type(), "Bool_new", true, {});
+    operand Bool_obj = vp.call({}, op_type("Bool").get_ptr_type(), "Bool_new", true, {});
     vp.call(
       {op_type("Bool").get_ptr_type(), op_type(INT1)},
       op_type(VOID),
