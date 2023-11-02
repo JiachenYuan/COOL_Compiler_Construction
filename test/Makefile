@@ -46,6 +46,9 @@ cgen-2:
 %.ll: %.ast $(CGEN)
 	$(proj_dir)/$(CGEN) $(CGENOPTS) < $< > $@
 
+%_ref.ll: %.cl
+	../reference-binaries/lexer $< | ../reference-binaries/parser | ../reference-binaries/semant | ../reference-binaries/cgen-2 > $@
+
 %-o3.ll: %.ll
 	$(OPT) -O3 -S $< -f -o $*-o3.ll
 

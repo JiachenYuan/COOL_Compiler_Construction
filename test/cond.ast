@@ -1,0 +1,78 @@
+#31
+_program
+  #1
+  _class
+    A
+    Object
+    "cond.cl"
+    (
+    )
+  #3
+  _class
+    B
+    A
+    "cond.cl"
+    (
+    )
+  #31
+  _class
+    Main
+    Object
+    "cond.cl"
+    (
+    #6
+    _attr
+      a
+      A
+      #6
+      _no_expr
+      : _no_type
+    #7
+    _attr
+      b
+      B
+      #7
+      _no_expr
+      : _no_type
+    #30
+    _method
+      main
+      Bool
+      #28
+      _block
+        #17
+        _cond
+          #13
+          _bool
+            1
+          : Bool
+          #15
+          _object
+            a
+          : A
+          #17
+          _object
+            b
+          : B
+        : A
+        #24
+        _cond
+          #20
+          _bool
+            0
+          : Bool
+          #21
+          _int
+            1
+          : Int
+          #23
+          _bool
+            1
+          : Bool
+        : Object
+        #27
+        _bool
+          1
+        : Bool
+      : Bool
+    )

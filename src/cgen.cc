@@ -473,7 +473,7 @@ void StringEntry::code_def(std::ostream &s, CgenClassTable *ct) {
   string_struct_values.push_back(const_value(op_arr_type(INT8, str_const.size()+1), "@"+vreg_name, true));
   vp.init_struct_constant(op, string_struct_types, string_struct_values);
 
-  ct->string_literal_vreg_names[str_const] = "@String." + std::to_string(get_index());
+  ct->string_literal_vreg_names[str_const] = "String." + std::to_string(get_index());
 #endif
 }
 
@@ -696,6 +696,11 @@ void CgenNode::code_class() {
     CgenEnvironment env(*ct_stream, this);
     method->code(&env);
   }
+
+  // Generate [class]_new method
+  CgenEnvironment env(*ct_stream, this);
+  code_init_function(&env);
+
   // Recursively call code class for children classes
   for (CgenNode* child : get_children()) {
     child->code_class();
@@ -860,25 +865,27 @@ operand cond_class::code(CgenEnvironment *env) {
 
   // /TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
-  std::string labelThen = env->new_label("true.", false);
-  std::string labelElse = env->new_label("false.", false);
-  std::string labelEnd = env->new_label("end.", true);
+  std::string label_then = env->new_label("true.", false);
+  std::string label_else = env->new_label("false.", false);
+  std::string label_end = env->new_label("end.", true);
 
-  operand predResult = pred->code(env);
-  vp.branch_cond(predResult, labelThen, labelElse);
+  operand pred_result = pred->code(env);
+  vp.branch_cond(pred_result, label_then, label_else);
 
-  vp.begin_block(labelThen);
-  operand thenResult = then_exp->code(env);
-  vp.store(thenResult, res_ptr);
-  vp.branch_uncond(labelEnd);
+  vp.begin_block(label_then);
+  operand then_result = then_exp->code(env);
+  operand conformed_then_result = conform(then_result, result_type, env);
+  vp.store(conformed_then_result, res_ptr);
+  vp.branch_uncond(label_end);
 
-  vp.begin_block(labelElse);
-  operand elseResult = else_exp->code(env);
-  vp.store(elseResult, res_ptr);
-  vp.branch_uncond(labelEnd);
+  vp.begin_block(label_else);
+  operand else_result = else_exp->code(env);
+  operand conformed_else_result = conform(else_result, result_type, env);
+  vp.store(conformed_else_result, res_ptr);
+  vp.branch_uncond(label_end);
 
-  vp.begin_block(labelEnd);
-  return vp.load(res_ptr.get_type().get_deref_type(), res_ptr);
+  vp.begin_block(label_end);
+  return vp.load(result_type, res_ptr);
 }
 
 operand loop_class::code(CgenEnvironment *env) {
@@ -903,7 +910,8 @@ operand loop_class::code(CgenEnvironment *env) {
   vp.branch_uncond(labelWhile);
 
   vp.begin_block(labelLoopEnd);
-  return int_value(0); 
+
+  return null_value(op_type("Object", 1)); 
 }
 
 operand block_class::code(CgenEnvironment *env) {
@@ -1067,11 +1075,43 @@ operand object_class::code(CgenEnvironment *env) {
 
   // /TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
-  operand ret = *env->find_in_scopes(name);
-  if (cgen_debug) {
-    std::cerr << "  " << ret.get_type().get_deref_type().get_name() << std::endl;
+
+  // Attempt to find the variable in the symbol table
+  operand* var = env->find_in_scopes(name);
+  // If not found / result is nullptr, find it in attributes. 
+  //Since we have semantic analysis phase previously, it is garuanteed to contain it in one of the two plcaes
+  if (var != nullptr) {
+    // Found it in symbol table
+    operand ret = *var;
+    return vp.load(ret.get_type().get_deref_type(), ret);
+  } else {
+    if (cgen_debug) {
+      using namespace std;
+      cerr << ">>> trying to find self" << endl;
+    }
+    operand self_pptr = *env->find_in_scopes(self);
+    CgenNode* cur_class = env->get_class();
+    operand self_ptr = vp.load(op_type(env->get_class()->get_type_name(), 1), self_pptr);
+    op_type attr_type = cur_class->attr_list[name->get_string()];
+    int attr_index_in_record = cur_class->obj_record_index_of_attributes[name->get_string()];
+    if (cgen_debug) {
+      using namespace std;
+      cerr << ">>> the index of the attribute is " << attr_index_in_record << endl;
+    }
+    operand attr_ptr = vp.getelementptr(
+      op_type(env->get_class()->get_type_name()),
+      self_ptr,
+      int_value(0),
+      int_value(attr_index_in_record),
+      op_type(attr_type.get_name().substr(1), 1)
+    );
+    operand attr = vp.load(attr_type, attr_ptr);
+    return attr;
   }
-  return vp.load(ret.get_type().get_deref_type(), ret);
+  
+  
+  // operand ret = *env->find_in_scopes(name);
+  // return vp.load(ret.get_type().get_deref_type(), ret);
 }
 
 operand no_expr_class::code(CgenEnvironment *env) {
@@ -1157,7 +1197,8 @@ operand string_const_class::code(CgenEnvironment *env) {
   assert(0 && "Unsupported case for phase 1");
 #else
   // TODO: add code here and replace `return operand()`
-  return operand();
+  std::string global_string_obj_name = env->get_class()->get_classtable()->string_literal_vreg_names[token->get_string()];
+  return global_value(op_type("String", 1), global_string_obj_name);
 #endif
 }
 
@@ -1410,17 +1451,52 @@ void cond_class::make_alloca(CgenEnvironment *env) {
 
   // /TODO: add code here
   ValuePrinter vp(*env->cur_stream);
+  // Find lowest common ancestor
+  CgenNode* then_exp_class = env->type_to_class(then_exp->get_type());
+  CgenNode* else_exp_class = env->type_to_class(else_exp->get_type());
+  CgenNode* lowest_common_ancestor_type = nullptr;
+  std::unordered_set<CgenNode*> then_exp_ancestors;
   
-  op_type cond_type;
-  Symbol symbol = then_exp->get_type();
-  if (symbol->get_string() == "Int") {
-    cond_type = op_type(INT32);
-  } else if (symbol->get_string() == "Bool") {
-    cond_type = op_type(INT1);
+  if (cgen_debug) {
+    using namespace std;
+    cerr << ">>> The then expr has type name:" << then_exp_class->get_type_name() << endl;
+    cerr << ">>> The else expr has type name:" << else_exp_class->get_type_name() << endl;
   }
   
-  res_ptr = vp.alloca_mem(cond_type);
-  result_type = cond_type;
+  CgenNode* it = then_exp_class;
+  while (it != nullptr) {
+    then_exp_ancestors.insert(it);
+    it = it->get_parentnd();
+  }
+
+  it = else_exp_class;
+  while (it != nullptr) {
+    if (then_exp_ancestors.find(it) != then_exp_ancestors.end()) {
+      // Found the common ancestor
+      lowest_common_ancestor_type = it;
+      break;
+    }
+    it = it->get_parentnd();
+  }
+
+  op_type alloca_type;
+  std::string LCA_name = lowest_common_ancestor_type->get_type_name();
+
+  if (cgen_debug) {
+    using namespace std;
+    cerr << ">>> The LCA type is:" << LCA_name << endl;
+  }
+
+  if (LCA_name == "Int") {
+    alloca_type = op_type(INT32);
+  } else if (LCA_name == "Bool") {
+    alloca_type = op_type(INT1);
+  } else {
+    alloca_type = op_type(LCA_name, 1);
+  }
+  
+  res_ptr = vp.alloca_mem(alloca_type);
+  result_type = alloca_type;
 
   pred->make_alloca(env);
   then_exp->make_alloca(env);
@@ -1677,7 +1753,7 @@ operand conform(operand src, op_type type, CgenEnvironment *env) {
     // Box i32 to Int. Need allocation
     operand Int_obj = vp.call({}, op_type("Int").get_ptr_type(), "Int_new", true, {});
     vp.call(
-      {op_type("INT").get_ptr_type(), op_type(INT32)}, 
+      {op_type("Int").get_ptr_type(), op_type(INT32)}, 
       op_type(VOID), 
       "Int_init", 
       true, 
@@ -1707,6 +1783,14 @@ operand conform(operand src, op_type type, CgenEnvironment *env) {
       {Bool_obj, src}
     );
     return Bool_obj;
+  } else if (src.get_type().get_name() == "i32") {
+    // Conform i32 to something else: first conform to Int* and then bitcast
+    operand int_obj_ptr = conform(src, op_type("Int", 1), env);
+    return vp.bitcast(int_obj_ptr, type);
+  } else if (src.get_type().get_name() == "i1") {
+    // Conform i1 to something else: first conform to Bool* and then bitcast
+    operand bool_obj_ptr = conform(src, op_type("Bool", 1), env);
+    return vp.bitcast(bool_obj_ptr, type);
   } else {
     // If not conversion about Int and Bool, then just bitcast
     return vp.bitcast(src, type);

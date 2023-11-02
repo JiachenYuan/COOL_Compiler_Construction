@@ -1,0 +1,35 @@
+#8
+_program
+  #8
+  _class
+    Main
+    Object
+    "arith.cl"
+    (
+    #7
+    _method
+      main
+      Bool
+      #7
+      _let
+        a
+        Bool
+        #4
+        _bool
+          1
+        : Bool
+        #7
+        _let
+          b
+          Int
+          #5
+          _int
+            2
+          : Int
+          #7
+          _object
+            a
+          : Bool
+        : Bool
+      : Bool
+    )

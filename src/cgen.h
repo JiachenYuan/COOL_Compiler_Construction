@@ -120,7 +120,7 @@ public:
   // and add more as necessary
   std::ostream* get_ctstream() { return ct_stream; }
   std::string local_method_to_global_func(const std::string& method_name) { return get_type_name() + "_" + method_name; }
-
+  CgenNode* get_parentnd() { return parentnd; }
   // Class setup. You need to write the body of this function.
   void setup(int tag, int depth);
 #ifdef MP3
