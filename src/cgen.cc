@@ -697,7 +697,7 @@ void CgenNode::code_class() {
     method->code(&env);
   }
 
-  // Generate [class]_new method
+  // Generate [class]_new method for current class
   CgenEnvironment env(*ct_stream, this);
   code_init_function(&env);
 
@@ -709,6 +709,7 @@ void CgenNode::code_class() {
 
 void CgenNode::code_init_function(CgenEnvironment *env) {
   // TODO: add code here
+
 }
 
 #else
@@ -853,9 +854,20 @@ operand assign_class::code(CgenEnvironment *env) {
   ValuePrinter vp(*env->cur_stream);
   // /TODO: add code here and replace `return operand()`
   operand value = expr->code(env);
-  operand* decl_var = env->find_in_scopes(name);
-  vp.store(value, *decl_var);
-  
+  // operand* decl_var = env->find_in_scopes(name);
+  // vp.store(value, *decl_var);
+  VarRegAndPos var_reg_and_pos = get_vreg_of_variable(env, name);
+  operand variable_vreg = var_reg_and_pos.var; 
+  operand variable_pos = var_reg_and_pos.pos;
+  if (cgen_debug) {
+    using namespace std;
+    cerr << ">>> " << variable_vreg.get_typename() << endl;
+    cerr << ">>> " << variable_pos.get_typename() << endl;
+  }
+  op_type target_type = variable_vreg.get_type();
+  // op_type target_type = variable_vreg.get_type().get_deref_type();
+  operand conformed_value = conform(value, target_type, env);
+  vp.store(conformed_value, variable_pos);
   return value;
 }
 
@@ -943,9 +955,12 @@ operand let_class::code(CgenEnvironment *env) {
       var_init = int_value(0);
     } else if (type_decl->get_string() == "Bool") {
       var_init = bool_value(false, true);
+    } else {
+      var_init = null_value(id_type);
     }
   }
-  vp.store(var_init, id_op);
+  operand conformed_var_init = conform(var_init, id_type, env);
+  vp.store(conformed_var_init, id_op);
   env->add_binding(identifier, &id_op);
   operand ret = body->code(env);
 
@@ -1074,44 +1089,7 @@ operand object_class::code(CgenEnvironment *env) {
     std::cerr << "Object" << std::endl;
 
   // /TODO: add code here and replace `return operand()`
-  ValuePrinter vp(*env->cur_stream);
-
-  // Attempt to find the variable in the symbol table
-  operand* var = env->find_in_scopes(name);
-  // If not found / result is nullptr, find it in attributes. 
-  //Since we have semantic analysis phase previously, it is garuanteed to contain it in one of the two plcaes
-  if (var != nullptr) {
-    // Found it in symbol table
-    operand ret = *var;
-    return vp.load(ret.get_type().get_deref_type(), ret);
-  } else {
-    if (cgen_debug) {
-      using namespace std;
-      cerr << ">>> trying to find self" << endl;
-    }
-    operand self_pptr = *env->find_in_scopes(self);
-    CgenNode* cur_class = env->get_class();
-    operand self_ptr = vp.load(op_type(env->get_class()->get_type_name(), 1), self_pptr);
-    op_type attr_type = cur_class->attr_list[name->get_string()];
-    int attr_index_in_record = cur_class->obj_record_index_of_attributes[name->get_string()];
-    if (cgen_debug) {
-      using namespace std;
-      cerr << ">>> the index of the attribute is " << attr_index_in_record << endl;
-    }
-    operand attr_ptr = vp.getelementptr(
-      op_type(env->get_class()->get_type_name()),
-      self_ptr,
-      int_value(0),
-      int_value(attr_index_in_record),
-      op_type(attr_type.get_name().substr(1), 1)
-    );
-    operand attr = vp.load(attr_type, attr_ptr);
-    return attr;
-  }
-  
-  
-  // operand ret = *env->find_in_scopes(name);
-  // return vp.load(ret.get_type().get_deref_type(), ret);
+  return get_vreg_of_variable(env, name).var;
 }
 
 operand no_expr_class::code(CgenEnvironment *env) {
@@ -1533,12 +1511,18 @@ void let_class::make_alloca(CgenEnvironment *env) {
   init->make_alloca(env);
   body->make_alloca(env);
 
-  if (type_decl->get_string() == "Int") {
+  CgenNode* declared_type = env->type_to_class(type_decl);
+  std::string declared_type_name = declared_type->get_type_name();
+
+  if (declared_type_name == "Int") {
     id_type = INT32;
     id_op = vp.alloca_mem(INT32);
-  } else if (type_decl->get_string() == "Bool") {
+  } else if (declared_type_name == "Bool") {
     id_type = INT1;
     id_op = vp.alloca_mem(INT1);
+  } else {
+    id_type = op_type(declared_type_name, 1);
+    id_op = vp.alloca_mem(id_type);
   }
 }
 
@@ -1798,6 +1782,43 @@ operand conform(operand src, op_type type, CgenEnvironment *env) {
 }
 
 
+
+VarRegAndPos get_vreg_of_variable(CgenEnvironment *env, Symbol name) {
+  ValuePrinter vp(*env->cur_stream);
+    // Attempt to find the variable in the symbol table
+  operand* var = env->find_in_scopes(name);
+  // If not found / result is nullptr, find it in attributes. 
+  //Since we have semantic analysis phase previously, it is garuanteed to contain it in one of the two plcaes
+  if (var != nullptr) {
+    // Found it in symbol table
+    operand ret = *var;
+    return VarRegAndPos{vp.load(ret.get_type().get_deref_type(), ret), ret};
+  } else {
+    if (cgen_debug) {
+      using namespace std;
+      cerr << ">>> trying to find self" << endl;
+    }
+    operand self_pptr = *env->find_in_scopes(self);
+    CgenNode* cur_class = env->get_class();
+    operand self_ptr = vp.load(op_type(env->get_class()->get_type_name(), 1), self_pptr);
+    op_type attr_type = cur_class->attr_list[name->get_string()];
+    int attr_index_in_record = cur_class->obj_record_index_of_attributes[name->get_string()];
+    if (cgen_debug) {
+      using namespace std;
+      cerr << ">>> the index of the attribute is " << attr_index_in_record << endl;
+    }
+    operand attr_ptr = vp.getelementptr(
+      op_type(env->get_class()->get_type_name()),
+      self_ptr,
+      int_value(0),
+      int_value(attr_index_in_record),
+      op_type(attr_type.get_name().substr(1), 1)
+    );
+    operand attr = vp.load(attr_type, attr_ptr);
+    return VarRegAndPos{attr, attr_ptr};
+  }
+}
+
 // Retrieve the class tag from an object record.
 // src is the object we need the tag from.
 // src_class is the CgenNode for the *static* class of the expression.
@@ -1807,3 +1828,4 @@ operand get_class_tag(operand src, CgenNode *src_cls, CgenEnvironment *env) {
   return operand();
 }
 #endif
+

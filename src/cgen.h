@@ -221,4 +221,12 @@ public:
 // Generate any code necessary to convert from given operand to
 // dest_type, assuming it has already been checked to be compatible
 operand conform(operand src, op_type dest_type, CgenEnvironment *env);
+
+struct VarRegAndPos {
+  operand var;
+  operand pos;
+};
+// Try to first find a variable's virtual register in symbol table
+// if not found, then try to find it in current class's attribute list
+VarRegAndPos get_vreg_of_variable(CgenEnvironment* env, Symbol name);
 #endif
