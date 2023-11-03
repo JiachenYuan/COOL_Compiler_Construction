@@ -1,0 +1,60 @@
+#15
+_program
+  #4
+  _class
+    A
+    Object
+    "case.cl"
+    (
+    #2
+    _attr
+      a
+      Int
+      #2
+      _no_expr
+      : _no_type
+    #3
+    _attr
+      b
+      Bool
+      #3
+      _no_expr
+      : _no_type
+    )
+  #15
+  _class
+    Main
+    Object
+    "case.cl"
+    (
+    #14
+    _method
+      main
+      Bool
+      #14
+      _block
+        #12
+        _typcase
+          #9
+          _new
+            A
+          : A
+          #10
+          _branch
+            m
+            Main
+            #10
+            _bool
+              0
+            : Bool
+          #11
+          _branch
+            object
+            Object
+            #11
+            _bool
+              1
+            : Bool
+        : Bool
+      : Bool
+    )

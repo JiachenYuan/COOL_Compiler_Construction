@@ -961,14 +961,11 @@ void method_class::code(CgenEnvironment *env) {
     temp_index++;
   }
 
-
-  // Recursively emit code for expressions contained in the main method
-  // operand ret = expr->code(env);
-  // vp.ret(ret);
-
   // Recursively call code on expr
   operand ret = expr->code(env);
-  vp.ret(ret);
+  // Conform the return type from the body to the return type of the method
+  operand conformed_ret = conform(ret, cur_method_res_type, env);
+  vp.ret(conformed_ret);
 
   env->close_scope();
 
@@ -1272,8 +1269,8 @@ operand static_dispatch_class::code(CgenEnvironment *env) {
   // 1. Prepare parameters
   std::vector<operand> param_list;
   int first = actual->first();
-  int second = actual->next(first);
-  for (int i=second; actual->more(i); i=actual->next(i)) {
+  // int second = actual->next(first);
+  for (int i=first; actual->more(i); i=actual->next(i)) {
     Expression param = actual->nth(i);
     param_list.push_back(param->code(env));
   }
@@ -1285,11 +1282,11 @@ operand static_dispatch_class::code(CgenEnvironment *env) {
   }
   param_list.insert(param_list.begin(), expr_code);
 
-  // operand isNull = vp.icmp(EQ, expr_code, null_value(EMPTY));
-  // std::string new_ok_label = env->new_ok_label();
-  // vp.branch_cond(isNull, "abort", new_ok_label);
+  operand isNull = vp.icmp(EQ, expr_code, null_value(EMPTY));
+  std::string new_ok_label = env->new_ok_label();
+  vp.branch_cond(isNull, "abort", new_ok_label);
   
-  // vp.begin_block(new_ok_label);
+  vp.begin_block(new_ok_label);
 
   // 2. get function ptr from correct vtable
   CgenNode* designated_class = env->type_to_class(type_name);
@@ -1304,14 +1301,23 @@ operand static_dispatch_class::code(CgenEnvironment *env) {
     int_value(0),
     int_value(method_index_in_vtable),
     op_type(method_type.get_name().substr(1), 1));  
-  vp.load(method_type, ptr_to_method);
+  operand method = vp.load(method_type, ptr_to_method);
   // 3. Conform parameters 
   for (std::size_t i=0; i<param_list.size(); i++) {
     operand conformed = conform(param_list[i], method_type.args[i], env);
     param_list[i] = conformed;
   }
   // 4. call
-  operand ret = vp.call(method_type.args, method_type.res, ptr_to_method.get_name().substr(1), false, param_list);
+  operand ret = vp.call(method_type.args, method_type.res, method.get_name().substr(1), false, param_list);
+  //! todo:adsfassssssssssssssssssssssssssssssssssssssssssssssssssss
+  std::string method_ret_type_from_COOL = designated_class->method_types_in_COOL[method_name].res.get_name();
+  if (method_ret_type_from_COOL.find("SELF_TYPE") != std::string::npos) {
+    // Original return type is SELF_TYPE, so the call would return a "designated_class*", but we want a "current_class*"
+    // So need one more conform
+    CgenNode* cur_class = env->get_class();
+    operand conformed_ret = conform(ret, op_type(cur_class->get_type_name(), 1), env);
+    return conformed_ret;
+  }
   return ret;
 #endif
 }
@@ -1345,8 +1351,8 @@ operand dispatch_class::code(CgenEnvironment *env) {
   // 1. Prepare parameters
   std::vector<operand> param_list;
   int first = actual->first();
-  int second = actual->next(first);
-  for (int i=second; actual->more(i); i=actual->next(i)) {
+  // int second = actual->next(first);
+  for (int i=first; actual->more(i); i=actual->next(i)) {
     Expression param = actual->nth(i);
     param_list.push_back(param->code(env));
   }
@@ -1404,7 +1410,7 @@ operand dispatch_class::code(CgenEnvironment *env) {
     int_value(method_index_in_vtable),
     op_type(method_type.get_name().substr(1), 1));  
   
-  vp.load(method_type, ptr_to_method);
+  operand method = vp.load(method_type, ptr_to_method);
 
   // 3. Conform parameters (excluding the first implicit parameter)
   for (std::size_t i=0; i<param_list.size(); i++) {
@@ -1412,20 +1418,83 @@ operand dispatch_class::code(CgenEnvironment *env) {
     param_list[i] = conformed;
   }
   // 4. call
-  operand ret = vp.call(method_type.args, method_type.res, ptr_to_method.get_name().substr(1), false, param_list);
+  operand ret = vp.call(method_type.args, method_type.res, method.get_name().substr(1), false, param_list);
   return ret; 
 #endif
 }
 
 // Handle a Cool case expression (selecting based on the type of an object)
+operand get_class_tag(operand src, CgenNode *src_cls, CgenEnvironment *env); // forward declaration
 operand typcase_class::code(CgenEnvironment *env) {
   if (cgen_debug)
     std::cerr << "typecase::code()" << std::endl;
 #ifndef MP3
   assert(0 && "Unsupported case for phase 1");
 #else
-  // TODO: add code here and replace `return operand()`
-  return operand();
+  ValuePrinter vp(*env->cur_stream);
+  CgenClassTable *ct = env->get_class()->get_classtable();
+
+  std::string header_label = env->new_label("case.hdr.", false);
+  std::string exit_label = env->new_label("case.exit.", false);
+
+  // Generate code for expression to select on, and get its static type
+  operand code_val = expr->code(env);
+  operand expr_val = code_val;
+  std::string code_val_t = code_val.get_typename();
+  op_type join_type = env->type_to_class(type)->get_type_name();
+  CgenNode *cls = env->type_to_class(expr->get_type());
+
+  // Check for case on void, which gives a runtime error
+  if (code_val.get_type().get_id() != INT32 &&
+      code_val.get_type().get_id() != INT1) {
+    op_type bool_type(INT1), empty_type;
+    null_value null_op(code_val.get_type());
+    operand icmp_result(bool_type, env->new_name());
+    vp.icmp(*env->cur_stream, EQ, code_val, null_op, icmp_result);
+    std::string ok_label = env->new_ok_label();
+    vp.branch_cond(icmp_result, "abort", ok_label);
+    vp.begin_block(ok_label);
+  }
+
+  operand tag = get_class_tag(expr_val, cls, env);
+  vp.branch_uncond(header_label);
+  std::string prev_label = header_label;
+  vp.begin_block(header_label);
+
+  env->branch_operand = alloca_op;
+
+  std::vector<operand> values;
+  env->next_label = exit_label;
+
+  // Generate code for the branches
+  for (int i = ct->get_num_classes() - 1; i >= 0; --i) {
+    for (auto case_branch : cases) {
+      if (i == ct->find_in_scopes(case_branch->get_type_decl())->get_tag()) {
+        std::string prefix = std::string("case.") + std::to_string(i) + ".";
+        std::string case_label = env->new_label(prefix, false);
+        vp.branch_uncond(case_label);
+        vp.begin_block(case_label);
+        operand val = case_branch->code(expr_val, tag, join_type, env);
+        values.push_back(val);
+      }
+    }
+  }
+
+  // Abort if there was not a branch covering the actual type
+  vp.branch_uncond("abort");
+
+  // Done with case expression: get final result
+  env->new_label("", true);
+  vp.begin_block(exit_label);
+  operand final_result(alloca_type, env->new_name());
+  alloca_op.set_type(alloca_op.get_type().get_ptr_type());
+  vp.load(*env->cur_stream, alloca_op.get_type().get_deref_type(),
+          alloca_op, final_result);
+  alloca_op.set_type(alloca_op.get_type().get_deref_type());
+
+  if (cgen_debug)
+    std::cerr << "Done typcase::code()" << std::endl;
+  return final_result;
 #endif
 }
 
@@ -1453,7 +1522,9 @@ operand isvoid_class::code(CgenEnvironment *env) {
   assert(0 && "Unsupported case for phase 1");
 #else
   // TODO: add code here and replace `return operand()`
-  return operand();
+  ValuePrinter vp(*env->cur_stream);
+  operand e1_coded = e1->code(env);
+  return vp.icmp(EQ, e1_coded, null_value(e1_coded.get_type()));
 #endif
 }
 
@@ -1532,8 +1603,72 @@ operand branch_class::code(operand expr_val, operand tag, op_type join_type,
 #ifndef MP3
   assert(0 && "Unsupported case for phase 1");
 #else
-  // TODO: add code here and replace `return operand()`
-  return operand();
+  using namespace std;
+  operand empty;
+  ValuePrinter vp(*env->cur_stream);
+  if (cgen_debug)
+    cerr << "In branch_class::code()" << endl;
+
+  CgenNode *cls = env->get_class()->get_classtable()->find_in_scopes(type_decl);
+  int my_tag = cls->get_tag();
+  int max_child = cls->get_max_child();
+
+  // Generate unique labels for branching into >= branch tag and <= max child
+  string sg_label =
+      env->new_label(string("src_gte_br") + "." + to_string(my_tag) + ".", false);
+  string sl_label =
+      env->new_label(string("src_lte_mc") + "." + to_string(my_tag) + ".", false);
+  string exit_label =
+      env->new_label(string("br_exit") + "." + to_string(my_tag) + ".", false);
+
+  int_value my_tag_val(my_tag);
+  op_type old_tag_t(tag.get_type()), i32_t(INT32);
+  tag.set_type(i32_t);
+
+  // Compare the source tag to the class tag
+  operand icmp_result = vp.icmp(LT, tag, my_tag_val);
+  vp.branch_cond(icmp_result, exit_label, sg_label);
+  vp.begin_block(sg_label);
+  int_value max_child_val(max_child);
+
+  // Compare the source tag to max child
+  operand icmp2_result = vp.icmp(GT, tag, max_child_val);
+  vp.branch_cond(icmp2_result, exit_label, sl_label);
+  vp.begin_block(sl_label);
+  tag.set_type(old_tag_t);
+
+  // Handle casts of *arbitrary* types to Int or Bool.  We need to:
+  // (a) cast expr_val to boxed type (struct Int* or struct Bool*)
+  // (b) unwrap value field from the boxed type
+  // At run-time, if source object is not Int or Bool, this will never
+  // be invoked (assuming no bugs in the type checker).
+  if (cls->get_type_name() == "Int") {
+    expr_val = conform(expr_val, op_type(cls->get_type_name(), 1), env);
+  } else if (cls->get_type_name() == "Bool") {
+    expr_val = conform(expr_val, op_type(cls->get_type_name(), 1), env);
+  }
+
+  // If the case expression is of the right type, make a new local
+  // variable for the type-casted version of it, which can be used
+  // within the expression to evaluate on this branch.
+  operand conf_result = conform(expr_val, alloca_type, env);
+  vp.store(conf_result, alloca_op);
+  env->add_local(name, alloca_op);
+
+  // Generate code for the expression to evaluate on this branch
+  operand val = conform(expr->code(env), join_type.get_ptr_type(), env);
+  operand conformed = conform(val, env->branch_operand.get_type(), env);
+  env->branch_operand.set_type(env->branch_operand.get_type().get_ptr_type());
+  // Store result of the expression evaluated
+  vp.store(conformed, env->branch_operand);
+  env->branch_operand.set_type(env->branch_operand.get_type().get_deref_type());
+  env->close_scope();
+  // Branch to case statement exit label
+  vp.branch_uncond(env->next_label);
+  vp.begin_block(exit_label);
+  if (cgen_debug)
+    cerr << "Done branch_class::code()" << endl;
+  return conformed;
 #endif
 }
 
@@ -1573,6 +1708,10 @@ void attr_class::code(CgenEnvironment *env) {
   if (init_coded.get_type().get_id() != EMPTY) {
     operand conformed_init = conform(init_coded, target_type, env);
     vp.store(conformed_init, *attr_pos);
+  } else if (target_type.get_id() == INT32) {
+    vp.store(int_value(0), *attr_pos);
+  } else if (target_type.get_id() == INT1) {
+    vp.store(bool_value(false, true), *attr_pos);
   } else {
     vp.store(null_value(target_type), *attr_pos);
   }
@@ -1834,11 +1973,28 @@ void dispatch_class::make_alloca(CgenEnvironment *env) {
 
 void typcase_class::make_alloca(CgenEnvironment *env) {
   if (cgen_debug)
-    std::cerr << "typecase" << std::endl;
+    std::cerr << "typecase::make_alloca()" << std::endl;
 #ifndef MP3
   assert(0 && "Unsupported case for phase 1");
 #else
-    // TODO: add code here
+  using namespace std;
+  ValuePrinter vp(*env->cur_stream);
+  expr->make_alloca(env);
+
+  // Get result type of case expression
+  branch_class *b = (branch_class *)cases->nth(cases->first());
+  string case_result_type = b->get_expr()->get_type()->get_string();
+  if (case_result_type == "SELF_TYPE")
+    case_result_type = env->get_class()->get_type_name();
+
+  // Allocate space for result of case expression
+  alloca_type = op_type(case_result_type, 1);
+  alloca_op = operand(alloca_type, env->new_name());
+  vp.alloca_mem(*env->cur_stream, alloca_type, alloca_op);
+
+  for (auto case_branch : cases) {
+    case_branch->make_alloca(env);
+  }
 #endif
 }
 
@@ -1866,7 +2022,26 @@ void branch_class::make_alloca(CgenEnvironment *env) {
 #ifndef MP3
   assert(0 && "Unsupported case for phase 1");
 #else
-  // TODO: add code here
+  using namespace std;
+  ValuePrinter vp(*env->cur_stream);
+  if (cgen_debug)
+    cerr << "In branch_class::make_alloca()" << endl;
+
+  CgenNode *cls = env->get_class()->get_classtable()->find_in_scopes(type_decl);
+  alloca_type = op_type(cls->get_type_name(), 1);
+  
+  if (cls->get_type_name() == "Int") {
+    alloca_type = op_type(INT32);
+  } else if (cls->get_type_name() == "Bool") {
+    alloca_type = op_type(INT1);
+  }
+
+  alloca_op = vp.alloca_mem(alloca_type);
+
+  expr->make_alloca(env);
+  
+  if (cgen_debug)
+    cerr << "Done branch_class::make_alloca()" << endl;
 #endif
 }
 
@@ -1986,7 +2161,28 @@ VarRegAndPos get_vreg_of_variable(CgenEnvironment *env, Symbol name) {
 // You need to look up and return the class tag for it's dynamic value
 operand get_class_tag(operand src, CgenNode *src_cls, CgenEnvironment *env) {
   // TODO: ADD CODE HERE (MP3 ONLY)
-  return operand();
+  ValuePrinter vp(*env->cur_stream);
+  operand vtable_pptr = vp.getelementptr(
+    src.get_type().get_deref_type(),
+    src,
+    int_value(0),
+    int_value(0),
+    op_type("_"+src.get_type().get_deref_type().get_name().substr(1)+"_vtable", 2)
+  );
+  operand vtable_ptr = vp.load(
+    op_type("_"+src.get_type().get_deref_type().get_name().substr(1)+"_vtable", 1), 
+    vtable_pptr
+  );
+  operand tag_ptr = vp.getelementptr(
+    op_type("_"+src.get_type().get_deref_type().get_name().substr(1)+"_vtable"),
+    vtable_ptr,
+    int_value(0),
+    int_value(0),
+    op_type(INT32_PTR)
+  );
+  operand tag = vp.load(INT32, tag_ptr);
+
+  return tag;
 }
 #endif
 

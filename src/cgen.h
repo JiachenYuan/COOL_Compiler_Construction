@@ -203,10 +203,10 @@ public:
   void close_scope() { var_table.exitscope(); }
 
   // TODO: Add more functions as necessary.
-  // void CgenEnvironment::add_local(Symbol name, operand &vb) {
-  //   this->open_scope();
-  //   this->add_binding(name, &vb);
-  // }
+  void add_local(Symbol name, operand &vb) {
+    this->open_scope();
+    this->add_binding(name, &vb);
+  }
 
 private:
   cool::SymbolTable<operand>
@@ -217,6 +217,8 @@ private:
 
 public:
   std::ostream *cur_stream;
+  operand branch_operand;
+  std::string next_label;
 };
 
 #ifdef MP3

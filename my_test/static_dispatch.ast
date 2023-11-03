@@ -1,0 +1,102 @@
+#27
+_program
+  #3
+  _class
+    A
+    Object
+    "static_dispatch.cl"
+    (
+    )
+  #13
+  _class
+    B
+    A
+    "static_dispatch.cl"
+    (
+    #6
+    _attr
+      b
+      String
+      #6
+      _no_expr
+      : _no_type
+    #7
+    _attr
+      a
+      Bool
+      #7
+      _no_expr
+      : _no_type
+    #8
+    _attr
+      c
+      B
+      #8
+      _no_expr
+      : _no_type
+    #12
+    _method
+      test1
+      #10
+      _formal
+        arg1
+        A
+      #10
+      _formal
+        arg2
+        Int
+      SELF_TYPE
+      #12
+      _object
+        self
+      : SELF_TYPE
+    )
+  #27
+  _class
+    Main
+    B
+    "static_dispatch.cl"
+    (
+    #26
+    _method
+      main
+      String
+      #24
+      _block
+        #22
+        _let
+          test_obj
+          Main
+          #20
+          _object
+            self
+          : SELF_TYPE
+          #22
+          _block
+            #21
+            _static_dispatch
+              #21
+              _object
+                test_obj
+              : Main
+              B
+              test1
+              (
+              #21
+              _object
+                c
+              : B
+              #21
+              _int
+                3
+              : Int
+              )
+            : Main
+          : Main
+        : Main
+        #23
+        _string
+          "Hello"
+        : String
+      : String
+    )

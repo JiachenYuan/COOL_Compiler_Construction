@@ -11,9 +11,9 @@ cd "$(dirname "$0")/test" || exit 1
 
 
 # Find all _ref.out files and process them
-for ref_file in *_ref.out; do
+for ref_file in *.refout; do
     if [ -f "$ref_file" ]; then
-        testname="${ref_file%_ref.out}"
+        testname="${ref_file%.refout}"
         out_file="${testname}.out"
         
         if [ -f "$out_file" ]; then
