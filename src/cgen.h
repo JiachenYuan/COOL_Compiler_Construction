@@ -76,6 +76,8 @@ public:
   std::ostream *ct_stream;
   // mapping from global string to virtual register name that stores the corresponding String object in LLVM
   std::unordered_map<std::string, std::string> string_literal_vreg_names;
+  // Main_main method node
+  CgenNode* main_class;  
 };
 
 // Each CgenNode corresponds to a Cool class. As such, it is responsible for
@@ -154,6 +156,9 @@ public:
   std::vector<std::string> attr_names_in_order;
   std::map<std::string, op_type> attr_list;
   std::map<std::string, int> obj_record_index_of_attributes;
+
+  std::map<std::string, attr_class*> attrs_as_features; // attribute nodes that will need to generate code for
+  std::map<std::string, method_class*> methods_as_features; // method nodes that will need to generate code for
 
 };
 

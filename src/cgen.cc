@@ -378,28 +378,48 @@ void CgenClassTable::code_constants() {
 //
 void CgenClassTable::code_main(){
 // TODO: add code here
-ValuePrinter valuePrinter(*ct_stream);
-// Define a global string: "Main.main() returned %d\n"
-valuePrinter.init_constant(".str", const_value(op_arr_type(INT8, 25), "Main.main() returned %d\n", true));
-// Define a function main that has no parameters and returns an i32
-valuePrinter.define(INT32, "main", {});
-// Define an entry basic block
-valuePrinter.begin_block("entry");
-// Call Main_main(). This returns int for phase 1, Object for phase 2
-operand temp0 = valuePrinter.call({}, INT32, "Main_main", true, {});
+  ValuePrinter vp(*ct_stream);
 #ifdef MP3
-// MP3
+  // MP3
+  // Define a function main that has no parameters and returns an i32
+  vp.define(INT32, "main", {});
+  // Define an entry basic block
+  vp.begin_block("entry");
+  if (main_class == nullptr) {
+    std::cerr << ">>> Main class is nullptr" << std::endl;
+    abort();
+  }
+  op_func_type main_main_method_type = main_class->method_types_in_LLVM["main"];
+
+  operand main_obj(op_type(main_class->get_type_name(), 1), "main.obj");
+  vp.call(*ct_stream, {}, "Main_new", true, {}, main_obj);
+
+  operand main_retval(main_main_method_type.res, "main.retval");
+  vp.call(*ct_stream, main_main_method_type.args, "Main_main", true, {main_obj}, main_retval);
+  vp.ret(int_value(0));
+  
+  vp.end_define();
+  
+  
 #else
-// MP2
-// Get the address of the string "Main_main() returned %d\n" using
-// getelementptr
-operand temp1 = valuePrinter.getelementptr(op_arr_type(INT8, 25), global_value(op_arr_ptr_type(INT8, 25), ".str"), int_value(0), int_value(0), op_arr_type(INT8, 25));
-// Call printf with the string address of "Main_main() returned %d\n"
-// and the return value of Main_main() as its arguments
-operand temp2 = valuePrinter.call_variadic({INT8_PTR}, INT32, "printf", true, {operand(INT8_PTR, temp1.get_name().substr(1)), operand(INT32, temp0.get_name().substr(1))});
-// Insert return 0
-valuePrinter.ret(int_value(0));
-valuePrinter.end_define();
+  // MP2
+  // Define a global string: "Main.main() returned %d\n"
+  valuePrinter.init_constant(".str", const_value(op_arr_type(INT8, 25), "Main.main() returned %d\n", true));
+  // Define a function main that has no parameters and returns an i32
+  valuePrinter.define(INT32, "main", {});
+  // Define an entry basic block
+  valuePrinter.begin_block("entry");
+  // Call Main_main(). This returns int for phase 1, Object for phase 2
+  operand temp0 = valuePrinter.call({}, INT32, "Main_main", true, {});
+  // Get the address of the string "Main_main() returned %d\n" using
+  // getelementptr
+  operand temp1 = valuePrinter.getelementptr(op_arr_type(INT8, 25), global_value(op_arr_ptr_type(INT8, 25), ".str"), int_value(0), int_value(0), op_arr_type(INT8, 25));
+  // Call printf with the string address of "Main_main() returned %d\n"
+  // and the return value of Main_main() as its arguments
+  operand temp2 = valuePrinter.call_variadic({INT8_PTR}, INT32, "printf", true, {operand(INT8_PTR, temp1.get_name().substr(1)), operand(INT32, temp0.get_name().substr(1))});
+  // Insert return 0
+  valuePrinter.ret(int_value(0));
+  valuePrinter.end_define();
 #endif
 }
 
@@ -509,7 +529,7 @@ void CgenNode::setup(int tag, int depth) {
     vp.declare(op_type(VOID), "Bool_init", {op_type(get_type_name()+"*"), INT1});
   }
   // Declare a new function for class new
-  vp.declare(op_type(class_name).get_ptr_type(), get_init_function_name(), {});
+  // vp.declare(op_type(class_name).get_ptr_type(), get_init_function_name(), {});
 
   //* 1. Declare Class Record
   // declare function name as a string
@@ -527,12 +547,17 @@ void CgenNode::setup(int tag, int depth) {
         continue;
       }
       if (v.get_name().find("SELF_TYPE") != std::string::npos) {
-        attributes_types.push_back(op_type(class_name).get_ptr_type());
+        attributes_types.push_back(op_type(class_name, 1));
+        attr_list[k] = op_type(class_name, 1);
       } else {
         attributes_types.push_back(v);
+        attr_list[k] = v;
       }
       obj_record_index_of_attributes[k] = obj_record_attr_index;
       obj_record_attr_index++;
+
+      // Also add attr_class of parent attributes to current class's attrs_as_features
+      attrs_as_features[k] = parentnd->attrs_as_features[k];
     }
   }
 
@@ -546,6 +571,21 @@ void CgenNode::setup(int tag, int depth) {
     obj_record_index_of_attributes[k] = obj_record_attr_index;
     obj_record_attr_index++;
   }
+
+  // Insert all parent's attribute names into current class's attribute name lists
+  if (parentnd) {
+    for (int i = (int) (parentnd->attr_names_in_order.size()-1); i>=0; i--) {
+      std::string& k = parentnd->attr_names_in_order[i];
+    
+    // for (std::string& k: parentnd->attr_names_in_order) {
+      if (k.find("_vtable") != std::string::npos) {
+        continue;
+      }
+      attr_names_in_order.insert(attr_names_in_order.begin(), k);
+    }
+  }
+
+
   vp.type_define(class_name, attributes_types);
 
   //* 2. Declare Class VTable
@@ -663,13 +703,11 @@ void CgenNode::setup(int tag, int depth) {
   op.set_name("@" + op.get_name().substr(1)); // remove the first "%""
   vp.init_struct_constant(op, field_types, init_values);
 
-
-  // if (cgen_debug) {
-  //   using namespace std;
-  //   cerr << "num of methods in LLVM=" << method_types_earliest.size() << endl;
-  //   cerr << "num of methods in COOL=" << method_types_in_COOL.size() << endl;
-  //   cerr << (method_types_earliest.size() == method_types_in_COOL.size()) << endl;
-  // }
+  // Special case: if current method is Main_main, record its arg types and res types in CgenClassTable
+  // these information is used by LLVM-level entry main function so that it can call Main_main correctly
+  if (get_type_name() == "Main") {
+    get_classtable()->main_class = this;
+  }
 #endif
 }
 
@@ -688,13 +726,21 @@ void CgenNode::layout_features() {
 void CgenNode::code_class() {
   // No code generation for basic classes. The runtime will handle that.
   if (basic()) {
+    // Need to declare _new method
+    ValuePrinter vp(*ct_stream);
+    vp.declare(op_type(get_type_name(), 1), get_init_function_name(), {});
     return;
   }
   // TODO: add code here
-  for (int i=features->first(); features->more(i); i=features->next(i)) {
-    method_class* method = (method_class *)features->nth(i);
+  // for (int i=features->first(); features->more(i); i=features->next(i)) {
+  //   Feature feature = features->nth(i);
+  //   CgenEnvironment env(*ct_stream, this);
+  //   if (feature.)
+  //   feature->code(&env);
+  // }
+  for (auto& [method_name, method_tree_node] : methods_as_features) {
     CgenEnvironment env(*ct_stream, this);
-    method->code(&env);
+    method_tree_node->code(&env);
   }
 
   // Generate [class]_new method for current class
@@ -709,6 +755,94 @@ void CgenNode::code_class() {
 
 void CgenNode::code_init_function(CgenEnvironment *env) {
   // TODO: add code here
+  ValuePrinter vp(*env->cur_stream);
+
+  vp.define(op_type(get_type_name(), 1), get_init_function_name(), {});
+  //* Begin block entry:
+  vp.begin_block("entry");
+  operand instance_pptr = vp.alloca_mem(op_type(get_type_name(), 1));
+  operand instance_sizeof_ptr = vp.getelementptr(
+    op_type(get_vtable_type_name()),
+    global_value(op_type(get_vtable_type_name(), 1), get_vtable_name()),
+    int_value(0),
+    int_value(1),
+    op_type(INT32).get_ptr_type()
+  );
+  operand instance_size = vp.load(op_type(INT32), instance_sizeof_ptr);
+  operand malloced_space = vp.call({INT32}, INT8_PTR, "malloc", true, {instance_size});
+  operand casted_instance_ptr = vp.bitcast(malloced_space, op_type(get_type_name(), 1));
+  operand malloc_is_null = operand(INT1, "malloc.null");
+  vp.icmp(*env->cur_stream, EQ, casted_instance_ptr, null_value(op_type(get_type_name(), 1)), malloc_is_null);
+  vp.branch_cond(malloc_is_null, "abort", "okay");
+
+  //* Begin okay block. It would allocate attributes and initialize the attributes
+  vp.begin_block("okay");
+  operand vtable_pptr = vp.getelementptr(
+    op_type(get_type_name()),
+    casted_instance_ptr,
+    int_value(0),
+    int_value(0),
+    op_type(get_vtable_type_name(), 2)
+  );
+  vp.store(global_value(op_type(get_vtable_type_name(), 1), get_vtable_name()), vtable_pptr);
+  vp.store(casted_instance_ptr, instance_pptr);
+  // First pass, set default values for each attributes
+  env->open_scope();
+
+  for (std::size_t i=0; i<attr_names_in_order.size(); i++) {
+    int index_in_obj_record = i + 1;
+    std::string& attr_name = attr_names_in_order[i];
+    op_type attr_type = attr_list[attr_name];
+
+    operand attr_ptr = vp.getelementptr(
+      op_type(get_type_name()),
+      casted_instance_ptr,
+      int_value(0),
+      int_value(index_in_obj_record),
+      attr_type.get_ptr_type()
+    );
+    operand default_val;
+    if (attr_type.get_id() == INT32) {
+      default_val = int_value(0);
+    } else if (attr_type.get_id() == INT1) {
+      default_val = bool_value(false, true);
+    } else {
+      default_val = null_value(attr_type);
+    }
+    vp.store(default_val, attr_ptr);
+    // Also need to add bindings to symbol table since second pass might need attribute's vreg
+    // Entry e(attr_name, 0);
+    // Symbol symbol = &e;
+    Symbol symbol = attrs_as_features[attr_name]->get_name();
+    env->add_binding(symbol, &attr_ptr);
+  }
+  
+  // Second pass, set expr on the RHS of the attribute to the correct attribute vreg
+  for (std::size_t i=0; i<attr_names_in_order.size(); i++) {
+    int index_in_obj_record = i + 1;
+    std::string& attr_name = attr_names_in_order[i];
+    op_type attr_type = attr_list[attr_name];
+    operand attr_ptr = vp.getelementptr(
+      op_type(get_type_name()),
+      casted_instance_ptr,
+      int_value(0),
+      int_value(index_in_obj_record),
+      attr_type.get_ptr_type()
+    );
+    attrs_as_features[attr_name]->code(env);
+  }
+
+  // Return the pointer to the malloced object
+  vp.ret(casted_instance_ptr);
+
+  
+  
+  env->close_scope();
+  vp.begin_block("abort");
+  vp.call({}, VOID, "abort", true, {});
+  vp.unreachable();
+  vp.end_define();
+
 
 }
 
@@ -776,9 +910,9 @@ void method_class::code(CgenEnvironment *env) {
   ValuePrinter vp(*env->cur_stream);
   // TODO: add code here
   CgenNode* current_cls = env->get_class();
-  std::string cur_class_name_in_COOL = name->get_string();
-  std::string cur_class_name_in_LLVM = current_cls->global_method_name_map[cur_class_name_in_COOL]; 
-  op_func_type curr_method_type = current_cls->method_types_in_LLVM[cur_class_name_in_COOL];
+  std::string cur_method_name_in_COOL = name->get_string();
+  std::string cur_method_name_in_LLVM = current_cls->global_method_name_map[cur_method_name_in_COOL]; 
+  op_func_type curr_method_type = current_cls->method_types_in_LLVM[cur_method_name_in_COOL];
   op_type cur_method_res_type = curr_method_type.res;
   
   std::vector<op_type> cur_method_args_types = curr_method_type.args;
@@ -799,7 +933,7 @@ void method_class::code(CgenEnvironment *env) {
   }
 
   
-  vp.define(cur_method_res_type, cur_class_name_in_LLVM, cur_method_args);
+  vp.define(cur_method_res_type, cur_method_name_in_LLVM, cur_method_args);
   vp.begin_block("entry");
   // Make alloca on expr recursively
   expr->make_alloca(env);
@@ -859,11 +993,7 @@ operand assign_class::code(CgenEnvironment *env) {
   VarRegAndPos var_reg_and_pos = get_vreg_of_variable(env, name);
   operand variable_vreg = var_reg_and_pos.var; 
   operand variable_pos = var_reg_and_pos.pos;
-  if (cgen_debug) {
-    using namespace std;
-    cerr << ">>> " << variable_vreg.get_typename() << endl;
-    cerr << ">>> " << variable_pos.get_typename() << endl;
-  }
+
   op_type target_type = variable_vreg.get_type();
   // op_type target_type = variable_vreg.get_type().get_deref_type();
   operand conformed_value = conform(value, target_type, env);
@@ -975,6 +1105,8 @@ operand plus_class::code(CgenEnvironment *env) {
   // /TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
   operand op1 = e1->code(env), op2 = e2->code(env);
+  op1 = conform(op1, INT32, env);
+  op2 = conform(op2, INT32, env);
   return vp.add(op1, op2);
 }
 
@@ -985,6 +1117,8 @@ operand sub_class::code(CgenEnvironment *env) {
   // /TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
   operand op1 = e1->code(env), op2 = e2->code(env);
+  op1 = conform(op1, INT32, env);
+  op2 = conform(op2, INT32, env);
   return vp.sub(op1, op2);
 }
 
@@ -995,6 +1129,8 @@ operand mul_class::code(CgenEnvironment *env) {
   // /TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
   operand op1 = e1->code(env), op2 = e2->code(env);
+  op1 = conform(op1, INT32, env);
+  op2 = conform(op2, INT32, env);
   return vp.mul(op1, op2);
 }
 
@@ -1012,6 +1148,8 @@ operand divide_class::code(CgenEnvironment *env) {
   vp.branch_cond(is_divider_zero, "abort", ok_label);
 
   vp.begin_block(ok_label);
+  op1 = conform(op1, INT32, env);
+  op2 = conform(op2, INT32, env);
   return vp.div(op1, op2);
 }
 
@@ -1023,6 +1161,8 @@ operand neg_class::code(CgenEnvironment *env) {
   ValuePrinter vp(*env->cur_stream);
   operand op1 = int_value(0);
   operand op2 = e1->code(env);
+  op1 = conform(op1, INT32, env);
+  op2 = conform(op2, INT32, env);
   return vp.sub(op1, op2); 
 }
 
@@ -1033,6 +1173,8 @@ operand lt_class::code(CgenEnvironment *env) {
   // /TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
   operand op1 = e1->code(env), op2 = e2->code(env);
+  op1 = conform(op1, INT32, env);
+  op2 = conform(op2, INT32, env);
   return vp.icmp(LT, op1, op2);
 
 }
@@ -1044,6 +1186,8 @@ operand eq_class::code(CgenEnvironment *env) {
   // /TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
   operand op1 = e1->code(env), op2 = e2->code(env);
+  op1 = conform(op1, INT32, env);
+  op2 = conform(op2, INT32, env);
   return vp.icmp(EQ, op1, op2);
 }
 
@@ -1054,6 +1198,8 @@ operand leq_class::code(CgenEnvironment *env) {
   // /TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
   operand op1 = e1->code(env), op2 = e2->code(env);
+  op1 = conform(op1, INT32, env);
+  op2 = conform(op2, INT32, env);
   return vp.icmp(LE, op1, op2);
 }
 
@@ -1064,6 +1210,8 @@ operand comp_class::code(CgenEnvironment *env) {
   // /TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
   operand op1 = bool_value(true, true), op2 = e1->code(env);
+  op1 = conform(op1, INT1, env);
+  op2 = conform(op2, INT1, env);
   return vp.xor_in(op2, op1);
 }
 
@@ -1231,13 +1379,6 @@ operand dispatch_class::code(CgenEnvironment *env) {
   std::string vtable_name = designated_class->get_vtable_name();
   op_func_type method_type = designated_class->method_types_in_LLVM[method_name];
 
-  if (cgen_debug) {
-    using namespace std;
-    // cerr << method_type.get_id() << endl;
-    cerr << op_type(method_type.get_ptr_type_name().substr(1)).get_name() << endl;
-    
-  }
-
   // op_type gep_type = expr_code.get_type();
   // op_type gep_op1
   // if (expr_code.get_type().get_name() == "i32*") {
@@ -1319,7 +1460,7 @@ op_type convert_to_COOL_type(std::string type_str) {
   } else if (type_str == "sbyte*") {
     ret_type_COOL = op_type(INT8_PTR);
   } else {
-    ret_type_COOL = op_type(type_str).get_ptr_type();
+    ret_type_COOL = op_type(type_str, 1);
   }
   return ret_type_COOL;
 }
@@ -1365,9 +1506,12 @@ void method_class::layout_feature(CgenNode *cls) {
   }
   formal_llvm_type_list.insert(formal_llvm_type_list.begin(), op_type(cls->get_type_name()).get_ptr_type());
 
-  vp.declare(ret_type_llvm, method_name, formal_llvm_type_list);
+  if (cls->basic()) {
+    vp.declare(ret_type_llvm, method_name, formal_llvm_type_list);
+  }
 
-
+  // Record that this is an method of the current class.
+  cls->methods_as_features[function_name] = this;
 
 #endif
 }
@@ -1400,6 +1544,10 @@ void attr_class::layout_feature(CgenNode *cls) {
   cls->attr_list[attr_name] = attr_type;
   cls->attr_names_in_order.push_back(attr_name);
 
+  // Record that this is an attribute of the current class.
+  cls->attrs_as_features[attr_name] = this;
+  
+
 #endif
 }
 
@@ -1408,6 +1556,21 @@ void attr_class::code(CgenEnvironment *env) {
   assert(0 && "Unsupported case for phase 1");
 #else
   // TODO: add code here
+  ValuePrinter vp(*env->cur_stream);
+  operand init_coded = init->code(env);
+  operand* attr_pos = env->find_in_scopes(name);
+  // if (cgen_debug) {
+  //   using namespace std;
+  //   cerr << ">>> Getting deref type of attribute vreg type" << endl;
+  // }
+  op_type target_type = attr_pos->get_type().get_deref_type();
+  if (init_coded.get_type().get_id() != EMPTY) {
+    operand conformed_init = conform(init_coded, target_type, env);
+    vp.store(conformed_init, *attr_pos);
+  } else {
+    vp.store(null_value(target_type), *attr_pos);
+  }
+  
 #endif
 }
 
@@ -1435,11 +1598,11 @@ void cond_class::make_alloca(CgenEnvironment *env) {
   CgenNode* lowest_common_ancestor_type = nullptr;
   std::unordered_set<CgenNode*> then_exp_ancestors;
   
-  if (cgen_debug) {
-    using namespace std;
-    cerr << ">>> The then expr has type name:" << then_exp_class->get_type_name() << endl;
-    cerr << ">>> The else expr has type name:" << else_exp_class->get_type_name() << endl;
-  }
+  // if (cgen_debug) {
+  //   using namespace std;
+  //   cerr << ">>> The then expr has type name:" << then_exp_class->get_type_name() << endl;
+  //   cerr << ">>> The else expr has type name:" << else_exp_class->get_type_name() << endl;
+  // }
   
   CgenNode* it = then_exp_class;
   while (it != nullptr) {
@@ -1460,10 +1623,10 @@ void cond_class::make_alloca(CgenEnvironment *env) {
   op_type alloca_type;
   std::string LCA_name = lowest_common_ancestor_type->get_type_name();
 
-  if (cgen_debug) {
-    using namespace std;
-    cerr << ">>> The LCA type is:" << LCA_name << endl;
-  }
+  // if (cgen_debug) {
+  //   using namespace std;
+  //   cerr << ">>> The LCA type is:" << LCA_name << endl;
+  // }
 
   if (LCA_name == "Int") {
     alloca_type = op_type(INT32);
@@ -1794,19 +1957,11 @@ VarRegAndPos get_vreg_of_variable(CgenEnvironment *env, Symbol name) {
     operand ret = *var;
     return VarRegAndPos{vp.load(ret.get_type().get_deref_type(), ret), ret};
   } else {
-    if (cgen_debug) {
-      using namespace std;
-      cerr << ">>> trying to find self" << endl;
-    }
     operand self_pptr = *env->find_in_scopes(self);
     CgenNode* cur_class = env->get_class();
     operand self_ptr = vp.load(op_type(env->get_class()->get_type_name(), 1), self_pptr);
     op_type attr_type = cur_class->attr_list[name->get_string()];
     int attr_index_in_record = cur_class->obj_record_index_of_attributes[name->get_string()];
-    if (cgen_debug) {
-      using namespace std;
-      cerr << ">>> the index of the attribute is " << attr_index_in_record << endl;
-    }
     operand attr_ptr = vp.getelementptr(
       op_type(env->get_class()->get_type_name()),
       self_ptr,
@@ -1824,7 +1979,7 @@ VarRegAndPos get_vreg_of_variable(CgenEnvironment *env, Symbol name) {
 // src_class is the CgenNode for the *static* class of the expression.
 // You need to look up and return the class tag for it's dynamic value
 operand get_class_tag(operand src, CgenNode *src_cls, CgenEnvironment *env) {
-  // ADD CODE HERE (MP3 ONLY)
+  // TODO: ADD CODE HERE (MP3 ONLY)
   return operand();
 }
 #endif

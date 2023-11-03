@@ -1,0 +1,84 @@
+#17
+_program
+  #3
+  _class
+    A
+    Object
+    "init_func.cl"
+    (
+    #2
+    _attr
+      a
+      Int
+      #2
+      _int
+        9
+      : Int
+    )
+  #7
+  _class
+    B
+    Object
+    "init_func.cl"
+    (
+    #6
+    _attr
+      z
+      Int
+      #6
+      _int
+        10
+      : Int
+    )
+  #17
+  _class
+    Main
+    B
+    "init_func.cl"
+    (
+    #10
+    _attr
+      a
+      Int
+      #10
+      _plus
+        #10
+        _plus
+          #10
+          _int
+            1
+          : Int
+          #10
+          _int
+            3
+          : Int
+        : Int
+        #10
+        _int
+          5
+        : Int
+      : Int
+    #11
+    _attr
+      b
+      Bool
+      #11
+      _bool
+        1
+      : Bool
+    #12
+    _attr
+      c
+      A
+      #12
+      _no_expr
+      : _no_type
+    #16
+    _method
+      main
+      Bool
+      #15
+      _bool
+        1
+      : Bool
+    )
