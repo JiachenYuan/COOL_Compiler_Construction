@@ -307,7 +307,7 @@ define i1 @Main.main(%Main* %self) {
 
 entry:
 	%tmp.1 = alloca %A*
-	%tmp.2 = alloca %Object*
+	%tmp.2 = alloca i32
 	%tmp.0 = alloca %Main*
 	store %Main* %self, %Main** %tmp.0
 	br i1 true, label %true.0, label %false.0
@@ -332,21 +332,21 @@ end.0:
 	br i1 false, label %true.1, label %false.1
 
 true.1:
-	%tmp.12 = call %Int* @Int_new(  )
-	call void(%Int*, i32 ) @Int_init( %Int* %tmp.12, i32 1 )
-	%tmp.13 = bitcast %Int* %tmp.12 to %Object*
-	store %Object* %tmp.13, %Object** %tmp.2
+	%tmp.11 = call %Int* @Int_new(  )
+	%tmp.13 = getelementptr %Int, %Int* %tmp.11, i32 0, i32 1
+	%tmp.12 = load i32, i32* %tmp.13
+	store i32 %tmp.12, i32* %tmp.2
 	br label %end.1
 
 false.1:
-	%tmp.15 = call %Bool* @Bool_new(  )
-	call void(%Bool*, i1 ) @Bool_init( %Bool* %tmp.15, i1 true )
-	%tmp.16 = bitcast %Bool* %tmp.15 to %Object*
-	store %Object* %tmp.16, %Object** %tmp.2
+	%tmp.14 = call %Int* @Int_new(  )
+	%tmp.16 = getelementptr %Int, %Int* %tmp.14, i32 0, i32 1
+	%tmp.15 = load i32, i32* %tmp.16
+	store i32 %tmp.15, i32* %tmp.2
 	br label %end.1
 
 end.1:
-	%tmp.17 = load %Object*, %Object** %tmp.2
+	%tmp.17 = load i32, i32* %tmp.2
 	ret i1 true
 
 abort:

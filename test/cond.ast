@@ -62,14 +62,14 @@ _program
             0
           : Bool
           #21
-          _int
-            1
+          _new
+            Int
           : Int
           #23
-          _bool
-            1
-          : Bool
-        : Object
+          _new
+            Int
+          : Int
+        : Int
         #27
         _bool
           1

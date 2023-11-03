@@ -18,9 +18,9 @@ class Main {
 
         (
             if false then
-                1
+                new Int
             else 
-                true
+                new Int
             fi
         );
 

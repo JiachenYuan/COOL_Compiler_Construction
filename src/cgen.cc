@@ -1436,7 +1436,13 @@ operand new__class::code(CgenEnvironment *env) {
   assert(0 && "Unsupported case for phase 1");
 #else
   // TODO: add code here and replace `return operand()`
-  return operand();
+  // we do not need to support new SELF_TYPE as said in spec
+  // if (type_name->get_string() == "SELF_TYPE")
+  ValuePrinter vp(*env->cur_stream);
+  CgenNode* target_class = env->type_to_class(type_name);
+  operand new_instance = vp.call({}, op_type(target_class->get_type_name(), 1), target_class->get_init_function_name(), true, {});
+
+  return new_instance;
 #endif
 }
 
@@ -1598,11 +1604,11 @@ void cond_class::make_alloca(CgenEnvironment *env) {
   CgenNode* lowest_common_ancestor_type = nullptr;
   std::unordered_set<CgenNode*> then_exp_ancestors;
   
-  // if (cgen_debug) {
-  //   using namespace std;
-  //   cerr << ">>> The then expr has type name:" << then_exp_class->get_type_name() << endl;
-  //   cerr << ">>> The else expr has type name:" << else_exp_class->get_type_name() << endl;
-  // }
+  if (cgen_debug) {
+    using namespace std;
+    cerr << ">>> The then expr has type name:" << then_exp_class->get_type_name() << endl;
+    cerr << ">>> The else expr has type name:" << else_exp_class->get_type_name() << endl;
+  }
   
   CgenNode* it = then_exp_class;
   while (it != nullptr) {
