@@ -37,7 +37,7 @@ source_filename = "dispatch5_o.ll"
 @str.B = internal constant [2 x i8] c"B\00"
 @_B_vtable_prototype = constant %_B_vtable { i32 7, i32 ptrtoint (%B* getelementptr (%B, %B* null, i32 1) to i32), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @str.B, i32 0, i32 0), %B* ()* @B_new, %Object* (%B*)* bitcast (%Object* (%Object*)* @Object_abort to %Object* (%B*)*), %String* (%B*)* bitcast (%String* (%Object*)* @Object_type_name to %String* (%B*)*), %B* (%B*)* bitcast (%Object* (%Object*)* @Object_copy to %B* (%B*)*), i32 (%B*)* bitcast (i32 (%A*)* @A_f to i32 (%B*)*) }
 @str.C = internal constant [2 x i8] c"C\00"
-@_C_vtable_prototype = constant %_C_vtable { i32 8, i32 ptrtoint (%C* getelementptr (%C, %C* null, i32 1) to i32), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @str.C, i32 0, i32 0), %C* ()* @C_new, %Object* (%C*)* bitcast (%Object* (%Object*)* @Object_abort to %Object* (%C*)*), %String* (%C*)* bitcast (%String* (%Object*)* @Object_type_name to %String* (%C*)*), %C* (%C*)* bitcast (%Object* (%Object*)* @Object_copy to %C* (%C*)*), i32 (%C*)* bitcast (i32 (%A*)* @A_f to i32 (%C*)*) }
+@_C_vtable_prototype = constant %_C_vtable { i32 8, i32 ptrtoint (%C* getelementptr (%C, %C* null, i32 1) to i32), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @str.C, i32 0, i32 0), %C* ()* @C_new, %Object* (%C*)* bitcast (%Object* (%Object*)* @Object_abort to %Object* (%C*)*), %String* (%C*)* bitcast (%String* (%Object*)* @Object_type_name to %String* (%C*)*), %C* (%C*)* bitcast (%Object* (%Object*)* @Object_copy to %C* (%C*)*), i32 (%C*)* @C_f }
 @global_str.1 = internal constant [14 x i8] c"<basic class>\00"
 @String.1 = local_unnamed_addr constant %String { %_String_vtable* @_String_vtable_prototype, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @global_str.1, i32 0, i32 0) }
 @global_str.0 = internal constant [15 x i8] c"dispatch5_o.cl\00"
@@ -155,7 +155,7 @@ ok.8:                                             ; preds = %ok.6
   %vtpm.66 = load %_Main_vtable*, %_Main_vtable** %vtpm.11, align 8
   %vtpm.67 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.66, i64 0, i32 8
   %tmp.9 = load %Main* (%Main*, i32)*, %Main* (%Main*, i32)** %vtpm.67, align 8
-  %vtpm.68 = tail call %Main* %tmp.9(%Main* nonnull %self, i32 5)
+  %vtpm.68 = tail call %Main* %tmp.9(%Main* nonnull %self, i32 6)
   %vtpm.71 = load %C*, %C** %vtpm.44, align 8
   %vtpm.72 = icmp eq %C* %vtpm.71, null
   br i1 %vtpm.72, label %abort, label %ok.10
@@ -237,8 +237,8 @@ okay:                                             ; preds = %entry
   %vtpm.155 = getelementptr i8, i8* %vtpm.150, i64 24
   %vtpm.156 = getelementptr i8, i8* %vtpm.150, i64 32
   tail call void @llvm.memset.p0i8.i64(i8* noundef nonnull align 8 dereferenceable(40) %vtpm.153, i8 0, i64 40, i1 false)
-  %vtpm.176.i = tail call i8* @malloc(i32 8)
-  %malloc.null.i = icmp eq i8* %vtpm.176.i, null
+  %vtpm.186.i = tail call i8* @malloc(i32 8)
+  %malloc.null.i = icmp eq i8* %vtpm.186.i, null
   br i1 %malloc.null.i, label %abort.i, label %A_new.exit
 
 abort.i:                                          ; preds = %okay
@@ -246,12 +246,12 @@ abort.i:                                          ; preds = %okay
   unreachable
 
 A_new.exit:                                       ; preds = %okay
-  %vtpm.178.i = bitcast i8* %vtpm.176.i to %_A_vtable**
-  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.178.i, align 8
+  %vtpm.188.i = bitcast i8* %vtpm.186.i to %_A_vtable**
+  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.188.i, align 8
   %0 = bitcast i8* %vtpm.153 to i8**
-  store i8* %vtpm.176.i, i8** %0, align 8
-  %vtpm.183.i = tail call i8* @malloc(i32 8)
-  %malloc.null.i1 = icmp eq i8* %vtpm.183.i, null
+  store i8* %vtpm.186.i, i8** %0, align 8
+  %vtpm.193.i = tail call i8* @malloc(i32 8)
+  %malloc.null.i1 = icmp eq i8* %vtpm.193.i, null
   br i1 %malloc.null.i1, label %abort.i2, label %B_new.exit
 
 abort.i2:                                         ; preds = %A_new.exit
@@ -259,12 +259,12 @@ abort.i2:                                         ; preds = %A_new.exit
   unreachable
 
 B_new.exit:                                       ; preds = %A_new.exit
-  %vtpm.185.i = bitcast i8* %vtpm.183.i to %_B_vtable**
-  store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %vtpm.185.i, align 8
+  %vtpm.195.i = bitcast i8* %vtpm.193.i to %_B_vtable**
+  store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %vtpm.195.i, align 8
   %1 = bitcast i8* %vtpm.154 to i8**
-  store i8* %vtpm.183.i, i8** %1, align 8
-  %vtpm.192.i = tail call i8* @malloc(i32 8)
-  %malloc.null.i3 = icmp eq i8* %vtpm.192.i, null
+  store i8* %vtpm.193.i, i8** %1, align 8
+  %vtpm.202.i = tail call i8* @malloc(i32 8)
+  %malloc.null.i3 = icmp eq i8* %vtpm.202.i, null
   br i1 %malloc.null.i3, label %abort.i4, label %C_new.exit
 
 abort.i4:                                         ; preds = %B_new.exit
@@ -272,12 +272,12 @@ abort.i4:                                         ; preds = %B_new.exit
   unreachable
 
 C_new.exit:                                       ; preds = %B_new.exit
-  %vtpm.194.i = bitcast i8* %vtpm.192.i to %_C_vtable**
-  store %_C_vtable* @_C_vtable_prototype, %_C_vtable** %vtpm.194.i, align 8
+  %vtpm.204.i = bitcast i8* %vtpm.202.i to %_C_vtable**
+  store %_C_vtable* @_C_vtable_prototype, %_C_vtable** %vtpm.204.i, align 8
   %2 = bitcast i8* %vtpm.155 to i8**
-  store i8* %vtpm.192.i, i8** %2, align 8
-  %vtpm.183.i5 = tail call i8* @malloc(i32 8)
-  %malloc.null.i6 = icmp eq i8* %vtpm.183.i5, null
+  store i8* %vtpm.202.i, i8** %2, align 8
+  %vtpm.193.i5 = tail call i8* @malloc(i32 8)
+  %malloc.null.i6 = icmp eq i8* %vtpm.193.i5, null
   br i1 %malloc.null.i6, label %abort.i9, label %B_new.exit10
 
 abort.i9:                                         ; preds = %C_new.exit
@@ -285,12 +285,12 @@ abort.i9:                                         ; preds = %C_new.exit
   unreachable
 
 B_new.exit10:                                     ; preds = %C_new.exit
-  %vtpm.185.i8 = bitcast i8* %vtpm.183.i5 to %_B_vtable**
-  store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %vtpm.185.i8, align 8
+  %vtpm.195.i8 = bitcast i8* %vtpm.193.i5 to %_B_vtable**
+  store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %vtpm.195.i8, align 8
   %3 = bitcast i8* %vtpm.156 to i8**
-  store i8* %vtpm.183.i5, i8** %3, align 8
-  %vtpm.192.i11 = tail call i8* @malloc(i32 8)
-  %malloc.null.i12 = icmp eq i8* %vtpm.192.i11, null
+  store i8* %vtpm.193.i5, i8** %3, align 8
+  %vtpm.202.i11 = tail call i8* @malloc(i32 8)
+  %malloc.null.i12 = icmp eq i8* %vtpm.202.i11, null
   br i1 %malloc.null.i12, label %abort.i15, label %C_new.exit16
 
 abort.i15:                                        ; preds = %B_new.exit10
@@ -300,10 +300,10 @@ abort.i15:                                        ; preds = %B_new.exit10
 C_new.exit16:                                     ; preds = %B_new.exit10
   %vtpm.157 = getelementptr i8, i8* %vtpm.150, i64 40
   %vtpm.151 = bitcast i8* %vtpm.150 to %Main*
-  %vtpm.194.i14 = bitcast i8* %vtpm.192.i11 to %_C_vtable**
-  store %_C_vtable* @_C_vtable_prototype, %_C_vtable** %vtpm.194.i14, align 8
+  %vtpm.204.i14 = bitcast i8* %vtpm.202.i11 to %_C_vtable**
+  store %_C_vtable* @_C_vtable_prototype, %_C_vtable** %vtpm.204.i14, align 8
   %4 = bitcast i8* %vtpm.157 to i8**
-  store i8* %vtpm.192.i11, i8** %4, align 8
+  store i8* %vtpm.202.i11, i8** %4, align 8
   ret %Main* %vtpm.151
 
 abort:                                            ; preds = %entry
@@ -319,15 +319,15 @@ entry:
 
 define %A* @A_new() {
 entry:
-  %vtpm.176 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.176, null
+  %vtpm.186 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.186, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.177 = bitcast i8* %vtpm.176 to %A*
-  %vtpm.178 = bitcast i8* %vtpm.176 to %_A_vtable**
-  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.178, align 8
-  ret %A* %vtpm.177
+  %vtpm.187 = bitcast i8* %vtpm.186 to %A*
+  %vtpm.188 = bitcast i8* %vtpm.186 to %_A_vtable**
+  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.188, align 8
+  ret %A* %vtpm.187
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -336,15 +336,15 @@ abort:                                            ; preds = %entry
 
 define %B* @B_new() {
 entry:
-  %vtpm.183 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.183, null
+  %vtpm.193 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.193, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.184 = bitcast i8* %vtpm.183 to %B*
-  %vtpm.185 = bitcast i8* %vtpm.183 to %_B_vtable**
-  store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %vtpm.185, align 8
-  ret %B* %vtpm.184
+  %vtpm.194 = bitcast i8* %vtpm.193 to %B*
+  %vtpm.195 = bitcast i8* %vtpm.193 to %_B_vtable**
+  store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %vtpm.195, align 8
+  ret %B* %vtpm.194
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -352,22 +352,22 @@ abort:                                            ; preds = %entry
 }
 
 ; Function Attrs: mustprogress nofree norecurse nosync nounwind readnone willreturn
-define i32 @C_f(%C* nocapture readnone %self) local_unnamed_addr #0 {
+define i32 @C_f(%C* nocapture readnone %self) #0 {
 entry:
   ret i32 6
 }
 
 define %C* @C_new() {
 entry:
-  %vtpm.192 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.192, null
+  %vtpm.202 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.202, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.193 = bitcast i8* %vtpm.192 to %C*
-  %vtpm.194 = bitcast i8* %vtpm.192 to %_C_vtable**
-  store %_C_vtable* @_C_vtable_prototype, %_C_vtable** %vtpm.194, align 8
-  ret %C* %vtpm.193
+  %vtpm.203 = bitcast i8* %vtpm.202 to %C*
+  %vtpm.204 = bitcast i8* %vtpm.202 to %_C_vtable**
+  store %_C_vtable* @_C_vtable_prototype, %_C_vtable** %vtpm.204, align 8
+  ret %C* %vtpm.203
 
 abort:                                            ; preds = %entry
   tail call void @abort()

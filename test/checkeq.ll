@@ -464,7 +464,9 @@ okay:
 	%vtpm.89 = getelementptr %Main, %Main* %vtpm.87, i32 0, i32 1
 	store %Object* null, %Object** %vtpm.89
 	%vtpm.90 = getelementptr %Main, %Main* %vtpm.87, i32 0, i32 1
-	store %Object* null, %Object** %vtpm.90
+	%vtpm.91 = load %Main*, %Main** %vtpm.83
+	%vtpm.92 = getelementptr %Main, %Main* %vtpm.91, i32 0, i32 1
+	store %Object* null, %Object** %vtpm.92
 	ret %Main* %vtpm.87
 
 abort:

@@ -1,81 +1,98 @@
-add.out:
-Main.main() returned 3
-anot3.out:
-Main.main() returned 9
-arith.out:
-Main.main() returned -1
-block2.out:
-Main.main() returned 4
-block.out:
-Main.main() returned 2
-comp0.out:
-Main.main() returned 0
-comp1.out:
-Main.main() returned -1
-condfalse.out:
-Main.main() returned 5
-condtrue.out:
-Main.main() returned 1
-div.out:
-Main.main() returned 2
-eqfalse.out:
-Main.main() returned 8
-eqtrue.out:
-Main.main() returned 1
-leqfalse.out:
-Main.main() returned 2
-leqtrue.out:
-Main.main() returned 1
-letbool.out:
-Main.main() returned 1
-letinittrap.out:
-Main.main() returned 1
-letint.out:
-Main.main() returned 10
-letmultiple2.out:
-Main.main() returned 28
-letmultiple.out:
-Main.main() returned 23
-letnestedx.out:
-Main.main() returned 1
-letnestedy.out:
-Main.main() returned 1
-letsame.out:
-Main.main() returned 8
-letshad.out:
-Main.main() returned 1
-local1let.out:
-Main.main() returned 11
-local2ifelse.out:
-Main.main() returned 3
-local31whileeq.out:
-Main.main() returned 2
-local3while.out:
-Main.main() returned 5
-local41booleq.out:
-Main.main() returned 1
-local4bool.out:
-Main.main() returned 1
-loop2.out:
-Main.main() returned 11
-loop3.out:
-Main.main() returned 10
-loop.out:
-Main.main() returned 10
-ltfalse.out:
-Main.main() returned 14
-lttrue.out:
-Main.main() returned 1
-mul.out:
-Main.main() returned 2
-notfalse.out:
-Main.main() returned 50
-nottrue.out:
-Main.main() returned 1
-ret20.out:
-Main.main() returned 20
-sub.out:
-Main.main() returned 1
-testCodeMain.out:
-Main.main() returned 123
-zerodivabort.out:
+assign1o.out:
+7656assign2o.out:
+878assignments_o.out:
+46attr1o.out:
+247attr2o.out:
+67basic_funcs.out:
+Main879MainFrugel4inbasic.out:
+block_o.out:
+890book_list.out:
+bools.out:
+box.out:
+7case-none.out:
+case-order.out:
+main
+caseskip.out:
+2checkeq.out:
+self != obj
+1 != 0
+true != false
+"abc" != "bbc"
+checkvoid_dynamic.out:
+checkvoid_static.out:
+cond_o.out:
+8copy_o1.out:
+Hello!
+copy_o2.out:
+42 21copy_o3.out:
+42dispatch1_o.out:
+5dispatch2_o.out:
+90dispatch3_o.out:
+57dispatch4_o.out:
+42dispatch5_o.out:
+55666555555dispatch6_o.out:
+dispatch7_o.out:
+1divide_o.out:
+2equal1_o.out:
+ok!
+equal2_o.out:
+ok!
+equal3_o.out:
+ok!
+equal4_o.out:
+ok!
+equal_o.out:
+not okhairyscary.out:
+17141611714163171416511714161171416317141653117141611714163171416511714161171416317141653171416117141631714165171416initializer-inh.out:
+new A
+A.f: x = 0
+new B
+B.f: y = 0
+initializing B.y. here x = 12
+initializers.out:
+012ints_o.out:
+53isvoid_o.out:
+oklesseq_o.out:
+1less_o.out:
+1let1_o.out:
+798let2_o.out:
+1letinittrap_o.out:
+1minus_o.out:
+-20neg_o.out:
+-10nestedlet_o.out:
+32new1.out:
+new2.out:
+not_o.out:
+1out_int.out:
+0out_string.out:
+Hello
+plus_o.out:
+7self.out:
+selftype.out:
+shadow-attr-case.out:
+good
+shadow-attr-formal.out:
+good
+shadow-attr-let.out:
+good
+shadow-case-let.out:
+good
+shadow-formal-case.out:
+good
+shadow-formal-let.out:
+good
+shadow-let-case.out:
+good
+shadow-let-let.out:
+good
+strings1_o.out:
+Yoyoyostrings_o.out:
+Yoyoyotimes_o.out:
+10typcase1.out:
+typcase2_o.out:
+2typename_o.out:
+Base
+Derived
+Main
+Derived
+Derived

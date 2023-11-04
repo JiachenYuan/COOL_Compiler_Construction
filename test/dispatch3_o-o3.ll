@@ -33,7 +33,7 @@ source_filename = "dispatch3_o.ll"
 @str.Beta = internal constant [5 x i8] c"Beta\00"
 @_Beta_vtable_prototype = constant %_Beta_vtable { i32 6, i32 ptrtoint (%Beta* getelementptr (%Beta, %Beta* null, i32 1) to i32), i8* getelementptr inbounds ([5 x i8], [5 x i8]* @str.Beta, i32 0, i32 0), %Beta* ()* @Beta_new, %Object* (%Beta*)* bitcast (%Object* (%Object*)* @Object_abort to %Object* (%Beta*)*), %String* (%Beta*)* bitcast (%String* (%Object*)* @Object_type_name to %String* (%Beta*)*), %Beta* (%Beta*)* bitcast (%Object* (%Object*)* @Object_copy to %Beta* (%Beta*)*), i32 (%Beta*)* @Beta_niam, i32 (%Beta*)* @Beta_bugger }
 @str.Alpha = internal constant [6 x i8] c"Alpha\00"
-@_Alpha_vtable_prototype = constant %_Alpha_vtable { i32 7, i32 ptrtoint (%Alpha* getelementptr (%Alpha, %Alpha* null, i32 1) to i32), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @str.Alpha, i32 0, i32 0), %Alpha* ()* @Alpha_new, %Object* (%Alpha*)* bitcast (%Object* (%Object*)* @Object_abort to %Object* (%Alpha*)*), %String* (%Alpha*)* bitcast (%String* (%Object*)* @Object_type_name to %String* (%Alpha*)*), %Alpha* (%Alpha*)* bitcast (%Object* (%Object*)* @Object_copy to %Alpha* (%Alpha*)*), i32 (%Alpha*)* bitcast (i32 (%Beta*)* @Beta_niam to i32 (%Alpha*)*), i32 (%Alpha*)* bitcast (i32 (%Beta*)* @Beta_bugger to i32 (%Alpha*)*) }
+@_Alpha_vtable_prototype = constant %_Alpha_vtable { i32 7, i32 ptrtoint (%Alpha* getelementptr (%Alpha, %Alpha* null, i32 1) to i32), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @str.Alpha, i32 0, i32 0), %Alpha* ()* @Alpha_new, %Object* (%Alpha*)* bitcast (%Object* (%Object*)* @Object_abort to %Object* (%Alpha*)*), %String* (%Alpha*)* bitcast (%String* (%Object*)* @Object_type_name to %String* (%Alpha*)*), %Alpha* (%Alpha*)* bitcast (%Object* (%Object*)* @Object_copy to %Alpha* (%Alpha*)*), i32 (%Alpha*)* @Alpha_niam, i32 (%Alpha*)* bitcast (i32 (%Beta*)* @Beta_bugger to i32 (%Alpha*)*) }
 @global_str.1 = internal constant [14 x i8] c"<basic class>\00"
 @String.1 = local_unnamed_addr constant %String { %_String_vtable* @_String_vtable_prototype, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @global_str.1, i32 0, i32 0) }
 @global_str.0 = internal constant [15 x i8] c"dispatch3_o.cl\00"
@@ -191,7 +191,7 @@ abort:                                            ; preds = %entry
 }
 
 ; Function Attrs: mustprogress nofree norecurse nosync nounwind readnone willreturn
-define i32 @Alpha_niam(%Alpha* nocapture readnone %self) local_unnamed_addr #0 {
+define i32 @Alpha_niam(%Alpha* nocapture readnone %self) #0 {
 entry:
   ret i32 90
 }

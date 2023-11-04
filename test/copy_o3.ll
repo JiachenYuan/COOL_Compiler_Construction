@@ -531,13 +531,21 @@ okay:
 	%vtpm.91 = getelementptr %A, %A* %vtpm.86, i32 0, i32 4
 	store i32 0, i32* %vtpm.91
 	%vtpm.92 = getelementptr %A, %A* %vtpm.86, i32 0, i32 1
-	store i32 0, i32* %vtpm.92
-	%vtpm.93 = getelementptr %A, %A* %vtpm.86, i32 0, i32 2
-	store i1 false, i1* %vtpm.93
-	%vtpm.94 = getelementptr %A, %A* %vtpm.86, i32 0, i32 3
-	store %String* null, %String** %vtpm.94
-	%vtpm.95 = getelementptr %A, %A* %vtpm.86, i32 0, i32 4
-	store i32 0, i32* %vtpm.95
+	%vtpm.93 = load %A*, %A** %vtpm.82
+	%vtpm.94 = getelementptr %A, %A* %vtpm.93, i32 0, i32 1
+	store i32 0, i32* %vtpm.94
+	%vtpm.95 = getelementptr %A, %A* %vtpm.86, i32 0, i32 2
+	%vtpm.96 = load %A*, %A** %vtpm.82
+	%vtpm.97 = getelementptr %A, %A* %vtpm.96, i32 0, i32 2
+	store i1 false, i1* %vtpm.97
+	%vtpm.98 = getelementptr %A, %A* %vtpm.86, i32 0, i32 3
+	%vtpm.99 = load %A*, %A** %vtpm.82
+	%vtpm.100 = getelementptr %A, %A* %vtpm.99, i32 0, i32 3
+	store %String* null, %String** %vtpm.100
+	%vtpm.101 = getelementptr %A, %A* %vtpm.86, i32 0, i32 4
+	%vtpm.102 = load %A*, %A** %vtpm.82
+	%vtpm.103 = getelementptr %A, %A* %vtpm.102, i32 0, i32 4
+	store i32 0, i32* %vtpm.103
 	ret %A* %vtpm.86
 
 abort:
@@ -548,12 +556,12 @@ abort:
 define i32 @AA_get(%AA* %self) {
 
 entry:
-	%vtpm.97 = alloca %AA*
-	store %AA* %self, %AA** %vtpm.97
-	%vtpm.98 = load %AA*, %AA** %vtpm.97
-	%vtpm.99 = getelementptr %AA, %AA* %vtpm.98, i32 0, i32 6
-	%vtpm.100 = load i32, i32* %vtpm.99
-	ret i32 %vtpm.100
+	%vtpm.105 = alloca %AA*
+	store %AA* %self, %AA** %vtpm.105
+	%vtpm.106 = load %AA*, %AA** %vtpm.105
+	%vtpm.107 = getelementptr %AA, %AA* %vtpm.106, i32 0, i32 6
+	%vtpm.108 = load i32, i32* %vtpm.107
+	ret i32 %vtpm.108
 
 abort:
 	call void @abort(  )
@@ -563,15 +571,15 @@ abort:
 define i32 @AA_set(%AA* %self, i32 %x) {
 
 entry:
-	%vtpm.102 = alloca %AA*
-	%vtpm.103 = alloca i32
-	store %AA* %self, %AA** %vtpm.102
-	store i32 %x, i32* %vtpm.103
-	%vtpm.104 = load i32, i32* %vtpm.103
-	%vtpm.105 = load %AA*, %AA** %vtpm.102
-	%vtpm.106 = getelementptr %AA, %AA* %vtpm.105, i32 0, i32 6
-	store i32 %vtpm.104, i32* %vtpm.106
-	ret i32 %vtpm.104
+	%vtpm.110 = alloca %AA*
+	%vtpm.111 = alloca i32
+	store %AA* %self, %AA** %vtpm.110
+	store i32 %x, i32* %vtpm.111
+	%vtpm.112 = load i32, i32* %vtpm.111
+	%vtpm.113 = load %AA*, %AA** %vtpm.110
+	%vtpm.114 = getelementptr %AA, %AA* %vtpm.113, i32 0, i32 6
+	store i32 %vtpm.112, i32* %vtpm.114
+	ret i32 %vtpm.112
 
 abort:
 	call void @abort(  )
@@ -581,43 +589,55 @@ abort:
 define %AA* @AA_new() {
 
 entry:
-	%vtpm.108 = alloca %AA*
-	%vtpm.109 = getelementptr %_AA_vtable, %_AA_vtable* @_AA_vtable_prototype, i32 0, i32 1
-	%vtpm.110 = load i32, i32* %vtpm.109
-	%vtpm.111 = call i8*(i32 ) @malloc( i32 %vtpm.110 )
-	%vtpm.112 = bitcast i8* %vtpm.111 to %AA*
-	%malloc.null = icmp eq %AA* %vtpm.112, null
+	%vtpm.116 = alloca %AA*
+	%vtpm.117 = getelementptr %_AA_vtable, %_AA_vtable* @_AA_vtable_prototype, i32 0, i32 1
+	%vtpm.118 = load i32, i32* %vtpm.117
+	%vtpm.119 = call i8*(i32 ) @malloc( i32 %vtpm.118 )
+	%vtpm.120 = bitcast i8* %vtpm.119 to %AA*
+	%malloc.null = icmp eq %AA* %vtpm.120, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%vtpm.113 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 0
-	store %_AA_vtable* @_AA_vtable_prototype, %_AA_vtable** %vtpm.113
-	store %AA* %vtpm.112, %AA** %vtpm.108
-	%vtpm.114 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 1
-	store i32 0, i32* %vtpm.114
-	%vtpm.115 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 2
-	store i1 false, i1* %vtpm.115
-	%vtpm.116 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 3
-	store %String* null, %String** %vtpm.116
-	%vtpm.117 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 4
-	store i32 0, i32* %vtpm.117
-	%vtpm.118 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 5
-	store i1 false, i1* %vtpm.118
-	%vtpm.119 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 6
-	store i32 0, i32* %vtpm.119
-	%vtpm.120 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 1
-	store i32 0, i32* %vtpm.120
-	%vtpm.121 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 2
-	store i1 false, i1* %vtpm.121
-	%vtpm.122 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 3
-	store %String* null, %String** %vtpm.122
-	%vtpm.123 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 4
-	store i32 0, i32* %vtpm.123
-	%vtpm.124 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 5
-	store i1 false, i1* %vtpm.124
-	%vtpm.125 = getelementptr %AA, %AA* %vtpm.112, i32 0, i32 6
+	%vtpm.121 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 0
+	store %_AA_vtable* @_AA_vtable_prototype, %_AA_vtable** %vtpm.121
+	store %AA* %vtpm.120, %AA** %vtpm.116
+	%vtpm.122 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 1
+	store i32 0, i32* %vtpm.122
+	%vtpm.123 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 2
+	store i1 false, i1* %vtpm.123
+	%vtpm.124 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 3
+	store %String* null, %String** %vtpm.124
+	%vtpm.125 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 4
 	store i32 0, i32* %vtpm.125
-	ret %AA* %vtpm.112
+	%vtpm.126 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 5
+	store i1 false, i1* %vtpm.126
+	%vtpm.127 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 6
+	store i32 0, i32* %vtpm.127
+	%vtpm.128 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 1
+	%vtpm.129 = load %AA*, %AA** %vtpm.116
+	%vtpm.130 = getelementptr %AA, %AA* %vtpm.129, i32 0, i32 1
+	store i32 0, i32* %vtpm.130
+	%vtpm.131 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 2
+	%vtpm.132 = load %AA*, %AA** %vtpm.116
+	%vtpm.133 = getelementptr %AA, %AA* %vtpm.132, i32 0, i32 2
+	store i1 false, i1* %vtpm.133
+	%vtpm.134 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 3
+	%vtpm.135 = load %AA*, %AA** %vtpm.116
+	%vtpm.136 = getelementptr %AA, %AA* %vtpm.135, i32 0, i32 3
+	store %String* null, %String** %vtpm.136
+	%vtpm.137 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 4
+	%vtpm.138 = load %AA*, %AA** %vtpm.116
+	%vtpm.139 = getelementptr %AA, %AA* %vtpm.138, i32 0, i32 4
+	store i32 0, i32* %vtpm.139
+	%vtpm.140 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 5
+	%vtpm.141 = load %AA*, %AA** %vtpm.116
+	%vtpm.142 = getelementptr %AA, %AA* %vtpm.141, i32 0, i32 5
+	store i1 false, i1* %vtpm.142
+	%vtpm.143 = getelementptr %AA, %AA* %vtpm.120, i32 0, i32 6
+	%vtpm.144 = load %AA*, %AA** %vtpm.116
+	%vtpm.145 = getelementptr %AA, %AA* %vtpm.144, i32 0, i32 6
+	store i32 0, i32* %vtpm.145
+	ret %AA* %vtpm.120
 
 abort:
 	call void @abort(  )

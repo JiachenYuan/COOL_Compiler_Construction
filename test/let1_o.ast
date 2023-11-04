@@ -1,0 +1,43 @@
+#9
+_program
+  #9
+  _class
+    Main
+    IO
+    "let1_o.cl"
+    (
+    #8
+    _method
+      main
+      Object
+      #8
+      _block
+        #6
+        _dispatch
+          #6
+          _object
+            self
+          : SELF_TYPE
+          out_int
+          (
+          #6
+          _let
+            x
+            Int
+            #6
+            _int
+              798
+            : Int
+            #6
+            _object
+              x
+            : Int
+          : Int
+          )
+        : SELF_TYPE
+        #7
+        _object
+          self
+        : SELF_TYPE
+      : SELF_TYPE
+    )

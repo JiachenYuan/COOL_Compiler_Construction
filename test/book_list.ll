@@ -236,8 +236,8 @@ declare i32 @IO_in_int(%IO*)
 	%String* (%Article*) * bitcast (%String* (%IO*) * @IO_in_string to %String* (%Article*) *),
 	i32 (%Article*) * bitcast (i32 (%IO*) * @IO_in_int to i32 (%Article*) *),
 	%Book* (%Article*,%String*,%String*) * bitcast (%Book* (%Book*,%String*,%String*) * @Book_initBook to %Book* (%Article*,%String*,%String*) *),
-	%Object* (%Article*) * bitcast (%Object* (%Book*) * @Book_getSelf to %Object* (%Article*) *),
-	%String* (%Article*,%String*) * bitcast (%String* (%Book*,%String*) * @Book_print to %String* (%Article*,%String*) *),
+	%Object* (%Article*) * @Article_getSelf,
+	%String* (%Article*,%String*) * @Article_print,
 	%Article* (%Article*,%String*,%String*,%String*) * @Article_initArticle
 }
 
@@ -323,11 +323,11 @@ declare i32 @IO_in_int(%IO*)
 	%Cons* (%Cons*,i32) * bitcast (%IO* (%IO*,i32) * @IO_out_int to %Cons* (%Cons*,i32) *),
 	%String* (%Cons*) * bitcast (%String* (%IO*) * @IO_in_string to %String* (%Cons*) *),
 	i32 (%Cons*) * bitcast (i32 (%IO*) * @IO_in_int to i32 (%Cons*) *),
-	i1 (%Cons*) * bitcast (i1 (%BookList*) * @BookList_isNil to i1 (%Cons*) *),
+	i1 (%Cons*) * @Cons_isNil,
 	%Cons* (%Cons*,%Book*) * bitcast (%Cons* (%BookList*,%Book*) * @BookList_cons to %Cons* (%Cons*,%Book*) *),
-	%Book* (%Cons*) * bitcast (%Book* (%BookList*) * @BookList_car to %Book* (%Cons*) *),
-	%BookList* (%Cons*) * bitcast (%BookList* (%BookList*) * @BookList_cdr to %BookList* (%Cons*) *),
-	%String* (%Cons*,%String*) * bitcast (%String* (%BookList*,%String*) * @BookList_print_list to %String* (%Cons*,%String*) *),
+	%Book* (%Cons*) * @Cons_car,
+	%BookList* (%Cons*) * @Cons_cdr,
+	%String* (%Cons*,%String*) * @Cons_print_list,
 	%Cons* (%Cons*,%Book*,%BookList*) * @Cons_init
 }
 
@@ -367,11 +367,11 @@ declare i32 @IO_in_int(%IO*)
 	%Nil* (%Nil*,i32) * bitcast (%IO* (%IO*,i32) * @IO_out_int to %Nil* (%Nil*,i32) *),
 	%String* (%Nil*) * bitcast (%String* (%IO*) * @IO_in_string to %String* (%Nil*) *),
 	i32 (%Nil*) * bitcast (i32 (%IO*) * @IO_in_int to i32 (%Nil*) *),
-	i1 (%Nil*) * bitcast (i1 (%BookList*) * @BookList_isNil to i1 (%Nil*) *),
+	i1 (%Nil*) * @Nil_isNil,
 	%Cons* (%Nil*,%Book*) * bitcast (%Cons* (%BookList*,%Book*) * @BookList_cons to %Cons* (%Nil*,%Book*) *),
 	%Book* (%Nil*) * bitcast (%Book* (%BookList*) * @BookList_car to %Book* (%Nil*) *),
 	%BookList* (%Nil*) * bitcast (%BookList* (%BookList*) * @BookList_cdr to %BookList* (%Nil*) *),
-	%String* (%Nil*,%String*) * bitcast (%String* (%BookList*,%String*) * @BookList_print_list to %String* (%Nil*,%String*) *)
+	%String* (%Nil*,%String*) * @Nil_print_list
 }
 
 @str.Main = internal constant [5 x i8] c"Main\00"
@@ -635,9 +635,13 @@ okay:
 	%vtpm.63 = getelementptr %Book, %Book* %vtpm.60, i32 0, i32 2
 	store %String* null, %String** %vtpm.63
 	%vtpm.64 = getelementptr %Book, %Book* %vtpm.60, i32 0, i32 1
-	store %String* null, %String** %vtpm.64
-	%vtpm.65 = getelementptr %Book, %Book* %vtpm.60, i32 0, i32 2
-	store %String* null, %String** %vtpm.65
+	%vtpm.65 = load %Book*, %Book** %vtpm.56
+	%vtpm.66 = getelementptr %Book, %Book* %vtpm.65, i32 0, i32 1
+	store %String* null, %String** %vtpm.66
+	%vtpm.67 = getelementptr %Book, %Book* %vtpm.60, i32 0, i32 2
+	%vtpm.68 = load %Book*, %Book** %vtpm.56
+	%vtpm.69 = getelementptr %Book, %Book* %vtpm.68, i32 0, i32 2
+	store %String* null, %String** %vtpm.69
 	ret %Book* %vtpm.60
 
 abort:
@@ -648,11 +652,11 @@ abort:
 define %Object* @Article_getSelf(%Article* %self) {
 
 entry:
-	%vtpm.67 = alloca %Article*
-	store %Article* %self, %Article** %vtpm.67
-	%vtpm.68 = load %Article*, %Article** %vtpm.67
-	%vtpm.69 = bitcast %Article* %vtpm.68 to %Object*
-	ret %Object* %vtpm.69
+	%vtpm.71 = alloca %Article*
+	store %Article* %self, %Article** %vtpm.71
+	%vtpm.72 = load %Article*, %Article** %vtpm.71
+	%vtpm.73 = bitcast %Article* %vtpm.72 to %Object*
+	ret %Object* %vtpm.73
 
 abort:
 	call void @abort(  )
@@ -662,32 +666,32 @@ abort:
 define %Article* @Article_initArticle(%Article* %self, %String* %title_p, %String* %author_p, %String* %per_title_p) {
 
 entry:
-	%vtpm.71 = alloca %Article*
-	%vtpm.72 = alloca %String*
-	%vtpm.73 = alloca %String*
-	%vtpm.74 = alloca %String*
-	store %Article* %self, %Article** %vtpm.71
-	store %String* %title_p, %String** %vtpm.72
-	store %String* %author_p, %String** %vtpm.73
-	store %String* %per_title_p, %String** %vtpm.74
-	%vtpm.75 = load %String*, %String** %vtpm.72
-	%vtpm.76 = load %String*, %String** %vtpm.73
-	%vtpm.77 = load %Article*, %Article** %vtpm.71
-	%vtpm.78 = icmp eq %Article* %vtpm.77, null
-	br i1 %vtpm.78, label %abort, label %ok.0
+	%vtpm.75 = alloca %Article*
+	%vtpm.76 = alloca %String*
+	%vtpm.77 = alloca %String*
+	%vtpm.78 = alloca %String*
+	store %Article* %self, %Article** %vtpm.75
+	store %String* %title_p, %String** %vtpm.76
+	store %String* %author_p, %String** %vtpm.77
+	store %String* %per_title_p, %String** %vtpm.78
+	%vtpm.79 = load %String*, %String** %vtpm.76
+	%vtpm.80 = load %String*, %String** %vtpm.77
+	%vtpm.81 = load %Article*, %Article** %vtpm.75
+	%vtpm.82 = icmp eq %Article* %vtpm.81, null
+	br i1 %vtpm.82, label %abort, label %ok.0
 
 ok.0:
-	%vtpm.79 = getelementptr %Article, %Article* %vtpm.77, i32 0, i32 0
-	%vtpm.80 = load %_Article_vtable*, %_Article_vtable** %vtpm.79
-	%vtpm.81 = getelementptr %_Article_vtable, %_Article_vtable* %vtpm.80, i32 0, i32 11
-	%tmp.0 = load %Book* (%Article*,%String*,%String*) *, %Book* (%Article*,%String*,%String*) ** %vtpm.81
-	%vtpm.82 = call %Book*(%Article*, %String*, %String* ) %tmp.0( %Article* %vtpm.77, %String* %vtpm.75, %String* %vtpm.76 )
-	%vtpm.83 = load %String*, %String** %vtpm.74
-	%vtpm.84 = load %Article*, %Article** %vtpm.71
-	%vtpm.85 = getelementptr %Article, %Article* %vtpm.84, i32 0, i32 3
-	store %String* %vtpm.83, %String** %vtpm.85
-	%vtpm.86 = load %Article*, %Article** %vtpm.71
-	ret %Article* %vtpm.86
+	%vtpm.83 = getelementptr %Article, %Article* %vtpm.81, i32 0, i32 0
+	%vtpm.84 = load %_Article_vtable*, %_Article_vtable** %vtpm.83
+	%vtpm.85 = getelementptr %_Article_vtable, %_Article_vtable* %vtpm.84, i32 0, i32 11
+	%tmp.0 = load %Book* (%Article*,%String*,%String*) *, %Book* (%Article*,%String*,%String*) ** %vtpm.85
+	%vtpm.86 = call %Book*(%Article*, %String*, %String* ) %tmp.0( %Article* %vtpm.81, %String* %vtpm.79, %String* %vtpm.80 )
+	%vtpm.87 = load %String*, %String** %vtpm.78
+	%vtpm.88 = load %Article*, %Article** %vtpm.75
+	%vtpm.89 = getelementptr %Article, %Article* %vtpm.88, i32 0, i32 3
+	store %String* %vtpm.87, %String** %vtpm.89
+	%vtpm.90 = load %Article*, %Article** %vtpm.75
+	ret %Article* %vtpm.90
 
 abort:
 	call void @abort(  )
@@ -697,53 +701,53 @@ abort:
 define %String* @Article_print(%Article* %self, %String* %s) {
 
 entry:
-	%vtpm.88 = alloca %Article*
-	%vtpm.89 = alloca %String*
-	store %Article* %self, %Article** %vtpm.88
-	store %String* %s, %String** %vtpm.89
-	%vtpm.90 = load %String*, %String** %vtpm.89
-	%vtpm.91 = load %Article*, %Article** %vtpm.88
-	%vtpm.92 = icmp eq %Article* %vtpm.91, null
-	br i1 %vtpm.92, label %abort, label %ok.0
+	%vtpm.92 = alloca %Article*
+	%vtpm.93 = alloca %String*
+	store %Article* %self, %Article** %vtpm.92
+	store %String* %s, %String** %vtpm.93
+	%vtpm.94 = load %String*, %String** %vtpm.93
+	%vtpm.95 = load %Article*, %Article** %vtpm.92
+	%vtpm.96 = icmp eq %Article* %vtpm.95, null
+	br i1 %vtpm.96, label %abort, label %ok.0
 
 ok.0:
-	%vtpm.93 = getelementptr %_Book_vtable, %_Book_vtable* @_Book_vtable_prototype, i32 0, i32 13
-	%tmp.0 = load %String* (%Book*,%String*) *, %String* (%Book*,%String*) ** %vtpm.93
-	%vtpm.94 = bitcast %Article* %vtpm.91 to %Book*
-	%vtpm.95 = call %String*(%Book*, %String* ) %tmp.0( %Book* %vtpm.94, %String* %vtpm.90 )
-	store %String* %vtpm.95, %String** %vtpm.89
-	%vtpm.96 = load %Article*, %Article** %vtpm.88
-	%vtpm.97 = getelementptr %Article, %Article* %vtpm.96, i32 0, i32 3
-	%vtpm.98 = load %String*, %String** %vtpm.97
-	%vtpm.99 = load %String*, %String** %vtpm.89
-	%vtpm.100 = icmp eq %String* %vtpm.99, null
-	br i1 %vtpm.100, label %abort, label %ok.1
+	%vtpm.97 = getelementptr %_Book_vtable, %_Book_vtable* @_Book_vtable_prototype, i32 0, i32 13
+	%tmp.0 = load %String* (%Book*,%String*) *, %String* (%Book*,%String*) ** %vtpm.97
+	%vtpm.98 = bitcast %Article* %vtpm.95 to %Book*
+	%vtpm.99 = call %String*(%Book*, %String* ) %tmp.0( %Book* %vtpm.98, %String* %vtpm.94 )
+	store %String* %vtpm.99, %String** %vtpm.93
+	%vtpm.100 = load %Article*, %Article** %vtpm.92
+	%vtpm.101 = getelementptr %Article, %Article* %vtpm.100, i32 0, i32 3
+	%vtpm.102 = load %String*, %String** %vtpm.101
+	%vtpm.103 = load %String*, %String** %vtpm.93
+	%vtpm.104 = icmp eq %String* %vtpm.103, null
+	br i1 %vtpm.104, label %abort, label %ok.1
 
 ok.1:
-	%vtpm.101 = getelementptr %String, %String* %vtpm.99, i32 0, i32 0
-	%vtpm.102 = load %_String_vtable*, %_String_vtable** %vtpm.101
-	%vtpm.103 = getelementptr %_String_vtable, %_String_vtable* %vtpm.102, i32 0, i32 8
-	%tmp.1 = load %String* (%String*,%String*) *, %String* (%String*,%String*) ** %vtpm.103
-	%vtpm.104 = call %String*(%String*, %String* ) %tmp.1( %String* %vtpm.99, %String* @String.4 )
-	%vtpm.105 = icmp eq %String* %vtpm.104, null
-	br i1 %vtpm.105, label %abort, label %ok.2
+	%vtpm.105 = getelementptr %String, %String* %vtpm.103, i32 0, i32 0
+	%vtpm.106 = load %_String_vtable*, %_String_vtable** %vtpm.105
+	%vtpm.107 = getelementptr %_String_vtable, %_String_vtable* %vtpm.106, i32 0, i32 8
+	%tmp.1 = load %String* (%String*,%String*) *, %String* (%String*,%String*) ** %vtpm.107
+	%vtpm.108 = call %String*(%String*, %String* ) %tmp.1( %String* %vtpm.103, %String* @String.4 )
+	%vtpm.109 = icmp eq %String* %vtpm.108, null
+	br i1 %vtpm.109, label %abort, label %ok.2
 
 ok.2:
-	%vtpm.106 = getelementptr %String, %String* %vtpm.104, i32 0, i32 0
-	%vtpm.107 = load %_String_vtable*, %_String_vtable** %vtpm.106
-	%vtpm.108 = getelementptr %_String_vtable, %_String_vtable* %vtpm.107, i32 0, i32 8
-	%tmp.2 = load %String* (%String*,%String*) *, %String* (%String*,%String*) ** %vtpm.108
-	%vtpm.109 = call %String*(%String*, %String* ) %tmp.2( %String* %vtpm.104, %String* %vtpm.98 )
-	%vtpm.110 = icmp eq %String* %vtpm.109, null
-	br i1 %vtpm.110, label %abort, label %ok.3
+	%vtpm.110 = getelementptr %String, %String* %vtpm.108, i32 0, i32 0
+	%vtpm.111 = load %_String_vtable*, %_String_vtable** %vtpm.110
+	%vtpm.112 = getelementptr %_String_vtable, %_String_vtable* %vtpm.111, i32 0, i32 8
+	%tmp.2 = load %String* (%String*,%String*) *, %String* (%String*,%String*) ** %vtpm.112
+	%vtpm.113 = call %String*(%String*, %String* ) %tmp.2( %String* %vtpm.108, %String* %vtpm.102 )
+	%vtpm.114 = icmp eq %String* %vtpm.113, null
+	br i1 %vtpm.114, label %abort, label %ok.3
 
 ok.3:
-	%vtpm.111 = getelementptr %String, %String* %vtpm.109, i32 0, i32 0
-	%vtpm.112 = load %_String_vtable*, %_String_vtable** %vtpm.111
-	%vtpm.113 = getelementptr %_String_vtable, %_String_vtable* %vtpm.112, i32 0, i32 8
-	%tmp.3 = load %String* (%String*,%String*) *, %String* (%String*,%String*) ** %vtpm.113
-	%vtpm.114 = call %String*(%String*, %String* ) %tmp.3( %String* %vtpm.109, %String* @String.2 )
-	ret %String* %vtpm.114
+	%vtpm.115 = getelementptr %String, %String* %vtpm.113, i32 0, i32 0
+	%vtpm.116 = load %_String_vtable*, %_String_vtable** %vtpm.115
+	%vtpm.117 = getelementptr %_String_vtable, %_String_vtable* %vtpm.116, i32 0, i32 8
+	%tmp.3 = load %String* (%String*,%String*) *, %String* (%String*,%String*) ** %vtpm.117
+	%vtpm.118 = call %String*(%String*, %String* ) %tmp.3( %String* %vtpm.113, %String* @String.2 )
+	ret %String* %vtpm.118
 
 abort:
 	call void @abort(  )
@@ -753,31 +757,37 @@ abort:
 define %Article* @Article_new() {
 
 entry:
-	%vtpm.116 = alloca %Article*
-	%vtpm.117 = getelementptr %_Article_vtable, %_Article_vtable* @_Article_vtable_prototype, i32 0, i32 1
-	%vtpm.118 = load i32, i32* %vtpm.117
-	%vtpm.119 = call i8*(i32 ) @malloc( i32 %vtpm.118 )
-	%vtpm.120 = bitcast i8* %vtpm.119 to %Article*
-	%malloc.null = icmp eq %Article* %vtpm.120, null
+	%vtpm.120 = alloca %Article*
+	%vtpm.121 = getelementptr %_Article_vtable, %_Article_vtable* @_Article_vtable_prototype, i32 0, i32 1
+	%vtpm.122 = load i32, i32* %vtpm.121
+	%vtpm.123 = call i8*(i32 ) @malloc( i32 %vtpm.122 )
+	%vtpm.124 = bitcast i8* %vtpm.123 to %Article*
+	%malloc.null = icmp eq %Article* %vtpm.124, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%vtpm.121 = getelementptr %Article, %Article* %vtpm.120, i32 0, i32 0
-	store %_Article_vtable* @_Article_vtable_prototype, %_Article_vtable** %vtpm.121
-	store %Article* %vtpm.120, %Article** %vtpm.116
-	%vtpm.122 = getelementptr %Article, %Article* %vtpm.120, i32 0, i32 1
-	store %String* null, %String** %vtpm.122
-	%vtpm.123 = getelementptr %Article, %Article* %vtpm.120, i32 0, i32 2
-	store %String* null, %String** %vtpm.123
-	%vtpm.124 = getelementptr %Article, %Article* %vtpm.120, i32 0, i32 3
-	store %String* null, %String** %vtpm.124
-	%vtpm.125 = getelementptr %Article, %Article* %vtpm.120, i32 0, i32 1
-	store %String* null, %String** %vtpm.125
-	%vtpm.126 = getelementptr %Article, %Article* %vtpm.120, i32 0, i32 2
+	%vtpm.125 = getelementptr %Article, %Article* %vtpm.124, i32 0, i32 0
+	store %_Article_vtable* @_Article_vtable_prototype, %_Article_vtable** %vtpm.125
+	store %Article* %vtpm.124, %Article** %vtpm.120
+	%vtpm.126 = getelementptr %Article, %Article* %vtpm.124, i32 0, i32 1
 	store %String* null, %String** %vtpm.126
-	%vtpm.127 = getelementptr %Article, %Article* %vtpm.120, i32 0, i32 3
+	%vtpm.127 = getelementptr %Article, %Article* %vtpm.124, i32 0, i32 2
 	store %String* null, %String** %vtpm.127
-	ret %Article* %vtpm.120
+	%vtpm.128 = getelementptr %Article, %Article* %vtpm.124, i32 0, i32 3
+	store %String* null, %String** %vtpm.128
+	%vtpm.129 = getelementptr %Article, %Article* %vtpm.124, i32 0, i32 1
+	%vtpm.130 = load %Article*, %Article** %vtpm.120
+	%vtpm.131 = getelementptr %Article, %Article* %vtpm.130, i32 0, i32 1
+	store %String* null, %String** %vtpm.131
+	%vtpm.132 = getelementptr %Article, %Article* %vtpm.124, i32 0, i32 2
+	%vtpm.133 = load %Article*, %Article** %vtpm.120
+	%vtpm.134 = getelementptr %Article, %Article* %vtpm.133, i32 0, i32 2
+	store %String* null, %String** %vtpm.134
+	%vtpm.135 = getelementptr %Article, %Article* %vtpm.124, i32 0, i32 3
+	%vtpm.136 = load %Article*, %Article** %vtpm.120
+	%vtpm.137 = getelementptr %Article, %Article* %vtpm.136, i32 0, i32 3
+	store %String* null, %String** %vtpm.137
+	ret %Article* %vtpm.124
 
 abort:
 	call void @abort(  )
@@ -787,20 +797,20 @@ abort:
 define %Book* @BookList_car(%BookList* %self) {
 
 entry:
-	%vtpm.129 = alloca %BookList*
-	store %BookList* %self, %BookList** %vtpm.129
-	%vtpm.130 = load %BookList*, %BookList** %vtpm.129
-	%vtpm.131 = icmp eq %BookList* %vtpm.130, null
-	br i1 %vtpm.131, label %abort, label %ok.0
+	%vtpm.139 = alloca %BookList*
+	store %BookList* %self, %BookList** %vtpm.139
+	%vtpm.140 = load %BookList*, %BookList** %vtpm.139
+	%vtpm.141 = icmp eq %BookList* %vtpm.140, null
+	br i1 %vtpm.141, label %abort, label %ok.0
 
 ok.0:
-	%vtpm.132 = getelementptr %BookList, %BookList* %vtpm.130, i32 0, i32 0
-	%vtpm.133 = load %_BookList_vtable*, %_BookList_vtable** %vtpm.132
-	%vtpm.134 = getelementptr %_BookList_vtable, %_BookList_vtable* %vtpm.133, i32 0, i32 4
-	%tmp.0 = load %Object* (%BookList*) *, %Object* (%BookList*) ** %vtpm.134
-	%vtpm.135 = call %Object*(%BookList* ) %tmp.0( %BookList* %vtpm.130 )
-	%vtpm.136 = call %Book* @Book_new(  )
-	ret %Book* %vtpm.136
+	%vtpm.142 = getelementptr %BookList, %BookList* %vtpm.140, i32 0, i32 0
+	%vtpm.143 = load %_BookList_vtable*, %_BookList_vtable** %vtpm.142
+	%vtpm.144 = getelementptr %_BookList_vtable, %_BookList_vtable* %vtpm.143, i32 0, i32 4
+	%tmp.0 = load %Object* (%BookList*) *, %Object* (%BookList*) ** %vtpm.144
+	%vtpm.145 = call %Object*(%BookList* ) %tmp.0( %BookList* %vtpm.140 )
+	%vtpm.146 = call %Book* @Book_new(  )
+	ret %Book* %vtpm.146
 
 abort:
 	call void @abort(  )
@@ -810,20 +820,20 @@ abort:
 define %BookList* @BookList_cdr(%BookList* %self) {
 
 entry:
-	%vtpm.138 = alloca %BookList*
-	store %BookList* %self, %BookList** %vtpm.138
-	%vtpm.139 = load %BookList*, %BookList** %vtpm.138
-	%vtpm.140 = icmp eq %BookList* %vtpm.139, null
-	br i1 %vtpm.140, label %abort, label %ok.0
+	%vtpm.148 = alloca %BookList*
+	store %BookList* %self, %BookList** %vtpm.148
+	%vtpm.149 = load %BookList*, %BookList** %vtpm.148
+	%vtpm.150 = icmp eq %BookList* %vtpm.149, null
+	br i1 %vtpm.150, label %abort, label %ok.0
 
 ok.0:
-	%vtpm.141 = getelementptr %BookList, %BookList* %vtpm.139, i32 0, i32 0
-	%vtpm.142 = load %_BookList_vtable*, %_BookList_vtable** %vtpm.141
-	%vtpm.143 = getelementptr %_BookList_vtable, %_BookList_vtable* %vtpm.142, i32 0, i32 4
-	%tmp.0 = load %Object* (%BookList*) *, %Object* (%BookList*) ** %vtpm.143
-	%vtpm.144 = call %Object*(%BookList* ) %tmp.0( %BookList* %vtpm.139 )
-	%vtpm.145 = call %BookList* @BookList_new(  )
-	ret %BookList* %vtpm.145
+	%vtpm.151 = getelementptr %BookList, %BookList* %vtpm.149, i32 0, i32 0
+	%vtpm.152 = load %_BookList_vtable*, %_BookList_vtable** %vtpm.151
+	%vtpm.153 = getelementptr %_BookList_vtable, %_BookList_vtable* %vtpm.152, i32 0, i32 4
+	%tmp.0 = load %Object* (%BookList*) *, %Object* (%BookList*) ** %vtpm.153
+	%vtpm.154 = call %Object*(%BookList* ) %tmp.0( %BookList* %vtpm.149 )
+	%vtpm.155 = call %BookList* @BookList_new(  )
+	ret %BookList* %vtpm.155
 
 abort:
 	call void @abort(  )
@@ -833,26 +843,26 @@ abort:
 define %Cons* @BookList_cons(%BookList* %self, %Book* %hd) {
 
 entry:
-	%vtpm.147 = alloca %Cons*
-	%vtpm.148 = alloca %BookList*
-	%vtpm.149 = alloca %Book*
-	store %BookList* %self, %BookList** %vtpm.148
-	store %Book* %hd, %Book** %vtpm.149
-	%vtpm.150 = call %Cons* @Cons_new(  )
-	store %Cons* %vtpm.150, %Cons** %vtpm.147
-	%vtpm.151 = load %Book*, %Book** %vtpm.149
-	%vtpm.152 = load %BookList*, %BookList** %vtpm.148
-	%vtpm.153 = load %Cons*, %Cons** %vtpm.147
-	%vtpm.154 = icmp eq %Cons* %vtpm.153, null
-	br i1 %vtpm.154, label %abort, label %ok.0
+	%vtpm.157 = alloca %Cons*
+	%vtpm.158 = alloca %BookList*
+	%vtpm.159 = alloca %Book*
+	store %BookList* %self, %BookList** %vtpm.158
+	store %Book* %hd, %Book** %vtpm.159
+	%vtpm.160 = call %Cons* @Cons_new(  )
+	store %Cons* %vtpm.160, %Cons** %vtpm.157
+	%vtpm.161 = load %Book*, %Book** %vtpm.159
+	%vtpm.162 = load %BookList*, %BookList** %vtpm.158
+	%vtpm.163 = load %Cons*, %Cons** %vtpm.157
+	%vtpm.164 = icmp eq %Cons* %vtpm.163, null
+	br i1 %vtpm.164, label %abort, label %ok.0
 
 ok.0:
-	%vtpm.155 = getelementptr %Cons, %Cons* %vtpm.153, i32 0, i32 0
-	%vtpm.156 = load %_Cons_vtable*, %_Cons_vtable** %vtpm.155
-	%vtpm.157 = getelementptr %_Cons_vtable, %_Cons_vtable* %vtpm.156, i32 0, i32 16
-	%tmp.0 = load %Cons* (%Cons*,%Book*,%BookList*) *, %Cons* (%Cons*,%Book*,%BookList*) ** %vtpm.157
-	%vtpm.158 = call %Cons*(%Cons*, %Book*, %BookList* ) %tmp.0( %Cons* %vtpm.153, %Book* %vtpm.151, %BookList* %vtpm.152 )
-	ret %Cons* %vtpm.158
+	%vtpm.165 = getelementptr %Cons, %Cons* %vtpm.163, i32 0, i32 0
+	%vtpm.166 = load %_Cons_vtable*, %_Cons_vtable** %vtpm.165
+	%vtpm.167 = getelementptr %_Cons_vtable, %_Cons_vtable* %vtpm.166, i32 0, i32 16
+	%tmp.0 = load %Cons* (%Cons*,%Book*,%BookList*) *, %Cons* (%Cons*,%Book*,%BookList*) ** %vtpm.167
+	%vtpm.168 = call %Cons*(%Cons*, %Book*, %BookList* ) %tmp.0( %Cons* %vtpm.163, %Book* %vtpm.161, %BookList* %vtpm.162 )
+	ret %Cons* %vtpm.168
 
 abort:
 	call void @abort(  )
@@ -862,18 +872,18 @@ abort:
 define i1 @BookList_isNil(%BookList* %self) {
 
 entry:
-	%vtpm.160 = alloca %BookList*
-	store %BookList* %self, %BookList** %vtpm.160
-	%vtpm.161 = load %BookList*, %BookList** %vtpm.160
-	%vtpm.162 = icmp eq %BookList* %vtpm.161, null
-	br i1 %vtpm.162, label %abort, label %ok.0
+	%vtpm.170 = alloca %BookList*
+	store %BookList* %self, %BookList** %vtpm.170
+	%vtpm.171 = load %BookList*, %BookList** %vtpm.170
+	%vtpm.172 = icmp eq %BookList* %vtpm.171, null
+	br i1 %vtpm.172, label %abort, label %ok.0
 
 ok.0:
-	%vtpm.163 = getelementptr %BookList, %BookList* %vtpm.161, i32 0, i32 0
-	%vtpm.164 = load %_BookList_vtable*, %_BookList_vtable** %vtpm.163
-	%vtpm.165 = getelementptr %_BookList_vtable, %_BookList_vtable* %vtpm.164, i32 0, i32 4
-	%tmp.0 = load %Object* (%BookList*) *, %Object* (%BookList*) ** %vtpm.165
-	%vtpm.166 = call %Object*(%BookList* ) %tmp.0( %BookList* %vtpm.161 )
+	%vtpm.173 = getelementptr %BookList, %BookList* %vtpm.171, i32 0, i32 0
+	%vtpm.174 = load %_BookList_vtable*, %_BookList_vtable** %vtpm.173
+	%vtpm.175 = getelementptr %_BookList_vtable, %_BookList_vtable* %vtpm.174, i32 0, i32 4
+	%tmp.0 = load %Object* (%BookList*) *, %Object* (%BookList*) ** %vtpm.175
+	%vtpm.176 = call %Object*(%BookList* ) %tmp.0( %BookList* %vtpm.171 )
 	ret i1 true
 
 abort:
@@ -884,10 +894,10 @@ abort:
 define %String* @BookList_print_list(%BookList* %self, %String* %s) {
 
 entry:
-	%vtpm.168 = alloca %BookList*
-	%vtpm.169 = alloca %String*
-	store %BookList* %self, %BookList** %vtpm.168
-	store %String* %s, %String** %vtpm.169
+	%vtpm.178 = alloca %BookList*
+	%vtpm.179 = alloca %String*
+	store %BookList* %self, %BookList** %vtpm.178
+	store %String* %s, %String** %vtpm.179
 	ret %String* @String.5
 
 abort:
@@ -898,19 +908,19 @@ abort:
 define %BookList* @BookList_new() {
 
 entry:
-	%vtpm.171 = alloca %BookList*
-	%vtpm.172 = getelementptr %_BookList_vtable, %_BookList_vtable* @_BookList_vtable_prototype, i32 0, i32 1
-	%vtpm.173 = load i32, i32* %vtpm.172
-	%vtpm.174 = call i8*(i32 ) @malloc( i32 %vtpm.173 )
-	%vtpm.175 = bitcast i8* %vtpm.174 to %BookList*
-	%malloc.null = icmp eq %BookList* %vtpm.175, null
+	%vtpm.181 = alloca %BookList*
+	%vtpm.182 = getelementptr %_BookList_vtable, %_BookList_vtable* @_BookList_vtable_prototype, i32 0, i32 1
+	%vtpm.183 = load i32, i32* %vtpm.182
+	%vtpm.184 = call i8*(i32 ) @malloc( i32 %vtpm.183 )
+	%vtpm.185 = bitcast i8* %vtpm.184 to %BookList*
+	%malloc.null = icmp eq %BookList* %vtpm.185, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%vtpm.176 = getelementptr %BookList, %BookList* %vtpm.175, i32 0, i32 0
-	store %_BookList_vtable* @_BookList_vtable_prototype, %_BookList_vtable** %vtpm.176
-	store %BookList* %vtpm.175, %BookList** %vtpm.171
-	ret %BookList* %vtpm.175
+	%vtpm.186 = getelementptr %BookList, %BookList* %vtpm.185, i32 0, i32 0
+	store %_BookList_vtable* @_BookList_vtable_prototype, %_BookList_vtable** %vtpm.186
+	store %BookList* %vtpm.185, %BookList** %vtpm.181
+	ret %BookList* %vtpm.185
 
 abort:
 	call void @abort(  )
@@ -920,12 +930,12 @@ abort:
 define %Book* @Cons_car(%Cons* %self) {
 
 entry:
-	%vtpm.178 = alloca %Cons*
-	store %Cons* %self, %Cons** %vtpm.178
-	%vtpm.179 = load %Cons*, %Cons** %vtpm.178
-	%vtpm.180 = getelementptr %Cons, %Cons* %vtpm.179, i32 0, i32 1
-	%vtpm.181 = load %Book*, %Book** %vtpm.180
-	ret %Book* %vtpm.181
+	%vtpm.188 = alloca %Cons*
+	store %Cons* %self, %Cons** %vtpm.188
+	%vtpm.189 = load %Cons*, %Cons** %vtpm.188
+	%vtpm.190 = getelementptr %Cons, %Cons* %vtpm.189, i32 0, i32 1
+	%vtpm.191 = load %Book*, %Book** %vtpm.190
+	ret %Book* %vtpm.191
 
 abort:
 	call void @abort(  )
@@ -935,12 +945,12 @@ abort:
 define %BookList* @Cons_cdr(%Cons* %self) {
 
 entry:
-	%vtpm.183 = alloca %Cons*
-	store %Cons* %self, %Cons** %vtpm.183
-	%vtpm.184 = load %Cons*, %Cons** %vtpm.183
-	%vtpm.185 = getelementptr %Cons, %Cons* %vtpm.184, i32 0, i32 2
-	%vtpm.186 = load %BookList*, %BookList** %vtpm.185
-	ret %BookList* %vtpm.186
+	%vtpm.193 = alloca %Cons*
+	store %Cons* %self, %Cons** %vtpm.193
+	%vtpm.194 = load %Cons*, %Cons** %vtpm.193
+	%vtpm.195 = getelementptr %Cons, %Cons* %vtpm.194, i32 0, i32 2
+	%vtpm.196 = load %BookList*, %BookList** %vtpm.195
+	ret %BookList* %vtpm.196
 
 abort:
 	call void @abort(  )
@@ -950,22 +960,22 @@ abort:
 define %Cons* @Cons_init(%Cons* %self, %Book* %hd, %BookList* %tl) {
 
 entry:
-	%vtpm.188 = alloca %Cons*
-	%vtpm.189 = alloca %Book*
-	%vtpm.190 = alloca %BookList*
-	store %Cons* %self, %Cons** %vtpm.188
-	store %Book* %hd, %Book** %vtpm.189
-	store %BookList* %tl, %BookList** %vtpm.190
-	%vtpm.191 = load %Book*, %Book** %vtpm.189
-	%vtpm.192 = load %Cons*, %Cons** %vtpm.188
-	%vtpm.193 = getelementptr %Cons, %Cons* %vtpm.192, i32 0, i32 1
-	store %Book* %vtpm.191, %Book** %vtpm.193
-	%vtpm.194 = load %BookList*, %BookList** %vtpm.190
-	%vtpm.195 = load %Cons*, %Cons** %vtpm.188
-	%vtpm.196 = getelementptr %Cons, %Cons* %vtpm.195, i32 0, i32 2
-	store %BookList* %vtpm.194, %BookList** %vtpm.196
-	%vtpm.197 = load %Cons*, %Cons** %vtpm.188
-	ret %Cons* %vtpm.197
+	%vtpm.198 = alloca %Cons*
+	%vtpm.199 = alloca %Book*
+	%vtpm.200 = alloca %BookList*
+	store %Cons* %self, %Cons** %vtpm.198
+	store %Book* %hd, %Book** %vtpm.199
+	store %BookList* %tl, %BookList** %vtpm.200
+	%vtpm.201 = load %Book*, %Book** %vtpm.199
+	%vtpm.202 = load %Cons*, %Cons** %vtpm.198
+	%vtpm.203 = getelementptr %Cons, %Cons* %vtpm.202, i32 0, i32 1
+	store %Book* %vtpm.201, %Book** %vtpm.203
+	%vtpm.204 = load %BookList*, %BookList** %vtpm.200
+	%vtpm.205 = load %Cons*, %Cons** %vtpm.198
+	%vtpm.206 = getelementptr %Cons, %Cons* %vtpm.205, i32 0, i32 2
+	store %BookList* %vtpm.204, %BookList** %vtpm.206
+	%vtpm.207 = load %Cons*, %Cons** %vtpm.198
+	ret %Cons* %vtpm.207
 
 abort:
 	call void @abort(  )
@@ -975,8 +985,8 @@ abort:
 define i1 @Cons_isNil(%Cons* %self) {
 
 entry:
-	%vtpm.199 = alloca %Cons*
-	store %Cons* %self, %Cons** %vtpm.199
+	%vtpm.209 = alloca %Cons*
+	store %Cons* %self, %Cons** %vtpm.209
 	ret i1 false
 
 abort:
@@ -988,100 +998,100 @@ define %String* @Cons_print_list(%Cons* %self, %String* %s) {
 
 entry:
 	%tmp.0 = alloca %String*
-	%vtpm.201 = alloca %Book*
-	%vtpm.202 = alloca %Article*
-	%vtpm.203 = alloca %Cons*
-	%vtpm.204 = alloca %String*
-	store %Cons* %self, %Cons** %vtpm.203
-	store %String* %s, %String** %vtpm.204
-	%vtpm.205 = load %String*, %String** %vtpm.204
-	%vtpm.206 = load %Cons*, %Cons** %vtpm.203
-	%vtpm.207 = getelementptr %Cons, %Cons* %vtpm.206, i32 0, i32 1
-	%vtpm.208 = load %Book*, %Book** %vtpm.207
-	%vtpm.209 = icmp eq %Book* %vtpm.208, null
-	br i1 %vtpm.209, label %abort, label %ok.0
+	%vtpm.211 = alloca %Book*
+	%vtpm.212 = alloca %Article*
+	%vtpm.213 = alloca %Cons*
+	%vtpm.214 = alloca %String*
+	store %Cons* %self, %Cons** %vtpm.213
+	store %String* %s, %String** %vtpm.214
+	%vtpm.215 = load %String*, %String** %vtpm.214
+	%vtpm.216 = load %Cons*, %Cons** %vtpm.213
+	%vtpm.217 = getelementptr %Cons, %Cons* %vtpm.216, i32 0, i32 1
+	%vtpm.218 = load %Book*, %Book** %vtpm.217
+	%vtpm.219 = icmp eq %Book* %vtpm.218, null
+	br i1 %vtpm.219, label %abort, label %ok.0
 
 ok.0:
-	%vtpm.210 = getelementptr %Book, %Book* %vtpm.208, i32 0, i32 0
-	%vtpm.211 = load %_Book_vtable*, %_Book_vtable** %vtpm.210
-	%vtpm.212 = getelementptr %_Book_vtable, %_Book_vtable* %vtpm.211, i32 0, i32 13
-	%tmp.1 = load %String* (%Book*,%String*) *, %String* (%Book*,%String*) ** %vtpm.212
-	%vtpm.213 = call %String*(%Book*, %String* ) %tmp.1( %Book* %vtpm.208, %String* %vtpm.205 )
-	store %String* %vtpm.213, %String** %vtpm.204
-	%vtpm.214 = load %Cons*, %Cons** %vtpm.203
-	%vtpm.215 = getelementptr %Cons, %Cons* %vtpm.214, i32 0, i32 1
-	%vtpm.216 = load %Book*, %Book** %vtpm.215
-	%vtpm.217 = icmp eq %Book* %vtpm.216, null
-	br i1 %vtpm.217, label %abort, label %ok.1
+	%vtpm.220 = getelementptr %Book, %Book* %vtpm.218, i32 0, i32 0
+	%vtpm.221 = load %_Book_vtable*, %_Book_vtable** %vtpm.220
+	%vtpm.222 = getelementptr %_Book_vtable, %_Book_vtable* %vtpm.221, i32 0, i32 13
+	%tmp.1 = load %String* (%Book*,%String*) *, %String* (%Book*,%String*) ** %vtpm.222
+	%vtpm.223 = call %String*(%Book*, %String* ) %tmp.1( %Book* %vtpm.218, %String* %vtpm.215 )
+	store %String* %vtpm.223, %String** %vtpm.214
+	%vtpm.224 = load %Cons*, %Cons** %vtpm.213
+	%vtpm.225 = getelementptr %Cons, %Cons* %vtpm.224, i32 0, i32 1
+	%vtpm.226 = load %Book*, %Book** %vtpm.225
+	%vtpm.227 = icmp eq %Book* %vtpm.226, null
+	br i1 %vtpm.227, label %abort, label %ok.1
 
 ok.1:
-	%vtpm.218 = getelementptr %Book, %Book* %vtpm.216, i32 0, i32 0
-	%vtpm.219 = load %_Book_vtable*, %_Book_vtable** %vtpm.218
-	%vtpm.220 = getelementptr %_Book_vtable, %_Book_vtable* %vtpm.219, i32 0, i32 12
-	%tmp.2 = load %Object* (%Book*) *, %Object* (%Book*) ** %vtpm.220
-	%vtpm.221 = call %Object*(%Book* ) %tmp.2( %Book* %vtpm.216 )
-	%tmp.3 = icmp eq %Object* %vtpm.221, null
+	%vtpm.228 = getelementptr %Book, %Book* %vtpm.226, i32 0, i32 0
+	%vtpm.229 = load %_Book_vtable*, %_Book_vtable** %vtpm.228
+	%vtpm.230 = getelementptr %_Book_vtable, %_Book_vtable* %vtpm.229, i32 0, i32 12
+	%tmp.2 = load %Object* (%Book*) *, %Object* (%Book*) ** %vtpm.230
+	%vtpm.231 = call %Object*(%Book* ) %tmp.2( %Book* %vtpm.226 )
+	%tmp.3 = icmp eq %Object* %vtpm.231, null
 	br i1 %tmp.3, label %abort, label %ok.2
 
 ok.2:
-	%vtpm.222 = getelementptr %Object, %Object* %vtpm.221, i32 0, i32 0
-	%vtpm.223 = load %_Object_vtable*, %_Object_vtable** %vtpm.222
-	%vtpm.224 = getelementptr %_Object_vtable, %_Object_vtable* %vtpm.223, i32 0, i32 0
-	%vtpm.225 = load i32, i32* %vtpm.224
+	%vtpm.232 = getelementptr %Object, %Object* %vtpm.231, i32 0, i32 0
+	%vtpm.233 = load %_Object_vtable*, %_Object_vtable** %vtpm.232
+	%vtpm.234 = getelementptr %_Object_vtable, %_Object_vtable* %vtpm.233, i32 0, i32 0
+	%vtpm.235 = load i32, i32* %vtpm.234
 	br label %case.hdr.0
 
 case.hdr.0:
 	br label %case.6.0
 
 case.6.0:
-	%vtpm.226 = icmp slt i32 %vtpm.225, 6
-	br i1 %vtpm.226, label %br_exit.6.0, label %src_gte_br.6.0
+	%vtpm.236 = icmp slt i32 %vtpm.235, 6
+	br i1 %vtpm.236, label %br_exit.6.0, label %src_gte_br.6.0
 
 src_gte_br.6.0:
-	%vtpm.227 = icmp sgt i32 %vtpm.225, 6
-	br i1 %vtpm.227, label %br_exit.6.0, label %src_lte_mc.6.0
+	%vtpm.237 = icmp sgt i32 %vtpm.235, 6
+	br i1 %vtpm.237, label %br_exit.6.0, label %src_lte_mc.6.0
 
 src_lte_mc.6.0:
-	%vtpm.228 = bitcast %Object* %vtpm.221 to %Article*
-	store %Article* %vtpm.228, %Article** %vtpm.202
-	%vtpm.229 = load %String*, %String** %vtpm.204
-	%vtpm.230 = icmp eq %String* %vtpm.229, null
-	br i1 %vtpm.230, label %abort, label %ok.3
+	%vtpm.238 = bitcast %Object* %vtpm.231 to %Article*
+	store %Article* %vtpm.238, %Article** %vtpm.212
+	%vtpm.239 = load %String*, %String** %vtpm.214
+	%vtpm.240 = icmp eq %String* %vtpm.239, null
+	br i1 %vtpm.240, label %abort, label %ok.3
 
 ok.3:
-	%vtpm.231 = getelementptr %String, %String* %vtpm.229, i32 0, i32 0
-	%vtpm.232 = load %_String_vtable*, %_String_vtable** %vtpm.231
-	%vtpm.233 = getelementptr %_String_vtable, %_String_vtable* %vtpm.232, i32 0, i32 8
-	%tmp.4 = load %String* (%String*,%String*) *, %String* (%String*,%String*) ** %vtpm.233
-	%vtpm.234 = call %String*(%String*, %String* ) %tmp.4( %String* %vtpm.229, %String* @String.7 )
-	store %String* %vtpm.234, %String** %tmp.0
+	%vtpm.241 = getelementptr %String, %String* %vtpm.239, i32 0, i32 0
+	%vtpm.242 = load %_String_vtable*, %_String_vtable** %vtpm.241
+	%vtpm.243 = getelementptr %_String_vtable, %_String_vtable* %vtpm.242, i32 0, i32 8
+	%tmp.4 = load %String* (%String*,%String*) *, %String* (%String*,%String*) ** %vtpm.243
+	%vtpm.244 = call %String*(%String*, %String* ) %tmp.4( %String* %vtpm.239, %String* @String.7 )
+	store %String* %vtpm.244, %String** %tmp.0
 	br label %case.exit.0
 
 br_exit.6.0:
 	br label %case.5.0
 
 case.5.0:
-	%vtpm.235 = icmp slt i32 %vtpm.225, 5
-	br i1 %vtpm.235, label %br_exit.5.0, label %src_gte_br.5.0
+	%vtpm.245 = icmp slt i32 %vtpm.235, 5
+	br i1 %vtpm.245, label %br_exit.5.0, label %src_gte_br.5.0
 
 src_gte_br.5.0:
-	%vtpm.236 = icmp sgt i32 %vtpm.225, 6
-	br i1 %vtpm.236, label %br_exit.5.0, label %src_lte_mc.5.0
+	%vtpm.246 = icmp sgt i32 %vtpm.235, 6
+	br i1 %vtpm.246, label %br_exit.5.0, label %src_lte_mc.5.0
 
 src_lte_mc.5.0:
-	%vtpm.237 = bitcast %Object* %vtpm.221 to %Book*
-	store %Book* %vtpm.237, %Book** %vtpm.201
-	%vtpm.238 = load %String*, %String** %vtpm.204
-	%vtpm.239 = icmp eq %String* %vtpm.238, null
-	br i1 %vtpm.239, label %abort, label %ok.4
+	%vtpm.247 = bitcast %Object* %vtpm.231 to %Book*
+	store %Book* %vtpm.247, %Book** %vtpm.211
+	%vtpm.248 = load %String*, %String** %vtpm.214
+	%vtpm.249 = icmp eq %String* %vtpm.248, null
+	br i1 %vtpm.249, label %abort, label %ok.4
 
 ok.4:
-	%vtpm.240 = getelementptr %String, %String* %vtpm.238, i32 0, i32 0
-	%vtpm.241 = load %_String_vtable*, %_String_vtable** %vtpm.240
-	%vtpm.242 = getelementptr %_String_vtable, %_String_vtable* %vtpm.241, i32 0, i32 8
-	%tmp.5 = load %String* (%String*,%String*) *, %String* (%String*,%String*) ** %vtpm.242
-	%vtpm.243 = call %String*(%String*, %String* ) %tmp.5( %String* %vtpm.238, %String* @String.6 )
-	store %String* %vtpm.243, %String** %tmp.0
+	%vtpm.250 = getelementptr %String, %String* %vtpm.248, i32 0, i32 0
+	%vtpm.251 = load %_String_vtable*, %_String_vtable** %vtpm.250
+	%vtpm.252 = getelementptr %_String_vtable, %_String_vtable* %vtpm.251, i32 0, i32 8
+	%tmp.5 = load %String* (%String*,%String*) *, %String* (%String*,%String*) ** %vtpm.252
+	%vtpm.253 = call %String*(%String*, %String* ) %tmp.5( %String* %vtpm.248, %String* @String.6 )
+	store %String* %vtpm.253, %String** %tmp.0
 	br label %case.exit.0
 
 br_exit.5.0:
@@ -1089,21 +1099,21 @@ br_exit.5.0:
 
 case.exit.0:
 	%tmp.6 = load %String*, %String** %tmp.0
-	store %String* %tmp.6, %String** %vtpm.204
-	%vtpm.244 = load %String*, %String** %vtpm.204
-	%vtpm.245 = load %Cons*, %Cons** %vtpm.203
-	%vtpm.246 = getelementptr %Cons, %Cons* %vtpm.245, i32 0, i32 2
-	%vtpm.247 = load %BookList*, %BookList** %vtpm.246
-	%vtpm.248 = icmp eq %BookList* %vtpm.247, null
-	br i1 %vtpm.248, label %abort, label %ok.5
+	store %String* %tmp.6, %String** %vtpm.214
+	%vtpm.254 = load %String*, %String** %vtpm.214
+	%vtpm.255 = load %Cons*, %Cons** %vtpm.213
+	%vtpm.256 = getelementptr %Cons, %Cons* %vtpm.255, i32 0, i32 2
+	%vtpm.257 = load %BookList*, %BookList** %vtpm.256
+	%vtpm.258 = icmp eq %BookList* %vtpm.257, null
+	br i1 %vtpm.258, label %abort, label %ok.5
 
 ok.5:
-	%vtpm.249 = getelementptr %BookList, %BookList* %vtpm.247, i32 0, i32 0
-	%vtpm.250 = load %_BookList_vtable*, %_BookList_vtable** %vtpm.249
-	%vtpm.251 = getelementptr %_BookList_vtable, %_BookList_vtable* %vtpm.250, i32 0, i32 15
-	%tmp.7 = load %String* (%BookList*,%String*) *, %String* (%BookList*,%String*) ** %vtpm.251
-	%vtpm.252 = call %String*(%BookList*, %String* ) %tmp.7( %BookList* %vtpm.247, %String* %vtpm.244 )
-	ret %String* %vtpm.252
+	%vtpm.259 = getelementptr %BookList, %BookList* %vtpm.257, i32 0, i32 0
+	%vtpm.260 = load %_BookList_vtable*, %_BookList_vtable** %vtpm.259
+	%vtpm.261 = getelementptr %_BookList_vtable, %_BookList_vtable* %vtpm.260, i32 0, i32 15
+	%tmp.7 = load %String* (%BookList*,%String*) *, %String* (%BookList*,%String*) ** %vtpm.261
+	%vtpm.262 = call %String*(%BookList*, %String* ) %tmp.7( %BookList* %vtpm.257, %String* %vtpm.254 )
+	ret %String* %vtpm.262
 
 abort:
 	call void @abort(  )
@@ -1113,27 +1123,31 @@ abort:
 define %Cons* @Cons_new() {
 
 entry:
-	%vtpm.254 = alloca %Cons*
-	%vtpm.255 = getelementptr %_Cons_vtable, %_Cons_vtable* @_Cons_vtable_prototype, i32 0, i32 1
-	%vtpm.256 = load i32, i32* %vtpm.255
-	%vtpm.257 = call i8*(i32 ) @malloc( i32 %vtpm.256 )
-	%vtpm.258 = bitcast i8* %vtpm.257 to %Cons*
-	%malloc.null = icmp eq %Cons* %vtpm.258, null
+	%vtpm.264 = alloca %Cons*
+	%vtpm.265 = getelementptr %_Cons_vtable, %_Cons_vtable* @_Cons_vtable_prototype, i32 0, i32 1
+	%vtpm.266 = load i32, i32* %vtpm.265
+	%vtpm.267 = call i8*(i32 ) @malloc( i32 %vtpm.266 )
+	%vtpm.268 = bitcast i8* %vtpm.267 to %Cons*
+	%malloc.null = icmp eq %Cons* %vtpm.268, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%vtpm.259 = getelementptr %Cons, %Cons* %vtpm.258, i32 0, i32 0
-	store %_Cons_vtable* @_Cons_vtable_prototype, %_Cons_vtable** %vtpm.259
-	store %Cons* %vtpm.258, %Cons** %vtpm.254
-	%vtpm.260 = getelementptr %Cons, %Cons* %vtpm.258, i32 0, i32 1
-	store %Book* null, %Book** %vtpm.260
-	%vtpm.261 = getelementptr %Cons, %Cons* %vtpm.258, i32 0, i32 2
-	store %BookList* null, %BookList** %vtpm.261
-	%vtpm.262 = getelementptr %Cons, %Cons* %vtpm.258, i32 0, i32 1
-	store %Book* null, %Book** %vtpm.262
-	%vtpm.263 = getelementptr %Cons, %Cons* %vtpm.258, i32 0, i32 2
-	store %BookList* null, %BookList** %vtpm.263
-	ret %Cons* %vtpm.258
+	%vtpm.269 = getelementptr %Cons, %Cons* %vtpm.268, i32 0, i32 0
+	store %_Cons_vtable* @_Cons_vtable_prototype, %_Cons_vtable** %vtpm.269
+	store %Cons* %vtpm.268, %Cons** %vtpm.264
+	%vtpm.270 = getelementptr %Cons, %Cons* %vtpm.268, i32 0, i32 1
+	store %Book* null, %Book** %vtpm.270
+	%vtpm.271 = getelementptr %Cons, %Cons* %vtpm.268, i32 0, i32 2
+	store %BookList* null, %BookList** %vtpm.271
+	%vtpm.272 = getelementptr %Cons, %Cons* %vtpm.268, i32 0, i32 1
+	%vtpm.273 = load %Cons*, %Cons** %vtpm.264
+	%vtpm.274 = getelementptr %Cons, %Cons* %vtpm.273, i32 0, i32 1
+	store %Book* null, %Book** %vtpm.274
+	%vtpm.275 = getelementptr %Cons, %Cons* %vtpm.268, i32 0, i32 2
+	%vtpm.276 = load %Cons*, %Cons** %vtpm.264
+	%vtpm.277 = getelementptr %Cons, %Cons* %vtpm.276, i32 0, i32 2
+	store %BookList* null, %BookList** %vtpm.277
+	ret %Cons* %vtpm.268
 
 abort:
 	call void @abort(  )
@@ -1143,8 +1157,8 @@ abort:
 define i1 @Nil_isNil(%Nil* %self) {
 
 entry:
-	%vtpm.265 = alloca %Nil*
-	store %Nil* %self, %Nil** %vtpm.265
+	%vtpm.279 = alloca %Nil*
+	store %Nil* %self, %Nil** %vtpm.279
 	ret i1 true
 
 abort:
@@ -1155,12 +1169,12 @@ abort:
 define %String* @Nil_print_list(%Nil* %self, %String* %s) {
 
 entry:
-	%vtpm.267 = alloca %Nil*
-	%vtpm.268 = alloca %String*
-	store %Nil* %self, %Nil** %vtpm.267
-	store %String* %s, %String** %vtpm.268
-	%vtpm.269 = load %String*, %String** %vtpm.268
-	ret %String* %vtpm.269
+	%vtpm.281 = alloca %Nil*
+	%vtpm.282 = alloca %String*
+	store %Nil* %self, %Nil** %vtpm.281
+	store %String* %s, %String** %vtpm.282
+	%vtpm.283 = load %String*, %String** %vtpm.282
+	ret %String* %vtpm.283
 
 abort:
 	call void @abort(  )
@@ -1170,19 +1184,19 @@ abort:
 define %Nil* @Nil_new() {
 
 entry:
-	%vtpm.271 = alloca %Nil*
-	%vtpm.272 = getelementptr %_Nil_vtable, %_Nil_vtable* @_Nil_vtable_prototype, i32 0, i32 1
-	%vtpm.273 = load i32, i32* %vtpm.272
-	%vtpm.274 = call i8*(i32 ) @malloc( i32 %vtpm.273 )
-	%vtpm.275 = bitcast i8* %vtpm.274 to %Nil*
-	%malloc.null = icmp eq %Nil* %vtpm.275, null
+	%vtpm.285 = alloca %Nil*
+	%vtpm.286 = getelementptr %_Nil_vtable, %_Nil_vtable* @_Nil_vtable_prototype, i32 0, i32 1
+	%vtpm.287 = load i32, i32* %vtpm.286
+	%vtpm.288 = call i8*(i32 ) @malloc( i32 %vtpm.287 )
+	%vtpm.289 = bitcast i8* %vtpm.288 to %Nil*
+	%malloc.null = icmp eq %Nil* %vtpm.289, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%vtpm.276 = getelementptr %Nil, %Nil* %vtpm.275, i32 0, i32 0
-	store %_Nil_vtable* @_Nil_vtable_prototype, %_Nil_vtable** %vtpm.276
-	store %Nil* %vtpm.275, %Nil** %vtpm.271
-	ret %Nil* %vtpm.275
+	%vtpm.290 = getelementptr %Nil, %Nil* %vtpm.289, i32 0, i32 0
+	store %_Nil_vtable* @_Nil_vtable_prototype, %_Nil_vtable** %vtpm.290
+	store %Nil* %vtpm.289, %Nil** %vtpm.285
+	ret %Nil* %vtpm.289
 
 abort:
 	call void @abort(  )
@@ -1192,71 +1206,71 @@ abort:
 define %String* @Main_main(%Main* %self) {
 
 entry:
-	%vtpm.278 = alloca %Book*
-	%vtpm.279 = alloca %Article*
-	%vtpm.280 = alloca %Main*
-	store %Main* %self, %Main** %vtpm.280
-	%vtpm.281 = call %Book* @Book_new(  )
-	%vtpm.282 = icmp eq %Book* %vtpm.281, null
-	br i1 %vtpm.282, label %abort, label %ok.0
+	%vtpm.292 = alloca %Book*
+	%vtpm.293 = alloca %Article*
+	%vtpm.294 = alloca %Main*
+	store %Main* %self, %Main** %vtpm.294
+	%vtpm.295 = call %Book* @Book_new(  )
+	%vtpm.296 = icmp eq %Book* %vtpm.295, null
+	br i1 %vtpm.296, label %abort, label %ok.0
 
 ok.0:
-	%vtpm.283 = getelementptr %Book, %Book* %vtpm.281, i32 0, i32 0
-	%vtpm.284 = load %_Book_vtable*, %_Book_vtable** %vtpm.283
-	%vtpm.285 = getelementptr %_Book_vtable, %_Book_vtable* %vtpm.284, i32 0, i32 11
-	%tmp.0 = load %Book* (%Book*,%String*,%String*) *, %Book* (%Book*,%String*,%String*) ** %vtpm.285
-	%vtpm.286 = call %Book*(%Book*, %String*, %String* ) %tmp.0( %Book* %vtpm.281, %String* @String.8, %String* @String.9 )
-	store %Book* %vtpm.286, %Book** %vtpm.278
-	%vtpm.287 = call %Article* @Article_new(  )
-	%vtpm.288 = icmp eq %Article* %vtpm.287, null
-	br i1 %vtpm.288, label %abort, label %ok.1
+	%vtpm.297 = getelementptr %Book, %Book* %vtpm.295, i32 0, i32 0
+	%vtpm.298 = load %_Book_vtable*, %_Book_vtable** %vtpm.297
+	%vtpm.299 = getelementptr %_Book_vtable, %_Book_vtable* %vtpm.298, i32 0, i32 11
+	%tmp.0 = load %Book* (%Book*,%String*,%String*) *, %Book* (%Book*,%String*,%String*) ** %vtpm.299
+	%vtpm.300 = call %Book*(%Book*, %String*, %String* ) %tmp.0( %Book* %vtpm.295, %String* @String.8, %String* @String.9 )
+	store %Book* %vtpm.300, %Book** %vtpm.292
+	%vtpm.301 = call %Article* @Article_new(  )
+	%vtpm.302 = icmp eq %Article* %vtpm.301, null
+	br i1 %vtpm.302, label %abort, label %ok.1
 
 ok.1:
-	%vtpm.289 = getelementptr %Article, %Article* %vtpm.287, i32 0, i32 0
-	%vtpm.290 = load %_Article_vtable*, %_Article_vtable** %vtpm.289
-	%vtpm.291 = getelementptr %_Article_vtable, %_Article_vtable* %vtpm.290, i32 0, i32 14
-	%tmp.1 = load %Article* (%Article*,%String*,%String*,%String*) *, %Article* (%Article*,%String*,%String*,%String*) ** %vtpm.291
-	%vtpm.292 = call %Article*(%Article*, %String*, %String*, %String* ) %tmp.1( %Article* %vtpm.287, %String* @String.10, %String* @String.11, %String* @String.12 )
-	store %Article* %vtpm.292, %Article** %vtpm.279
-	%vtpm.293 = load %Article*, %Article** %vtpm.279
-	%vtpm.294 = load %Book*, %Book** %vtpm.278
-	%vtpm.295 = call %Nil* @Nil_new(  )
-	%vtpm.296 = icmp eq %Nil* %vtpm.295, null
-	br i1 %vtpm.296, label %abort, label %ok.2
+	%vtpm.303 = getelementptr %Article, %Article* %vtpm.301, i32 0, i32 0
+	%vtpm.304 = load %_Article_vtable*, %_Article_vtable** %vtpm.303
+	%vtpm.305 = getelementptr %_Article_vtable, %_Article_vtable* %vtpm.304, i32 0, i32 14
+	%tmp.1 = load %Article* (%Article*,%String*,%String*,%String*) *, %Article* (%Article*,%String*,%String*,%String*) ** %vtpm.305
+	%vtpm.306 = call %Article*(%Article*, %String*, %String*, %String* ) %tmp.1( %Article* %vtpm.301, %String* @String.10, %String* @String.11, %String* @String.12 )
+	store %Article* %vtpm.306, %Article** %vtpm.293
+	%vtpm.307 = load %Article*, %Article** %vtpm.293
+	%vtpm.308 = load %Book*, %Book** %vtpm.292
+	%vtpm.309 = call %Nil* @Nil_new(  )
+	%vtpm.310 = icmp eq %Nil* %vtpm.309, null
+	br i1 %vtpm.310, label %abort, label %ok.2
 
 ok.2:
-	%vtpm.297 = getelementptr %Nil, %Nil* %vtpm.295, i32 0, i32 0
-	%vtpm.298 = load %_Nil_vtable*, %_Nil_vtable** %vtpm.297
-	%vtpm.299 = getelementptr %_Nil_vtable, %_Nil_vtable* %vtpm.298, i32 0, i32 12
-	%tmp.2 = load %Cons* (%Nil*,%Book*) *, %Cons* (%Nil*,%Book*) ** %vtpm.299
-	%vtpm.300 = call %Cons*(%Nil*, %Book* ) %tmp.2( %Nil* %vtpm.295, %Book* %vtpm.294 )
-	%vtpm.301 = icmp eq %Cons* %vtpm.300, null
-	br i1 %vtpm.301, label %abort, label %ok.3
+	%vtpm.311 = getelementptr %Nil, %Nil* %vtpm.309, i32 0, i32 0
+	%vtpm.312 = load %_Nil_vtable*, %_Nil_vtable** %vtpm.311
+	%vtpm.313 = getelementptr %_Nil_vtable, %_Nil_vtable* %vtpm.312, i32 0, i32 12
+	%tmp.2 = load %Cons* (%Nil*,%Book*) *, %Cons* (%Nil*,%Book*) ** %vtpm.313
+	%vtpm.314 = call %Cons*(%Nil*, %Book* ) %tmp.2( %Nil* %vtpm.309, %Book* %vtpm.308 )
+	%vtpm.315 = icmp eq %Cons* %vtpm.314, null
+	br i1 %vtpm.315, label %abort, label %ok.3
 
 ok.3:
-	%vtpm.302 = getelementptr %Cons, %Cons* %vtpm.300, i32 0, i32 0
-	%vtpm.303 = load %_Cons_vtable*, %_Cons_vtable** %vtpm.302
-	%vtpm.304 = getelementptr %_Cons_vtable, %_Cons_vtable* %vtpm.303, i32 0, i32 12
-	%tmp.3 = load %Cons* (%Cons*,%Book*) *, %Cons* (%Cons*,%Book*) ** %vtpm.304
-	%vtpm.305 = bitcast %Article* %vtpm.293 to %Book*
-	%vtpm.306 = call %Cons*(%Cons*, %Book* ) %tmp.3( %Cons* %vtpm.300, %Book* %vtpm.305 )
-	%vtpm.307 = load %Main*, %Main** %vtpm.280
-	%vtpm.308 = getelementptr %Main, %Main* %vtpm.307, i32 0, i32 1
-	%vtpm.309 = bitcast %Cons* %vtpm.306 to %BookList*
-	store %BookList* %vtpm.309, %BookList** %vtpm.308
-	%vtpm.310 = load %Main*, %Main** %vtpm.280
-	%vtpm.311 = getelementptr %Main, %Main* %vtpm.310, i32 0, i32 1
-	%vtpm.312 = load %BookList*, %BookList** %vtpm.311
-	%vtpm.313 = icmp eq %BookList* %vtpm.312, null
-	br i1 %vtpm.313, label %abort, label %ok.4
+	%vtpm.316 = getelementptr %Cons, %Cons* %vtpm.314, i32 0, i32 0
+	%vtpm.317 = load %_Cons_vtable*, %_Cons_vtable** %vtpm.316
+	%vtpm.318 = getelementptr %_Cons_vtable, %_Cons_vtable* %vtpm.317, i32 0, i32 12
+	%tmp.3 = load %Cons* (%Cons*,%Book*) *, %Cons* (%Cons*,%Book*) ** %vtpm.318
+	%vtpm.319 = bitcast %Article* %vtpm.307 to %Book*
+	%vtpm.320 = call %Cons*(%Cons*, %Book* ) %tmp.3( %Cons* %vtpm.314, %Book* %vtpm.319 )
+	%vtpm.321 = load %Main*, %Main** %vtpm.294
+	%vtpm.322 = getelementptr %Main, %Main* %vtpm.321, i32 0, i32 1
+	%vtpm.323 = bitcast %Cons* %vtpm.320 to %BookList*
+	store %BookList* %vtpm.323, %BookList** %vtpm.322
+	%vtpm.324 = load %Main*, %Main** %vtpm.294
+	%vtpm.325 = getelementptr %Main, %Main* %vtpm.324, i32 0, i32 1
+	%vtpm.326 = load %BookList*, %BookList** %vtpm.325
+	%vtpm.327 = icmp eq %BookList* %vtpm.326, null
+	br i1 %vtpm.327, label %abort, label %ok.4
 
 ok.4:
-	%vtpm.314 = getelementptr %BookList, %BookList* %vtpm.312, i32 0, i32 0
-	%vtpm.315 = load %_BookList_vtable*, %_BookList_vtable** %vtpm.314
-	%vtpm.316 = getelementptr %_BookList_vtable, %_BookList_vtable* %vtpm.315, i32 0, i32 15
-	%tmp.4 = load %String* (%BookList*,%String*) *, %String* (%BookList*,%String*) ** %vtpm.316
-	%vtpm.317 = call %String*(%BookList*, %String* ) %tmp.4( %BookList* %vtpm.312, %String* @String.5 )
-	ret %String* %vtpm.317
+	%vtpm.328 = getelementptr %BookList, %BookList* %vtpm.326, i32 0, i32 0
+	%vtpm.329 = load %_BookList_vtable*, %_BookList_vtable** %vtpm.328
+	%vtpm.330 = getelementptr %_BookList_vtable, %_BookList_vtable* %vtpm.329, i32 0, i32 15
+	%tmp.4 = load %String* (%BookList*,%String*) *, %String* (%BookList*,%String*) ** %vtpm.330
+	%vtpm.331 = call %String*(%BookList*, %String* ) %tmp.4( %BookList* %vtpm.326, %String* @String.5 )
+	ret %String* %vtpm.331
 
 abort:
 	call void @abort(  )
@@ -1266,23 +1280,25 @@ abort:
 define %Main* @Main_new() {
 
 entry:
-	%vtpm.319 = alloca %Main*
-	%vtpm.320 = getelementptr %_Main_vtable, %_Main_vtable* @_Main_vtable_prototype, i32 0, i32 1
-	%vtpm.321 = load i32, i32* %vtpm.320
-	%vtpm.322 = call i8*(i32 ) @malloc( i32 %vtpm.321 )
-	%vtpm.323 = bitcast i8* %vtpm.322 to %Main*
-	%malloc.null = icmp eq %Main* %vtpm.323, null
+	%vtpm.333 = alloca %Main*
+	%vtpm.334 = getelementptr %_Main_vtable, %_Main_vtable* @_Main_vtable_prototype, i32 0, i32 1
+	%vtpm.335 = load i32, i32* %vtpm.334
+	%vtpm.336 = call i8*(i32 ) @malloc( i32 %vtpm.335 )
+	%vtpm.337 = bitcast i8* %vtpm.336 to %Main*
+	%malloc.null = icmp eq %Main* %vtpm.337, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%vtpm.324 = getelementptr %Main, %Main* %vtpm.323, i32 0, i32 0
-	store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.324
-	store %Main* %vtpm.323, %Main** %vtpm.319
-	%vtpm.325 = getelementptr %Main, %Main* %vtpm.323, i32 0, i32 1
-	store %BookList* null, %BookList** %vtpm.325
-	%vtpm.326 = getelementptr %Main, %Main* %vtpm.323, i32 0, i32 1
-	store %BookList* null, %BookList** %vtpm.326
-	ret %Main* %vtpm.323
+	%vtpm.338 = getelementptr %Main, %Main* %vtpm.337, i32 0, i32 0
+	store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.338
+	store %Main* %vtpm.337, %Main** %vtpm.333
+	%vtpm.339 = getelementptr %Main, %Main* %vtpm.337, i32 0, i32 1
+	store %BookList* null, %BookList** %vtpm.339
+	%vtpm.340 = getelementptr %Main, %Main* %vtpm.337, i32 0, i32 1
+	%vtpm.341 = load %Main*, %Main** %vtpm.333
+	%vtpm.342 = getelementptr %Main, %Main* %vtpm.341, i32 0, i32 1
+	store %BookList* null, %BookList** %vtpm.342
+	ret %Main* %vtpm.337
 
 abort:
 	call void @abort(  )

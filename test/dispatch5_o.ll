@@ -274,7 +274,7 @@ declare i32 @IO_in_int(%IO*)
 	%Object* (%C*) * bitcast (%Object* (%Object*) * @Object_abort to %Object* (%C*) *),
 	%String* (%C*) * bitcast (%String* (%Object*) * @Object_type_name to %String* (%C*) *),
 	%C* (%C*) * bitcast (%Object* (%Object*) * @Object_copy to %C* (%C*) *),
-	i32 (%C*) * bitcast (i32 (%A*) * @A_f to i32 (%C*) *)
+	i32 (%C*) * @C_f
 }
 
 @global_str.1 = internal constant [14 x i8] c"<basic class>\00"
@@ -574,21 +574,31 @@ okay:
 	store %C* null, %C** %vtpm.157
 	%vtpm.158 = getelementptr %Main, %Main* %vtpm.151, i32 0, i32 1
 	%vtpm.159 = call %A* @A_new(  )
-	store %A* %vtpm.159, %A** %vtpm.158
-	%vtpm.160 = getelementptr %Main, %Main* %vtpm.151, i32 0, i32 2
-	%vtpm.161 = call %B* @B_new(  )
-	%vtpm.162 = bitcast %B* %vtpm.161 to %A*
-	store %A* %vtpm.162, %A** %vtpm.160
-	%vtpm.163 = getelementptr %Main, %Main* %vtpm.151, i32 0, i32 3
-	%vtpm.164 = call %C* @C_new(  )
-	%vtpm.165 = bitcast %C* %vtpm.164 to %A*
-	store %A* %vtpm.165, %A** %vtpm.163
-	%vtpm.166 = getelementptr %Main, %Main* %vtpm.151, i32 0, i32 4
-	%vtpm.167 = call %B* @B_new(  )
-	store %B* %vtpm.167, %B** %vtpm.166
-	%vtpm.168 = getelementptr %Main, %Main* %vtpm.151, i32 0, i32 5
-	%vtpm.169 = call %C* @C_new(  )
-	store %C* %vtpm.169, %C** %vtpm.168
+	%vtpm.160 = load %Main*, %Main** %vtpm.147
+	%vtpm.161 = getelementptr %Main, %Main* %vtpm.160, i32 0, i32 1
+	store %A* %vtpm.159, %A** %vtpm.161
+	%vtpm.162 = getelementptr %Main, %Main* %vtpm.151, i32 0, i32 2
+	%vtpm.163 = call %B* @B_new(  )
+	%vtpm.164 = load %Main*, %Main** %vtpm.147
+	%vtpm.165 = getelementptr %Main, %Main* %vtpm.164, i32 0, i32 2
+	%vtpm.166 = bitcast %B* %vtpm.163 to %A*
+	store %A* %vtpm.166, %A** %vtpm.165
+	%vtpm.167 = getelementptr %Main, %Main* %vtpm.151, i32 0, i32 3
+	%vtpm.168 = call %C* @C_new(  )
+	%vtpm.169 = load %Main*, %Main** %vtpm.147
+	%vtpm.170 = getelementptr %Main, %Main* %vtpm.169, i32 0, i32 3
+	%vtpm.171 = bitcast %C* %vtpm.168 to %A*
+	store %A* %vtpm.171, %A** %vtpm.170
+	%vtpm.172 = getelementptr %Main, %Main* %vtpm.151, i32 0, i32 4
+	%vtpm.173 = call %B* @B_new(  )
+	%vtpm.174 = load %Main*, %Main** %vtpm.147
+	%vtpm.175 = getelementptr %Main, %Main* %vtpm.174, i32 0, i32 4
+	store %B* %vtpm.173, %B** %vtpm.175
+	%vtpm.176 = getelementptr %Main, %Main* %vtpm.151, i32 0, i32 5
+	%vtpm.177 = call %C* @C_new(  )
+	%vtpm.178 = load %Main*, %Main** %vtpm.147
+	%vtpm.179 = getelementptr %Main, %Main* %vtpm.178, i32 0, i32 5
+	store %C* %vtpm.177, %C** %vtpm.179
 	ret %Main* %vtpm.151
 
 abort:
@@ -599,8 +609,8 @@ abort:
 define i32 @A_f(%A* %self) {
 
 entry:
-	%vtpm.171 = alloca %A*
-	store %A* %self, %A** %vtpm.171
+	%vtpm.181 = alloca %A*
+	store %A* %self, %A** %vtpm.181
 	ret i32 5
 
 abort:
@@ -611,19 +621,19 @@ abort:
 define %A* @A_new() {
 
 entry:
-	%vtpm.173 = alloca %A*
-	%vtpm.174 = getelementptr %_A_vtable, %_A_vtable* @_A_vtable_prototype, i32 0, i32 1
-	%vtpm.175 = load i32, i32* %vtpm.174
-	%vtpm.176 = call i8*(i32 ) @malloc( i32 %vtpm.175 )
-	%vtpm.177 = bitcast i8* %vtpm.176 to %A*
-	%malloc.null = icmp eq %A* %vtpm.177, null
+	%vtpm.183 = alloca %A*
+	%vtpm.184 = getelementptr %_A_vtable, %_A_vtable* @_A_vtable_prototype, i32 0, i32 1
+	%vtpm.185 = load i32, i32* %vtpm.184
+	%vtpm.186 = call i8*(i32 ) @malloc( i32 %vtpm.185 )
+	%vtpm.187 = bitcast i8* %vtpm.186 to %A*
+	%malloc.null = icmp eq %A* %vtpm.187, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%vtpm.178 = getelementptr %A, %A* %vtpm.177, i32 0, i32 0
-	store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.178
-	store %A* %vtpm.177, %A** %vtpm.173
-	ret %A* %vtpm.177
+	%vtpm.188 = getelementptr %A, %A* %vtpm.187, i32 0, i32 0
+	store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.188
+	store %A* %vtpm.187, %A** %vtpm.183
+	ret %A* %vtpm.187
 
 abort:
 	call void @abort(  )
@@ -633,19 +643,19 @@ abort:
 define %B* @B_new() {
 
 entry:
-	%vtpm.180 = alloca %B*
-	%vtpm.181 = getelementptr %_B_vtable, %_B_vtable* @_B_vtable_prototype, i32 0, i32 1
-	%vtpm.182 = load i32, i32* %vtpm.181
-	%vtpm.183 = call i8*(i32 ) @malloc( i32 %vtpm.182 )
-	%vtpm.184 = bitcast i8* %vtpm.183 to %B*
-	%malloc.null = icmp eq %B* %vtpm.184, null
+	%vtpm.190 = alloca %B*
+	%vtpm.191 = getelementptr %_B_vtable, %_B_vtable* @_B_vtable_prototype, i32 0, i32 1
+	%vtpm.192 = load i32, i32* %vtpm.191
+	%vtpm.193 = call i8*(i32 ) @malloc( i32 %vtpm.192 )
+	%vtpm.194 = bitcast i8* %vtpm.193 to %B*
+	%malloc.null = icmp eq %B* %vtpm.194, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%vtpm.185 = getelementptr %B, %B* %vtpm.184, i32 0, i32 0
-	store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %vtpm.185
-	store %B* %vtpm.184, %B** %vtpm.180
-	ret %B* %vtpm.184
+	%vtpm.195 = getelementptr %B, %B* %vtpm.194, i32 0, i32 0
+	store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %vtpm.195
+	store %B* %vtpm.194, %B** %vtpm.190
+	ret %B* %vtpm.194
 
 abort:
 	call void @abort(  )
@@ -655,8 +665,8 @@ abort:
 define i32 @C_f(%C* %self) {
 
 entry:
-	%vtpm.187 = alloca %C*
-	store %C* %self, %C** %vtpm.187
+	%vtpm.197 = alloca %C*
+	store %C* %self, %C** %vtpm.197
 	ret i32 6
 
 abort:
@@ -667,19 +677,19 @@ abort:
 define %C* @C_new() {
 
 entry:
-	%vtpm.189 = alloca %C*
-	%vtpm.190 = getelementptr %_C_vtable, %_C_vtable* @_C_vtable_prototype, i32 0, i32 1
-	%vtpm.191 = load i32, i32* %vtpm.190
-	%vtpm.192 = call i8*(i32 ) @malloc( i32 %vtpm.191 )
-	%vtpm.193 = bitcast i8* %vtpm.192 to %C*
-	%malloc.null = icmp eq %C* %vtpm.193, null
+	%vtpm.199 = alloca %C*
+	%vtpm.200 = getelementptr %_C_vtable, %_C_vtable* @_C_vtable_prototype, i32 0, i32 1
+	%vtpm.201 = load i32, i32* %vtpm.200
+	%vtpm.202 = call i8*(i32 ) @malloc( i32 %vtpm.201 )
+	%vtpm.203 = bitcast i8* %vtpm.202 to %C*
+	%malloc.null = icmp eq %C* %vtpm.203, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%vtpm.194 = getelementptr %C, %C* %vtpm.193, i32 0, i32 0
-	store %_C_vtable* @_C_vtable_prototype, %_C_vtable** %vtpm.194
-	store %C* %vtpm.193, %C** %vtpm.189
-	ret %C* %vtpm.193
+	%vtpm.204 = getelementptr %C, %C* %vtpm.203, i32 0, i32 0
+	store %_C_vtable* @_C_vtable_prototype, %_C_vtable** %vtpm.204
+	store %C* %vtpm.203, %C** %vtpm.199
+	ret %C* %vtpm.203
 
 abort:
 	call void @abort(  )

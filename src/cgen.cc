@@ -615,6 +615,7 @@ void CgenNode::setup(int tag, int depth) {
   vtable_index++;
 
   // Inherit Parent's methods
+  std::unordered_set<std::string> overriding_method;
   std::vector<std::string> inherited_method_in_order;
   std::unordered_set<std::string> inherited_methods_set;
   for (std::string& method_name : parentnd->method_names_in_order) {
@@ -643,6 +644,7 @@ void CgenNode::setup(int tag, int depth) {
       // Overriding method should have its own name and type
       global_method_name_map[method_name] = local_method_to_global_func(method_name);
       method_types_earliest[method_name] = method_type;
+      overriding_method.insert(method_name);
     } else {
       // Inheritanced methods should have the same global name as its parent's
       global_method_name_map[method_name] = parentnd->global_method_name_map[method_name];
@@ -650,8 +652,16 @@ void CgenNode::setup(int tag, int depth) {
     inherited_method_in_order.push_back(method_name);
     inherited_methods_set.insert(method_name);
     // method_names_in_order.insert(method_names_in_order.begin(), method_name);
-    
   }
+
+  // Record overriding method
+  for (std::string method_name : method_names_in_order) {
+    if (std::find(parentnd->method_names_in_order.begin(), parentnd->method_names_in_order.end(), method_name) != parentnd->method_names_in_order.end()) {
+      overriding_method.insert(method_name);
+    }
+
+  }
+
   // Add inherited_method_in_order into current method's method list
   for (int i=inherited_method_in_order.size()-1; i>=0; i--) {
     method_names_in_order.insert(method_names_in_order.begin(), inherited_method_in_order[i]);
@@ -701,7 +711,8 @@ void CgenNode::setup(int tag, int depth) {
   // for (auto& [method_name, ty] : method_types_in_COOL) {
     std::string method_name_in_llvm = global_method_name_map[method_name];
     // If this method is a override method, use bitcast
-    if (parentnd->method_types_in_COOL.find(method_name) != parentnd->method_types_in_COOL.end()) {
+    if (parentnd->method_types_in_COOL.find(method_name) != parentnd->method_types_in_COOL.end()
+    && overriding_method.find(method_name) == overriding_method.end()) {
       op_func_type parent_method_type = parentnd->method_types_earliest[method_name];
       operand op1(parent_method_type, parentnd->global_method_name_map[method_name]);
       op_type curr_method_type = method_types_in_LLVM[method_name]; 
@@ -791,7 +802,12 @@ void CgenNode::code_init_function(CgenEnvironment *env) {
   //* Begin block entry:
   vp.begin_block("entry");
   operand instance_pptr = vp.alloca_mem(op_type(get_type_name(), 1));
-  
+  // Make allocation for every attributes
+  for (std::size_t i=0; i<attr_names_in_order.size(); i++) {
+    std::string& attr_name = attr_names_in_order[i];
+    attrs_as_features[attr_name]->make_alloca(env);
+  }
+
 
   operand instance_sizeof_ptr = vp.getelementptr(
     op_type(get_vtable_type_name()),
@@ -820,6 +836,9 @@ void CgenNode::code_init_function(CgenEnvironment *env) {
   vp.store(casted_instance_ptr, instance_pptr);
   // First pass, set default values for each attributes
   env->open_scope();
+  // Also need to add self into the symbol table, because the attribute inititialization in the second pass might need it
+  env->add_binding(self, &instance_pptr);
+
 
   for (std::size_t i=0; i<attr_names_in_order.size(); i++) {
     int index_in_obj_record = i + 1;
@@ -846,7 +865,8 @@ void CgenNode::code_init_function(CgenEnvironment *env) {
     // Entry e(attr_name, 0);
     // Symbol symbol = &e;
     Symbol symbol = attrs_as_features[attr_name]->get_name();
-    env->add_binding(symbol, &attr_ptr);
+// ! Not sure if I should remove the binding here
+    // env->add_binding(symbol, &attr_ptr);
   }
   
   // Second pass, set expr on the RHS of the attribute to the correct attribute vreg
@@ -861,6 +881,9 @@ void CgenNode::code_init_function(CgenEnvironment *env) {
       int_value(index_in_obj_record),
       attr_type.get_ptr_type()
     );
+    if (cgen_debug) {
+      std::cerr << ">>> attr_name to be coded is " << attr_name << std::endl;
+    }
     attrs_as_features[attr_name]->code(env);
   }
 
@@ -1306,7 +1329,37 @@ operand object_class::code(CgenEnvironment *env) {
     std::cerr << "Object" << std::endl;
 
   // /TODO: add code here and replace `return operand()`
-  return get_vreg_of_variable(env, name).var;
+  // return get_vreg_of_variable(env, name).var;
+  ValuePrinter vp(*env->cur_stream);
+    // Attempt to find the variable in the symbol table
+  operand* var = env->find_in_scopes(name);
+  if (cgen_debug) {
+    using namespace std;
+    // cout << ">>>The object to be found is " << name->get_string() << ", and it " << ((var==nullptr)? "is not" : "is" )<< " in the symbol table" << endl;
+  }
+  // If not found / result is nullptr, find it in attributes. 
+  //Since we have semantic analysis phase previously, it is garuanteed to contain it in one of the two plcaes
+  if (var != nullptr) {
+    // Found it in symbol table
+    operand ret = *var;
+    // std::cout << ">>> The object has type " << ret.get_typename() << ", it's position is " << ret.get_name() << std::endl;
+    return vp.load(ret.get_type().get_deref_type(), ret);
+  } else {
+    operand self_pptr = *env->find_in_scopes(self);
+    CgenNode* cur_class = env->get_class();
+    operand self_ptr = vp.load(op_type(env->get_class()->get_type_name(), 1), self_pptr);
+    op_type attr_type = cur_class->attr_list[name->get_string()];
+    int attr_index_in_record = cur_class->obj_record_index_of_attributes[name->get_string()];
+    operand attr_ptr = vp.getelementptr(
+      op_type(env->get_class()->get_type_name()),
+      self_ptr,
+      int_value(0),
+      int_value(attr_index_in_record),
+      attr_type.get_ptr_type() 
+    );
+    operand attr = vp.load(attr_type, attr_ptr);
+    return attr;
+  }
 }
 
 operand no_expr_class::code(CgenEnvironment *env) {
@@ -1331,12 +1384,6 @@ operand static_dispatch_class::code(CgenEnvironment *env) {
 #else
   // TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
-  /*  
-  Expression expr;
-  Symbol type_name;
-  Symbol name;
-  Expressions actual;
-  */
 
   // 1. Prepare parameters
   std::vector<operand> param_list;
@@ -1410,20 +1457,16 @@ operand string_const_class::code(CgenEnvironment *env) {
 
 operand dispatch_class::code(CgenEnvironment *env) {
   if (cgen_debug)
-    std::cerr << "dispatch" << std::endl;
+    std::cerr << "Dynamic dispatch" << std::endl;
 #ifndef MP3
   assert(0 && "Unsupported case for phase 1");
 #else
   // TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
-  /*  
-  Expression expr;
-  Symbol name;
-  Expressions actual;
-  */
 
   // 1. Prepare parameters
   std::vector<operand> param_list;
+
   int first = actual->first();
   // int second = actual->next(first);
   for (int i=first; actual->more(i); i=actual->next(i)) {
@@ -1466,7 +1509,8 @@ operand dispatch_class::code(CgenEnvironment *env) {
   // }  
   // GEP to get vtable ptr from the object record
   operand vtable_ptr_ptr = vp.getelementptr(
-    expr_code.get_type().get_deref_type(),
+    op_type(expr_code.get_typename().substr(1, expr_code.get_typename().size()-2)),
+    // expr_code.get_type().get_deref_type(),
     expr_code,
     int_value(0),
     int_value(0),
@@ -1496,6 +1540,15 @@ operand dispatch_class::code(CgenEnvironment *env) {
   }
   // 4. call
   operand ret = vp.call(method_type.args, method_type.res, method.get_name().substr(1), false, param_list);
+  // Special treatment if the return type of the method to be called is SELF_TYPE
+  std::string method_ret_type_from_COOL = designated_class->method_types_in_COOL[method_name].res.get_name();
+  if (method_ret_type_from_COOL.find("SELF_TYPE") != std::string::npos) {
+    // Original return type is SELF_TYPE, so the call would return a "designated_class*", but we want a "expr_code*"
+    // So need one more conform
+    op_type target_type = expr_code.get_type();
+    operand conformed_ret = conform(ret, target_type, env);
+    return conformed_ret;
+  }
   return ret; 
 #endif
 }
@@ -1515,6 +1568,8 @@ operand typcase_class::code(CgenEnvironment *env) {
   std::string exit_label = env->new_label("case.exit.", false);
 
   // Generate code for expression to select on, and get its static type
+  if (cgen_debug)
+    std::cerr << ">>> Generating expr to select on " << std::endl;
   operand code_val = expr->code(env);
   operand expr_val = code_val;
   std::string code_val_t = code_val.get_typename();
@@ -1646,8 +1701,8 @@ void method_class::layout_feature(CgenNode *cls) {
     formal_COOL_type_list.push_back(convert_to_COOL_type(formal_type_str_repr));
   }
 
-  // !Record it in CgenNode's data structure, USING FUNCTION_NAME AS KEY
-  // ! Also record the order of relative position of the method because order matters in vtable generation
+  // Record it in CgenNode's data structure, USING FUNCTION_NAME AS KEY
+  // Also record the order of relative position of the method because order matters in vtable generation
   cls->method_types_in_COOL[function_name] = op_func_type(ret_type_COOL, formal_COOL_type_list);
   cls->method_names_in_order.push_back(function_name);
   // Print the declaration of the method as global function
@@ -1776,11 +1831,28 @@ void attr_class::code(CgenEnvironment *env) {
   // TODO: add code here
   ValuePrinter vp(*env->cur_stream);
   operand init_coded = init->code(env);
-  operand* attr_pos = env->find_in_scopes(name);
-  // if (cgen_debug) {
-  //   using namespace std;
-  //   cerr << ">>> Getting deref type of attribute vreg type" << endl;
-  // }
+
+  // load self, find the offset of attribute and then load the position
+  CgenNode* cur_class = env->get_class();
+  operand* self_ptr = env->find_in_scopes(self);
+  operand self_obj = vp.load(op_type(cur_class->get_type_name(), 1), *self_ptr);
+  int attribute_index = cur_class->obj_record_index_of_attributes[name->get_string()];
+  op_type attr_type = cur_class->attr_list[name->get_string()];
+  operand attr_ptr = vp.getelementptr(
+    op_type(cur_class->get_type_name()),
+    self_obj,
+    int_value(0),
+    int_value(attribute_index),
+    attr_type.get_ptr_type()
+  );
+  // operand attr = vp.load(attr_type, attr_ptr);
+
+  // operand* attr_pos = env->find_in_scopes(name);
+  operand* attr_pos = &attr_ptr;
+  if (cgen_debug) {
+    using namespace std;
+    // cout << ">>> Getting " << name->get_string() << "'s position: " << attr_pos->get_name() << endl;
+  }
   op_type target_type = attr_pos->get_type().get_deref_type();
   if (init_coded.get_type().get_id() != EMPTY) {
     operand conformed_init = conform(init_coded, target_type, env);

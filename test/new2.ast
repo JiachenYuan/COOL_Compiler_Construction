@@ -1,0 +1,48 @@
+#11
+_program
+  #11
+  _class
+    Main
+    Object
+    "new2.cl"
+    (
+    #5
+    _attr
+      x
+      Int
+      #5
+      _new
+        Int
+      : Int
+    #6
+    _attr
+      y
+      String
+      #6
+      _new
+        String
+      : String
+    #7
+    _attr
+      z
+      Bool
+      #7
+      _new
+        Bool
+      : Bool
+    #8
+    _attr
+      void
+      Main
+      #8
+      _no_expr
+      : _no_type
+    #10
+    _method
+      main
+      Bool
+      #10
+      _object
+        z
+      : Bool
+    )

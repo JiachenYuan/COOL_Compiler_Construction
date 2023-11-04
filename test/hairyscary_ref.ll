@@ -468,6 +468,8 @@ okay:
 	%tmp.33 = getelementptr %Bazz, %Bazz* %tmp.28, i32 0, i32 1
 	store i32 1, i32* %tmp.33
 	%tmp.34 = getelementptr %Bazz, %Bazz* %tmp.28, i32 0, i32 2
+
+	// Code case
 	%tmp.35 = load %Bazz*, %Bazz** %tmp.23
 	%tmp.36 = icmp eq %Bazz* %tmp.35, null
 	br i1 %tmp.36, label %abort, label %ok.1
@@ -827,9 +829,10 @@ case.exit.1:
 	%tmp.73 = bitcast %Bar* %tmp.72 to %Razz*
 	store %Razz* %tmp.73, %Razz** %tmp.55
 	%tmp.74 = getelementptr %Foo, %Foo* %tmp.18, i32 0, i32 5
-	%tmp.75 = load %Foo*, %Foo** %tmp.12
-	%tmp.76 = getelementptr %Foo, %Foo* %tmp.75, i32 0, i32 4
-	%tmp.77 = load %Razz*, %Razz** %tmp.76
+
+	%tmp.75 = load %Foo*, %Foo** %tmp.12 // Load self (About special case of dynamic dispatch)
+	%tmp.76 = getelementptr %Foo, %Foo* %tmp.75, i32 0, i32 4 
+	%tmp.77 = load %Razz*, %Razz** %tmp.76 // Load a
 	%tmp.78 = icmp eq %Razz* %tmp.77, null
 	br i1 %tmp.78, label %abort, label %ok.3
 

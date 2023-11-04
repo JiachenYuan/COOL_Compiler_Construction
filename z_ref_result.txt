@@ -1,81 +1,98 @@
-add_ref.out:
-Main.main() returned 3
-anot3_ref.out:
-Main.main() returned 9
-arith_ref.out:
-Main.main() returned -1
-block2_ref.out:
-Main.main() returned 4
-block_ref.out:
-Main.main() returned 2
-comp0_ref.out:
-Main.main() returned 0
-comp1_ref.out:
-Main.main() returned -1
-condfalse_ref.out:
-Main.main() returned 5
-condtrue_ref.out:
-Main.main() returned 1
-div_ref.out:
-Main.main() returned 2
-eqfalse_ref.out:
-Main.main() returned 8
-eqtrue_ref.out:
-Main.main() returned 1
-leqfalse_ref.out:
-Main.main() returned 2
-leqtrue_ref.out:
-Main.main() returned 1
-letbool_ref.out:
-Main.main() returned 1
-letinittrap_ref.out:
-Main.main() returned 1
-letint_ref.out:
-Main.main() returned 10
-letmultiple2_ref.out:
-Main.main() returned 28
-letmultiple_ref.out:
-Main.main() returned 23
-letnestedx_ref.out:
-Main.main() returned 1
-letnestedy_ref.out:
-Main.main() returned 1
-letsame_ref.out:
-Main.main() returned 8
-letshad_ref.out:
-Main.main() returned 1
-local1let_ref.out:
-Main.main() returned 11
-local2ifelse_ref.out:
-Main.main() returned 3
-local31whileeq_ref.out:
-Main.main() returned 2
-local3while_ref.out:
-Main.main() returned 5
-local41booleq_ref.out:
-Main.main() returned 1
-local4bool_ref.out:
-Main.main() returned 1
-loop2_ref.out:
-Main.main() returned 11
-loop3_ref.out:
-Main.main() returned 10
-loop_ref.out:
-Main.main() returned 10
-ltfalse_ref.out:
-Main.main() returned 14
-lttrue_ref.out:
-Main.main() returned 1
-mul_ref.out:
-Main.main() returned 2
-notfalse_ref.out:
-Main.main() returned 50
-nottrue_ref.out:
-Main.main() returned 1
-ret20_ref.out:
-Main.main() returned 20
-sub_ref.out:
-Main.main() returned 1
-testCodeMain_ref.out:
-Main.main() returned 123
-zerodivabort_ref.out:
+assign1o.refout:
+7656assign2o.refout:
+878assignments_o.refout:
+46attr1o.refout:
+247attr2o.refout:
+67basic_funcs.refout:
+Main879MainFrugel4inbasic.refout:
+block_o.refout:
+890book_list.refout:
+bools.refout:
+box.refout:
+7case-none.refout:
+case-order.refout:
+main
+caseskip.refout:
+2checkeq.refout:
+self != obj
+1 != 0
+true != false
+"abc" != "bbc"
+checkvoid_dynamic.refout:
+checkvoid_static.refout:
+cond_o.refout:
+8copy_o1.refout:
+Hello!
+copy_o2.refout:
+42 21copy_o3.refout:
+42dispatch1_o.refout:
+5dispatch2_o.refout:
+90dispatch3_o.refout:
+57dispatch4_o.refout:
+42dispatch5_o.refout:
+55666555555dispatch6_o.refout:
+dispatch7_o.refout:
+1divide_o.refout:
+2equal1_o.refout:
+ok!
+equal2_o.refout:
+ok!
+equal3_o.refout:
+ok!
+equal4_o.refout:
+ok!
+equal_o.refout:
+not okhairyscary.refout:
+17141611714163171416511714161171416317141653117141611714163171416511714161171416317141653171416117141631714165171416initializer-inh.refout:
+new A
+A.f: x = 0
+new B
+B.f: y = 0
+initializing B.y. here x = 12
+initializers.refout:
+012ints_o.refout:
+53isvoid_o.refout:
+oklesseq_o.refout:
+1less_o.refout:
+1let1_o.refout:
+798let2_o.refout:
+1letinittrap_o.refout:
+1minus_o.refout:
+-20neg_o.refout:
+-10nestedlet_o.refout:
+32new1.refout:
+new2.refout:
+not_o.refout:
+1out_int.refout:
+0out_string.refout:
+Hello
+plus_o.refout:
+7self.refout:
+selftype.refout:
+shadow-attr-case.refout:
+good
+shadow-attr-formal.refout:
+good
+shadow-attr-let.refout:
+good
+shadow-case-let.refout:
+good
+shadow-formal-case.refout:
+good
+shadow-formal-let.refout:
+good
+shadow-let-case.refout:
+good
+shadow-let-let.refout:
+good
+strings1_o.refout:
+Yoyoyostrings_o.refout:
+Yoyoyotimes_o.refout:
+10typcase1.refout:
+typcase2_o.refout:
+2typename_o.refout:
+Base
+Derived
+Main
+Derived
+Derived

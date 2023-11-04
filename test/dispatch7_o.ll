@@ -243,7 +243,7 @@ declare i32 @IO_in_int(%IO*)
 	%Object* (%Bar*) * bitcast (%Object* (%Object*) * @Object_abort to %Object* (%Bar*) *),
 	%String* (%Bar*) * bitcast (%String* (%Object*) * @Object_type_name to %String* (%Bar*) *),
 	%Bar* (%Bar*) * bitcast (%Object* (%Object*) * @Object_copy to %Bar* (%Bar*) *),
-	%Bar* (%Bar*) * bitcast (%Foo* (%Foo*) * @Foo_a to %Bar* (%Bar*) *),
+	%Bar* (%Bar*) * @Bar_a,
 	i32 (%Bar*,i32) * @Bar_b
 }
 

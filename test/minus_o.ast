@@ -1,0 +1,57 @@
+#9
+_program
+  #9
+  _class
+    Main
+    IO
+    "minus_o.cl"
+    (
+    #5
+    _attr
+      x
+      Int
+      #5
+      _int
+        10
+      : Int
+    #6
+    _attr
+      y
+      Int
+      #6
+      _int
+        30
+      : Int
+    #8
+    _method
+      main
+      Object
+      #8
+      _block
+        #8
+        _dispatch
+          #8
+          _object
+            self
+          : SELF_TYPE
+          out_int
+          (
+          #8
+          _sub
+            #8
+            _object
+              x
+            : Int
+            #8
+            _object
+              y
+            : Int
+          : Int
+          )
+        : SELF_TYPE
+        #8
+        _object
+          self
+        : SELF_TYPE
+      : SELF_TYPE
+    )

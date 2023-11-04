@@ -329,7 +329,9 @@ okay:
 	%vtpm.32 = getelementptr %Main, %Main* %vtpm.30, i32 0, i32 1
 	store %Foo* null, %Foo** %vtpm.32
 	%vtpm.33 = getelementptr %Main, %Main* %vtpm.30, i32 0, i32 1
-	store %Foo* null, %Foo** %vtpm.33
+	%vtpm.34 = load %Main*, %Main** %vtpm.26
+	%vtpm.35 = getelementptr %Main, %Main* %vtpm.34, i32 0, i32 1
+	store %Foo* null, %Foo** %vtpm.35
 	ret %Main* %vtpm.30
 
 abort:

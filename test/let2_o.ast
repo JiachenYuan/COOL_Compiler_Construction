@@ -1,0 +1,112 @@
+#10
+_program
+  #10
+  _class
+    Main
+    IO
+    "let2_o.cl"
+    (
+    #5
+    _method
+      func
+      Bool
+      #5
+      _let
+        x
+        Int
+        #5
+        _int
+          798
+        : Int
+        #5
+        _let
+          y
+          Bool
+          #5
+          _bool
+            1
+          : Bool
+          #5
+          _let
+            z
+            Int
+            #5
+            _int
+              5
+            : Int
+            #5
+            _let
+              x
+              Int
+              #5
+              _int
+                100
+              : Int
+              #5
+              _lt
+                #5
+                _object
+                  z
+                : Int
+                #5
+                _object
+                  x
+                : Int
+              : Bool
+            : Bool
+          : Bool
+        : Bool
+      : Bool
+    #9
+    _method
+      main
+      Object
+      #9
+      _block
+        #7
+        _cond
+          #7
+          _dispatch
+            #7
+            _object
+              self
+            : SELF_TYPE
+            func
+            (
+            )
+          : Bool
+          #7
+          _dispatch
+            #7
+            _object
+              self
+            : SELF_TYPE
+            out_int
+            (
+            #7
+            _int
+              1
+            : Int
+            )
+          : SELF_TYPE
+          #7
+          _dispatch
+            #7
+            _object
+              self
+            : SELF_TYPE
+            out_int
+            (
+            #7
+            _int
+              0
+            : Int
+            )
+          : SELF_TYPE
+        : SELF_TYPE
+        #8
+        _object
+          self
+        : SELF_TYPE
+      : SELF_TYPE
+    )

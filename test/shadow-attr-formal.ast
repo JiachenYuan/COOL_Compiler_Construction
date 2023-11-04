@@ -1,0 +1,74 @@
+#20
+_program
+  #20
+  _class
+    Main
+    IO
+    "shadow-attr-formal.cl"
+    (
+    #6
+    _attr
+      var
+      String
+      #6
+      _string
+        "bad"
+      : String
+    #11
+    _method
+      method
+      #8
+      _formal
+        var
+        String
+      Object
+      #10
+      _dispatch
+        #10
+        _object
+          self
+        : SELF_TYPE
+        out_string
+        (
+        #10
+        _object
+          var
+        : String
+        )
+      : SELF_TYPE
+    #19
+    _method
+      main
+      Object
+      #18
+      _block
+        #16
+        _dispatch
+          #16
+          _object
+            self
+          : SELF_TYPE
+          method
+          (
+          #16
+          _string
+            "good"
+          : String
+          )
+        : Object
+        #17
+        _dispatch
+          #17
+          _object
+            self
+          : SELF_TYPE
+          out_string
+          (
+          #17
+          _string
+            "\n"
+          : String
+          )
+        : SELF_TYPE
+      : SELF_TYPE
+    )

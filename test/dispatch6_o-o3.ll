@@ -137,15 +137,15 @@ entry:
 
 define %A* @A_new() {
 entry:
-  %vtpm.24 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.24, null
+  %vtpm.26 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.26, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.25 = bitcast i8* %vtpm.24 to %A*
-  %vtpm.26 = bitcast i8* %vtpm.24 to %_A_vtable**
-  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.26, align 8
-  ret %A* %vtpm.25
+  %vtpm.27 = bitcast i8* %vtpm.26 to %A*
+  %vtpm.28 = bitcast i8* %vtpm.26 to %_A_vtable**
+  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.28, align 8
+  ret %A* %vtpm.27
 
 abort:                                            ; preds = %entry
   tail call void @abort()

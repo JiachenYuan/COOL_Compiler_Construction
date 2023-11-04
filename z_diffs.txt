@@ -1,82 +1,145 @@
-Comparing add.out and add_ref.out
+Comparing assign1o.out and assign1o.refout
 
-Comparing anot3.out and anot3_ref.out
+Comparing assign2o.out and assign2o.refout
 
-Comparing arith.out and arith_ref.out
+Comparing assignments_o.out and assignments_o.refout
 
-Comparing block2.out and block2_ref.out
+Comparing attr1o.out and attr1o.refout
 
-Comparing block.out and block_ref.out
+Comparing attr2o.out and attr2o.refout
 
-Comparing comp0.out and comp0_ref.out
+Comparing basic_funcs.out and basic_funcs.refout
 
-Comparing comp1.out and comp1_ref.out
+Comparing basic.out and basic.refout
 
-Comparing condfalse.out and condfalse_ref.out
+Comparing block_o.out and block_o.refout
 
-Comparing condtrue.out and condtrue_ref.out
+Comparing book_list.out and book_list.refout
 
-Comparing div.out and div_ref.out
+Comparing bools.out and bools.refout
 
-Comparing eqfalse.out and eqfalse_ref.out
+Comparing box.out and box.refout
 
-Comparing eqtrue.out and eqtrue_ref.out
+Comparing caseloop_o.out and caseloop_o.refout
+1c1
+< 2
+\ No newline at end of file
+---
+> 0
+\ No newline at end of file
+Comparing case-none.out and case-none.refout
 
-Comparing leqfalse.out and leqfalse_ref.out
+Comparing case-order.out and case-order.refout
 
-Comparing leqtrue.out and leqtrue_ref.out
+Comparing caseskip.out and caseskip.refout
 
-Comparing letbool.out and letbool_ref.out
+Comparing checkeq.out and checkeq.refout
 
-Comparing letinittrap.out and letinittrap_ref.out
+Comparing checkvoid_dynamic.out and checkvoid_dynamic.refout
 
-Comparing letint.out and letint_ref.out
+Comparing checkvoid_static.out and checkvoid_static.refout
 
-Comparing letmultiple2.out and letmultiple2_ref.out
+Comparing cond_o.out and cond_o.refout
 
-Comparing letmultiple.out and letmultiple_ref.out
+Comparing copy_o1.out and copy_o1.refout
 
-Comparing letnestedx.out and letnestedx_ref.out
+Comparing copy_o2.out and copy_o2.refout
 
-Comparing letnestedy.out and letnestedy_ref.out
+Comparing copy_o3.out and copy_o3.refout
 
-Comparing letsame.out and letsame_ref.out
+Comparing dispatch1_o.out and dispatch1_o.refout
 
-Comparing letshad.out and letshad_ref.out
+Comparing dispatch2_o.out and dispatch2_o.refout
 
-Comparing local1let.out and local1let_ref.out
+Comparing dispatch3_o.out and dispatch3_o.refout
 
-Comparing local2ifelse.out and local2ifelse_ref.out
+Comparing dispatch4_o.out and dispatch4_o.refout
 
-Comparing local31whileeq.out and local31whileeq_ref.out
+Comparing dispatch5_o.out and dispatch5_o.refout
 
-Comparing local3while.out and local3while_ref.out
+Comparing dispatch6_o.out and dispatch6_o.refout
 
-Comparing local41booleq.out and local41booleq_ref.out
+Comparing dispatch7_o.out and dispatch7_o.refout
 
-Comparing local4bool.out and local4bool_ref.out
+Comparing divide_o.out and divide_o.refout
 
-Comparing loop2.out and loop2_ref.out
+Comparing equal1_o.out and equal1_o.refout
 
-Comparing loop3.out and loop3_ref.out
+Comparing equal2_o.out and equal2_o.refout
 
-Comparing loop.out and loop_ref.out
+Comparing equal3_o.out and equal3_o.refout
 
-Comparing ltfalse.out and ltfalse_ref.out
+Comparing equal4_o.out and equal4_o.refout
 
-Comparing lttrue.out and lttrue_ref.out
+Comparing equal_o.out and equal_o.refout
 
-Comparing mul.out and mul_ref.out
+Comparing hairyscary.out and hairyscary.refout
 
-Comparing notfalse.out and notfalse_ref.out
+Comparing initializer-inh.out and initializer-inh.refout
 
-Comparing nottrue.out and nottrue_ref.out
+Comparing initializers.out and initializers.refout
 
-Comparing ret20.out and ret20_ref.out
+Comparing ints_o.out and ints_o.refout
 
-Comparing sub.out and sub_ref.out
+Comparing isvoid_o.out and isvoid_o.refout
 
-Comparing testCodeMain.out and testCodeMain_ref.out
+Comparing lesseq_o.out and lesseq_o.refout
 
-Comparing zerodivabort.out and zerodivabort_ref.out
+Comparing less_o.out and less_o.refout
+
+Comparing let1_o.out and let1_o.refout
+
+Comparing let2_o.out and let2_o.refout
+
+Comparing letinittrap_o.out and letinittrap_o.refout
+
+Comparing minus_o.out and minus_o.refout
+
+Comparing neg_o.out and neg_o.refout
+
+Comparing nestedlet_o.out and nestedlet_o.refout
+
+Comparing new1.out and new1.refout
+
+Comparing new2.out and new2.refout
+
+Comparing not_o.out and not_o.refout
+
+Comparing out_int.out and out_int.refout
+
+Comparing out_string.out and out_string.refout
+
+Comparing plus_o.out and plus_o.refout
+
+Comparing self.out and self.refout
+
+Comparing selftype.out and selftype.refout
+
+Comparing shadow-attr-case.out and shadow-attr-case.refout
+
+Comparing shadow-attr-formal.out and shadow-attr-formal.refout
+
+Comparing shadow-attr-let.out and shadow-attr-let.refout
+
+Comparing shadow-case-let.out and shadow-case-let.refout
+
+Comparing shadow-formal-case.out and shadow-formal-case.refout
+
+Comparing shadow-formal-let.out and shadow-formal-let.refout
+
+Comparing shadow-let-case.out and shadow-let-case.refout
+
+Comparing shadow-let-let.out and shadow-let-let.refout
+
+Comparing strings1_o.out and strings1_o.refout
+
+Comparing strings_o.out and strings_o.refout
+
+Comparing times_o.out and times_o.refout
+
+Comparing typcase1.out and typcase1.refout
+
+Comparing typcase2_o.out and typcase2_o.refout
+
+Comparing typename_o.out and typename_o.refout
 

@@ -247,7 +247,7 @@ declare i32 @IO_in_int(%IO*)
 	%Object* (%Alpha*) * bitcast (%Object* (%Object*) * @Object_abort to %Object* (%Alpha*) *),
 	%String* (%Alpha*) * bitcast (%String* (%Object*) * @Object_type_name to %String* (%Alpha*) *),
 	%Alpha* (%Alpha*) * bitcast (%Object* (%Object*) * @Object_copy to %Alpha* (%Alpha*) *),
-	i32 (%Alpha*) * bitcast (i32 (%Beta*) * @Beta_niam to i32 (%Alpha*) *),
+	i32 (%Alpha*) * @Alpha_niam,
 	i32 (%Alpha*) * bitcast (i32 (%Beta*) * @Beta_bugger to i32 (%Alpha*) *)
 }
 

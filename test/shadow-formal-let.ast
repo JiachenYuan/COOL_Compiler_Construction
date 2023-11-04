@@ -1,0 +1,75 @@
+#19
+_program
+  #19
+  _class
+    Main
+    IO
+    "shadow-formal-let.cl"
+    (
+    #10
+    _method
+      method
+      #6
+      _formal
+        var
+        String
+      Object
+      #10
+      _let
+        var
+        String
+        #8
+        _string
+          "good"
+        : String
+        #9
+        _dispatch
+          #9
+          _object
+            self
+          : SELF_TYPE
+          out_string
+          (
+          #9
+          _object
+            var
+          : String
+          )
+        : SELF_TYPE
+      : SELF_TYPE
+    #18
+    _method
+      main
+      Object
+      #17
+      _block
+        #15
+        _dispatch
+          #15
+          _object
+            self
+          : SELF_TYPE
+          method
+          (
+          #15
+          _string
+            "bad"
+          : String
+          )
+        : Object
+        #16
+        _dispatch
+          #16
+          _object
+            self
+          : SELF_TYPE
+          out_string
+          (
+          #16
+          _string
+            "\n"
+          : String
+          )
+        : SELF_TYPE
+      : SELF_TYPE
+    )

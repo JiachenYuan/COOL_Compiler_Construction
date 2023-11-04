@@ -354,7 +354,9 @@ okay:
 	%vtpm.42 = getelementptr %A, %A* %vtpm.40, i32 0, i32 1
 	store %String* null, %String** %vtpm.42
 	%vtpm.43 = getelementptr %A, %A* %vtpm.40, i32 0, i32 1
-	store %String* @String.1, %String** %vtpm.43
+	%vtpm.44 = load %A*, %A** %vtpm.36
+	%vtpm.45 = getelementptr %A, %A* %vtpm.44, i32 0, i32 1
+	store %String* @String.1, %String** %vtpm.45
 	ret %A* %vtpm.40
 
 abort:

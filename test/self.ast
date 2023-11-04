@@ -1,0 +1,38 @@
+#12
+_program
+  #7
+  _class
+    Alpha
+    Object
+    "self.cl"
+    (
+    #6
+    _method
+      getSelf
+      Alpha
+      #6
+      _object
+        self
+      : SELF_TYPE
+    )
+  #12
+  _class
+    Main
+    Object
+    "self.cl"
+    (
+    #11
+    _method
+      main
+      Alpha
+      #11
+      _dispatch
+        #11
+        _new
+          Alpha
+        : Alpha
+        getSelf
+        (
+        )
+      : Alpha
+    )

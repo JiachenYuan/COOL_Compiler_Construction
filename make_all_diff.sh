@@ -18,7 +18,7 @@ for ref_file in *.refout; do
         
         if [ -f "$out_file" ]; then
             echo "Comparing $out_file and $ref_file" >> ../z_diffs.txt
-            diff "$out_file" "$ref_file" >> ../z_diffs.txt
+            diff "$out_file" "$ref_file" >> ../z_diffs.txt || continue
 
             # printout the stdout of my generated binary
             echo "$out_file:" >> ../z_my_result.txt 

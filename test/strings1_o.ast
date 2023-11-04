@@ -1,0 +1,48 @@
+#9
+_program
+  #9
+  _class
+    Main
+    IO
+    "strings1_o.cl"
+    (
+    #5
+    _method
+      func
+      String
+      #5
+      _string
+        "Yoyoyo"
+      : String
+    #8
+    _method
+      main
+      Object
+      #8
+      _block
+        #7
+        _dispatch
+          #7
+          _object
+            self
+          : SELF_TYPE
+          out_string
+          (
+          #7
+          _dispatch
+            #7
+            _object
+              self
+            : SELF_TYPE
+            func
+            (
+            )
+          : String
+          )
+        : SELF_TYPE
+        #7
+        _object
+          self
+        : SELF_TYPE
+      : SELF_TYPE
+    )

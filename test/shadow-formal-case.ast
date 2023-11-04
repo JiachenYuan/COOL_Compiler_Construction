@@ -1,0 +1,77 @@
+#21
+_program
+  #21
+  _class
+    Main
+    IO
+    "shadow-formal-case.cl"
+    (
+    #12
+    _method
+      method
+      #6
+      _formal
+        var
+        String
+      Object
+      #11
+      _typcase
+        #8
+        _string
+          "good"
+        : String
+        #10
+        _branch
+          var
+          String
+          #10
+          _dispatch
+            #10
+            _object
+              self
+            : SELF_TYPE
+            out_string
+            (
+            #10
+            _object
+              var
+            : String
+            )
+          : SELF_TYPE
+      : SELF_TYPE
+    #20
+    _method
+      main
+      Object
+      #19
+      _block
+        #17
+        _dispatch
+          #17
+          _object
+            self
+          : SELF_TYPE
+          method
+          (
+          #17
+          _string
+            "bad"
+          : String
+          )
+        : Object
+        #18
+        _dispatch
+          #18
+          _object
+            self
+          : SELF_TYPE
+          out_string
+          (
+          #18
+          _string
+            "\n"
+          : String
+          )
+        : SELF_TYPE
+      : SELF_TYPE
+    )

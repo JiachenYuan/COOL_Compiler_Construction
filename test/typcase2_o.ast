@@ -1,0 +1,112 @@
+#29
+_program
+  #5
+  _class
+    Alpha
+    Beta
+    "typcase2_o.cl"
+    (
+    )
+  #9
+  _class
+    Beta
+    Gamma
+    "typcase2_o.cl"
+    (
+    )
+  #11
+  _class
+    Gamma
+    Object
+    "typcase2_o.cl"
+    (
+    )
+  #29
+  _class
+    Main
+    IO
+    "typcase2_o.cl"
+    (
+    #15
+    _attr
+      xyz
+      Gamma
+      #15
+      _new
+        Alpha
+      : Alpha
+    #24
+    _method
+      func
+      Int
+      #23
+      _typcase
+        #18
+        _object
+          xyz
+        : Gamma
+        #19
+        _branch
+          b
+          Beta
+          #19
+          _int
+            1
+          : Int
+        #20
+        _branch
+          a
+          Alpha
+          #20
+          _int
+            2
+          : Int
+        #21
+        _branch
+          g
+          Gamma
+          #21
+          _int
+            3
+          : Int
+        #22
+        _branch
+          o
+          Object
+          #22
+          _int
+            0
+          : Int
+      : Int
+    #28
+    _method
+      main
+      Int
+      #28
+      _block
+        #27
+        _dispatch
+          #27
+          _object
+            self
+          : SELF_TYPE
+          out_int
+          (
+          #27
+          _dispatch
+            #27
+            _object
+              self
+            : SELF_TYPE
+            func
+            (
+            )
+          : Int
+          )
+        : SELF_TYPE
+        #27
+        _int
+          0
+        : Int
+      : Int
+    )

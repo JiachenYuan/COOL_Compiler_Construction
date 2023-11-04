@@ -33,7 +33,7 @@ source_filename = "dispatch7_o.ll"
 @str.Foo = internal constant [4 x i8] c"Foo\00"
 @_Foo_vtable_prototype = constant %_Foo_vtable { i32 6, i32 ptrtoint (%Foo* getelementptr (%Foo, %Foo* null, i32 1) to i32), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @str.Foo, i32 0, i32 0), %Foo* ()* @Foo_new, %Object* (%Foo*)* bitcast (%Object* (%Object*)* @Object_abort to %Object* (%Foo*)*), %String* (%Foo*)* bitcast (%String* (%Object*)* @Object_type_name to %String* (%Foo*)*), %Foo* (%Foo*)* bitcast (%Object* (%Object*)* @Object_copy to %Foo* (%Foo*)*), %Foo* (%Foo*)* @Foo_a }
 @str.Bar = internal constant [4 x i8] c"Bar\00"
-@_Bar_vtable_prototype = constant %_Bar_vtable { i32 7, i32 ptrtoint (%Bar* getelementptr (%Bar, %Bar* null, i32 1) to i32), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @str.Bar, i32 0, i32 0), %Bar* ()* @Bar_new, %Object* (%Bar*)* bitcast (%Object* (%Object*)* @Object_abort to %Object* (%Bar*)*), %String* (%Bar*)* bitcast (%String* (%Object*)* @Object_type_name to %String* (%Bar*)*), %Bar* (%Bar*)* bitcast (%Object* (%Object*)* @Object_copy to %Bar* (%Bar*)*), %Bar* (%Bar*)* bitcast (%Foo* (%Foo*)* @Foo_a to %Bar* (%Bar*)*), i32 (%Bar*, i32)* @Bar_b }
+@_Bar_vtable_prototype = constant %_Bar_vtable { i32 7, i32 ptrtoint (%Bar* getelementptr (%Bar, %Bar* null, i32 1) to i32), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @str.Bar, i32 0, i32 0), %Bar* ()* @Bar_new, %Object* (%Bar*)* bitcast (%Object* (%Object*)* @Object_abort to %Object* (%Bar*)*), %String* (%Bar*)* bitcast (%String* (%Object*)* @Object_type_name to %String* (%Bar*)*), %Bar* (%Bar*)* bitcast (%Object* (%Object*)* @Object_copy to %Bar* (%Bar*)*), %Bar* (%Bar*)* @Bar_a, i32 (%Bar*, i32)* @Bar_b }
 @global_str.1 = internal constant [14 x i8] c"<basic class>\00"
 @String.1 = local_unnamed_addr constant %String { %_String_vtable* @_String_vtable_prototype, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @global_str.1, i32 0, i32 0) }
 @global_str.0 = internal constant [15 x i8] c"dispatch7_o.cl\00"
@@ -176,7 +176,7 @@ abort:                                            ; preds = %entry
 }
 
 ; Function Attrs: mustprogress nofree norecurse nosync nounwind readnone willreturn
-define %Bar* @Bar_a(%Bar* readnone returned %self) local_unnamed_addr #0 {
+define %Bar* @Bar_a(%Bar* readnone returned %self) #0 {
 entry:
   ret %Bar* %self
 }

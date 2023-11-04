@@ -71,8 +71,8 @@ okay.i:                                           ; preds = %entry
   %vtpm.24.i = getelementptr i8, i8* %vtpm.21.i, i64 8
   %0 = bitcast i8* %vtpm.24.i to %Alpha**
   store %Alpha* null, %Alpha** %0, align 8
-  %vtpm.36.i.i = tail call i8* @malloc(i32 16)
-  %malloc.null.i.i = icmp eq i8* %vtpm.36.i.i, null
+  %vtpm.38.i.i = tail call i8* @malloc(i32 16)
+  %malloc.null.i.i = icmp eq i8* %vtpm.38.i.i, null
   br i1 %malloc.null.i.i, label %abort.i.i, label %Main_new.exit
 
 abort.i.i:                                        ; preds = %okay.i
@@ -84,16 +84,16 @@ abort.i:                                          ; preds = %entry
   unreachable
 
 Main_new.exit:                                    ; preds = %okay.i
-  %vtpm.38.i.i = bitcast i8* %vtpm.36.i.i to %_Alpha_vtable**
-  store %_Alpha_vtable* @_Alpha_vtable_prototype, %_Alpha_vtable** %vtpm.38.i.i, align 8
-  %vtpm.39.i.i = getelementptr i8, i8* %vtpm.36.i.i, i64 8
-  %1 = bitcast i8* %vtpm.39.i.i to i32*
+  %vtpm.40.i.i = bitcast i8* %vtpm.38.i.i to %_Alpha_vtable**
+  store %_Alpha_vtable* @_Alpha_vtable_prototype, %_Alpha_vtable** %vtpm.40.i.i, align 8
+  %vtpm.41.i.i = getelementptr i8, i8* %vtpm.38.i.i, i64 8
+  %1 = bitcast i8* %vtpm.41.i.i to i32*
   store i32 67, i32* %1, align 4
   %2 = bitcast i8* %vtpm.24.i to i8**
-  store i8* %vtpm.36.i.i, i8** %2, align 8
-  %vtpm.3.i.cast = bitcast i8* %vtpm.36.i.i to %Alpha*
+  store i8* %vtpm.38.i.i, i8** %2, align 8
+  %vtpm.3.i.cast = bitcast i8* %vtpm.38.i.i to %Alpha*
   %vtpm.22.i = bitcast i8* %vtpm.21.i to %Main*
-  %vtpm.6.i = load %_Alpha_vtable*, %_Alpha_vtable** %vtpm.38.i.i, align 8
+  %vtpm.6.i = load %_Alpha_vtable*, %_Alpha_vtable** %vtpm.40.i.i, align 8
   %vtpm.7.i = getelementptr %_Alpha_vtable, %_Alpha_vtable* %vtpm.6.i, i64 0, i32 7
   %tmp.0.i = load i32 (%Alpha*)*, i32 (%Alpha*)** %vtpm.7.i, align 8
   %vtpm.8.i = tail call i32 %tmp.0.i(%Alpha* nonnull %vtpm.3.i.cast)
@@ -152,8 +152,8 @@ okay:                                             ; preds = %entry
   %vtpm.24 = getelementptr i8, i8* %vtpm.21, i64 8
   %0 = bitcast i8* %vtpm.24 to %Alpha**
   store %Alpha* null, %Alpha** %0, align 8
-  %vtpm.36.i = tail call i8* @malloc(i32 16)
-  %malloc.null.i = icmp eq i8* %vtpm.36.i, null
+  %vtpm.38.i = tail call i8* @malloc(i32 16)
+  %malloc.null.i = icmp eq i8* %vtpm.38.i, null
   br i1 %malloc.null.i, label %abort.i, label %Alpha_new.exit
 
 abort.i:                                          ; preds = %okay
@@ -162,13 +162,13 @@ abort.i:                                          ; preds = %okay
 
 Alpha_new.exit:                                   ; preds = %okay
   %vtpm.22 = bitcast i8* %vtpm.21 to %Main*
-  %vtpm.38.i = bitcast i8* %vtpm.36.i to %_Alpha_vtable**
-  store %_Alpha_vtable* @_Alpha_vtable_prototype, %_Alpha_vtable** %vtpm.38.i, align 8
-  %vtpm.39.i = getelementptr i8, i8* %vtpm.36.i, i64 8
-  %1 = bitcast i8* %vtpm.39.i to i32*
+  %vtpm.40.i = bitcast i8* %vtpm.38.i to %_Alpha_vtable**
+  store %_Alpha_vtable* @_Alpha_vtable_prototype, %_Alpha_vtable** %vtpm.40.i, align 8
+  %vtpm.41.i = getelementptr i8, i8* %vtpm.38.i, i64 8
+  %1 = bitcast i8* %vtpm.41.i to i32*
   store i32 67, i32* %1, align 4
   %2 = bitcast i8* %vtpm.24 to i8**
-  store i8* %vtpm.36.i, i8** %2, align 8
+  store i8* %vtpm.38.i, i8** %2, align 8
   ret %Main* %vtpm.22
 
 abort:                                            ; preds = %entry
@@ -179,25 +179,25 @@ abort:                                            ; preds = %entry
 ; Function Attrs: argmemonly mustprogress nofree norecurse nosync nounwind readonly willreturn
 define i32 @Alpha_getX(%Alpha* nocapture readonly %self) #0 {
 entry:
-  %vtpm.30 = getelementptr %Alpha, %Alpha* %self, i64 0, i32 1
-  %vtpm.31 = load i32, i32* %vtpm.30, align 4
-  ret i32 %vtpm.31
+  %vtpm.32 = getelementptr %Alpha, %Alpha* %self, i64 0, i32 1
+  %vtpm.33 = load i32, i32* %vtpm.32, align 4
+  ret i32 %vtpm.33
 }
 
 define %Alpha* @Alpha_new() {
 entry:
-  %vtpm.36 = tail call i8* @malloc(i32 16)
-  %malloc.null = icmp eq i8* %vtpm.36, null
+  %vtpm.38 = tail call i8* @malloc(i32 16)
+  %malloc.null = icmp eq i8* %vtpm.38, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.37 = bitcast i8* %vtpm.36 to %Alpha*
-  %vtpm.38 = bitcast i8* %vtpm.36 to %_Alpha_vtable**
-  store %_Alpha_vtable* @_Alpha_vtable_prototype, %_Alpha_vtable** %vtpm.38, align 8
-  %vtpm.39 = getelementptr i8, i8* %vtpm.36, i64 8
-  %0 = bitcast i8* %vtpm.39 to i32*
+  %vtpm.39 = bitcast i8* %vtpm.38 to %Alpha*
+  %vtpm.40 = bitcast i8* %vtpm.38 to %_Alpha_vtable**
+  store %_Alpha_vtable* @_Alpha_vtable_prototype, %_Alpha_vtable** %vtpm.40, align 8
+  %vtpm.41 = getelementptr i8, i8* %vtpm.38, i64 8
+  %0 = bitcast i8* %vtpm.41 to i32*
   store i32 67, i32* %0, align 4
-  ret %Alpha* %vtpm.37
+  ret %Alpha* %vtpm.39
 
 abort:                                            ; preds = %entry
   tail call void @abort()

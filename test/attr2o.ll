@@ -300,7 +300,9 @@ okay:
 	store %Alpha* null, %Alpha** %vtpm.24
 	%vtpm.25 = getelementptr %Main, %Main* %vtpm.22, i32 0, i32 1
 	%vtpm.26 = call %Alpha* @Alpha_new(  )
-	store %Alpha* %vtpm.26, %Alpha** %vtpm.25
+	%vtpm.27 = load %Main*, %Main** %vtpm.18
+	%vtpm.28 = getelementptr %Main, %Main* %vtpm.27, i32 0, i32 1
+	store %Alpha* %vtpm.26, %Alpha** %vtpm.28
 	ret %Main* %vtpm.22
 
 abort:
@@ -311,12 +313,12 @@ abort:
 define i32 @Alpha_getX(%Alpha* %self) {
 
 entry:
-	%vtpm.28 = alloca %Alpha*
-	store %Alpha* %self, %Alpha** %vtpm.28
-	%vtpm.29 = load %Alpha*, %Alpha** %vtpm.28
-	%vtpm.30 = getelementptr %Alpha, %Alpha* %vtpm.29, i32 0, i32 1
-	%vtpm.31 = load i32, i32* %vtpm.30
-	ret i32 %vtpm.31
+	%vtpm.30 = alloca %Alpha*
+	store %Alpha* %self, %Alpha** %vtpm.30
+	%vtpm.31 = load %Alpha*, %Alpha** %vtpm.30
+	%vtpm.32 = getelementptr %Alpha, %Alpha* %vtpm.31, i32 0, i32 1
+	%vtpm.33 = load i32, i32* %vtpm.32
+	ret i32 %vtpm.33
 
 abort:
 	call void @abort(  )
@@ -326,23 +328,25 @@ abort:
 define %Alpha* @Alpha_new() {
 
 entry:
-	%vtpm.33 = alloca %Alpha*
-	%vtpm.34 = getelementptr %_Alpha_vtable, %_Alpha_vtable* @_Alpha_vtable_prototype, i32 0, i32 1
-	%vtpm.35 = load i32, i32* %vtpm.34
-	%vtpm.36 = call i8*(i32 ) @malloc( i32 %vtpm.35 )
-	%vtpm.37 = bitcast i8* %vtpm.36 to %Alpha*
-	%malloc.null = icmp eq %Alpha* %vtpm.37, null
+	%vtpm.35 = alloca %Alpha*
+	%vtpm.36 = getelementptr %_Alpha_vtable, %_Alpha_vtable* @_Alpha_vtable_prototype, i32 0, i32 1
+	%vtpm.37 = load i32, i32* %vtpm.36
+	%vtpm.38 = call i8*(i32 ) @malloc( i32 %vtpm.37 )
+	%vtpm.39 = bitcast i8* %vtpm.38 to %Alpha*
+	%malloc.null = icmp eq %Alpha* %vtpm.39, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%vtpm.38 = getelementptr %Alpha, %Alpha* %vtpm.37, i32 0, i32 0
-	store %_Alpha_vtable* @_Alpha_vtable_prototype, %_Alpha_vtable** %vtpm.38
-	store %Alpha* %vtpm.37, %Alpha** %vtpm.33
-	%vtpm.39 = getelementptr %Alpha, %Alpha* %vtpm.37, i32 0, i32 1
-	store i32 0, i32* %vtpm.39
-	%vtpm.40 = getelementptr %Alpha, %Alpha* %vtpm.37, i32 0, i32 1
-	store i32 67, i32* %vtpm.40
-	ret %Alpha* %vtpm.37
+	%vtpm.40 = getelementptr %Alpha, %Alpha* %vtpm.39, i32 0, i32 0
+	store %_Alpha_vtable* @_Alpha_vtable_prototype, %_Alpha_vtable** %vtpm.40
+	store %Alpha* %vtpm.39, %Alpha** %vtpm.35
+	%vtpm.41 = getelementptr %Alpha, %Alpha* %vtpm.39, i32 0, i32 1
+	store i32 0, i32* %vtpm.41
+	%vtpm.42 = getelementptr %Alpha, %Alpha* %vtpm.39, i32 0, i32 1
+	%vtpm.43 = load %Alpha*, %Alpha** %vtpm.35
+	%vtpm.44 = getelementptr %Alpha, %Alpha* %vtpm.43, i32 0, i32 1
+	store i32 67, i32* %vtpm.44
+	ret %Alpha* %vtpm.39
 
 abort:
 	call void @abort(  )

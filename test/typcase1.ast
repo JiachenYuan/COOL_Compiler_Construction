@@ -1,0 +1,28 @@
+#11
+_program
+  #11
+  _class
+    Main
+    Object
+    "typcase1.cl"
+    (
+    #10
+    _method
+      main
+      Object
+      #9
+      _typcase
+        #7
+        _object
+          self
+        : SELF_TYPE
+        #8
+        _branch
+          x
+          Object
+          #8
+          _object
+            x
+          : Object
+      : Object
+    )

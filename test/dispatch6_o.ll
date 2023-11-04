@@ -286,7 +286,9 @@ okay:
 	%vtpm.16 = getelementptr %Main, %Main* %vtpm.14, i32 0, i32 1
 	store %A* null, %A** %vtpm.16
 	%vtpm.17 = getelementptr %Main, %Main* %vtpm.14, i32 0, i32 1
-	store %A* null, %A** %vtpm.17
+	%vtpm.18 = load %Main*, %Main** %vtpm.10
+	%vtpm.19 = getelementptr %Main, %Main* %vtpm.18, i32 0, i32 1
+	store %A* null, %A** %vtpm.19
 	ret %Main* %vtpm.14
 
 abort:
@@ -297,8 +299,8 @@ abort:
 define i32 @A_f(%A* %self) {
 
 entry:
-	%vtpm.19 = alloca %A*
-	store %A* %self, %A** %vtpm.19
+	%vtpm.21 = alloca %A*
+	store %A* %self, %A** %vtpm.21
 	ret i32 5
 
 abort:
@@ -309,19 +311,19 @@ abort:
 define %A* @A_new() {
 
 entry:
-	%vtpm.21 = alloca %A*
-	%vtpm.22 = getelementptr %_A_vtable, %_A_vtable* @_A_vtable_prototype, i32 0, i32 1
-	%vtpm.23 = load i32, i32* %vtpm.22
-	%vtpm.24 = call i8*(i32 ) @malloc( i32 %vtpm.23 )
-	%vtpm.25 = bitcast i8* %vtpm.24 to %A*
-	%malloc.null = icmp eq %A* %vtpm.25, null
+	%vtpm.23 = alloca %A*
+	%vtpm.24 = getelementptr %_A_vtable, %_A_vtable* @_A_vtable_prototype, i32 0, i32 1
+	%vtpm.25 = load i32, i32* %vtpm.24
+	%vtpm.26 = call i8*(i32 ) @malloc( i32 %vtpm.25 )
+	%vtpm.27 = bitcast i8* %vtpm.26 to %A*
+	%malloc.null = icmp eq %A* %vtpm.27, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%vtpm.26 = getelementptr %A, %A* %vtpm.25, i32 0, i32 0
-	store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.26
-	store %A* %vtpm.25, %A** %vtpm.21
-	ret %A* %vtpm.25
+	%vtpm.28 = getelementptr %A, %A* %vtpm.27, i32 0, i32 0
+	store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.28
+	store %A* %vtpm.27, %A** %vtpm.23
+	ret %A* %vtpm.27
 
 abort:
 	call void @abort(  )

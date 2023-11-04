@@ -265,7 +265,9 @@ okay:
 	%vtpm.21 = getelementptr %Main, %Main* %vtpm.19, i32 0, i32 1
 	store i32 0, i32* %vtpm.21
 	%vtpm.22 = getelementptr %Main, %Main* %vtpm.19, i32 0, i32 1
-	store i32 5, i32* %vtpm.22
+	%vtpm.23 = load %Main*, %Main** %vtpm.15
+	%vtpm.24 = getelementptr %Main, %Main* %vtpm.23, i32 0, i32 1
+	store i32 5, i32* %vtpm.24
 	ret %Main* %vtpm.19
 
 abort:

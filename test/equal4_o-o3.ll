@@ -78,8 +78,8 @@ okay.i:                                           ; preds = %entry
   store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.64.i, align 8
   %vtpm.65.i = getelementptr i8, i8* %vtpm.62.i, i64 8
   tail call void @llvm.memset.p0i8.i64(i8* noundef nonnull align 8 dereferenceable(32) %vtpm.65.i, i8 0, i64 32, i1 false)
-  %vtpm.78.i.i = tail call i8* @malloc(i32 16)
-  %malloc.null.i.i = icmp eq i8* %vtpm.78.i.i, null
+  %vtpm.86.i.i = tail call i8* @malloc(i32 16)
+  %malloc.null.i.i = icmp eq i8* %vtpm.86.i.i, null
   br i1 %malloc.null.i.i, label %abort.i.i, label %Main_main.exit
 
 abort.i.i:                                        ; preds = %okay.i
@@ -93,13 +93,13 @@ abort.i:                                          ; preds = %entry
 Main_main.exit:                                   ; preds = %okay.i
   %vtpm.66.i = getelementptr i8, i8* %vtpm.62.i, i64 16
   %vtpm.63.i = bitcast i8* %vtpm.62.i to %Main*
-  %vtpm.80.i.i = bitcast i8* %vtpm.78.i.i to %_A_vtable**
-  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.80.i.i, align 8
-  %vtpm.81.i.i = getelementptr i8, i8* %vtpm.78.i.i, i64 8
-  %0 = bitcast i8* %vtpm.81.i.i to i32*
+  %vtpm.88.i.i = bitcast i8* %vtpm.86.i.i to %_A_vtable**
+  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.88.i.i, align 8
+  %vtpm.89.i.i = getelementptr i8, i8* %vtpm.86.i.i, i64 8
+  %0 = bitcast i8* %vtpm.89.i.i to i32*
   store i32 2, i32* %0, align 4
   %1 = bitcast i8* %vtpm.65.i to i8**
-  store i8* %vtpm.78.i.i, i8** %1, align 8
+  store i8* %vtpm.86.i.i, i8** %1, align 8
   tail call void @llvm.memset.p0i8.i64(i8* noundef nonnull align 8 dereferenceable(24) %vtpm.66.i, i8 0, i64 24, i1 false)
   %vtpm.40.i = load %_Main_vtable*, %_Main_vtable** %vtpm.64.i, align 8
   %vtpm.41.i = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.40.i, i64 0, i32 7
@@ -187,8 +187,8 @@ okay:                                             ; preds = %entry
   store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.64, align 8
   %vtpm.65 = getelementptr i8, i8* %vtpm.62, i64 8
   tail call void @llvm.memset.p0i8.i64(i8* noundef nonnull align 8 dereferenceable(32) %vtpm.65, i8 0, i64 32, i1 false)
-  %vtpm.78.i = tail call i8* @malloc(i32 16)
-  %malloc.null.i = icmp eq i8* %vtpm.78.i, null
+  %vtpm.86.i = tail call i8* @malloc(i32 16)
+  %malloc.null.i = icmp eq i8* %vtpm.86.i, null
   br i1 %malloc.null.i, label %abort.i, label %A_new.exit
 
 abort.i:                                          ; preds = %okay
@@ -198,13 +198,13 @@ abort.i:                                          ; preds = %okay
 A_new.exit:                                       ; preds = %okay
   %vtpm.66 = getelementptr i8, i8* %vtpm.62, i64 16
   %vtpm.63 = bitcast i8* %vtpm.62 to %Main*
-  %vtpm.80.i = bitcast i8* %vtpm.78.i to %_A_vtable**
-  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.80.i, align 8
-  %vtpm.81.i = getelementptr i8, i8* %vtpm.78.i, i64 8
-  %0 = bitcast i8* %vtpm.81.i to i32*
+  %vtpm.88.i = bitcast i8* %vtpm.86.i to %_A_vtable**
+  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.88.i, align 8
+  %vtpm.89.i = getelementptr i8, i8* %vtpm.86.i, i64 8
+  %0 = bitcast i8* %vtpm.89.i to i32*
   store i32 2, i32* %0, align 4
   %1 = bitcast i8* %vtpm.65 to i8**
-  store i8* %vtpm.78.i, i8** %1, align 8
+  store i8* %vtpm.86.i, i8** %1, align 8
   tail call void @llvm.memset.p0i8.i64(i8* noundef nonnull align 8 dereferenceable(24) %vtpm.66, i8 0, i64 24, i1 false)
   ret %Main* %vtpm.63
 
@@ -215,18 +215,18 @@ abort:                                            ; preds = %entry
 
 define %A* @A_new() {
 entry:
-  %vtpm.78 = tail call i8* @malloc(i32 16)
-  %malloc.null = icmp eq i8* %vtpm.78, null
+  %vtpm.86 = tail call i8* @malloc(i32 16)
+  %malloc.null = icmp eq i8* %vtpm.86, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.79 = bitcast i8* %vtpm.78 to %A*
-  %vtpm.80 = bitcast i8* %vtpm.78 to %_A_vtable**
-  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.80, align 8
-  %vtpm.81 = getelementptr i8, i8* %vtpm.78, i64 8
-  %0 = bitcast i8* %vtpm.81 to i32*
+  %vtpm.87 = bitcast i8* %vtpm.86 to %A*
+  %vtpm.88 = bitcast i8* %vtpm.86 to %_A_vtable**
+  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.88, align 8
+  %vtpm.89 = getelementptr i8, i8* %vtpm.86, i64 8
+  %0 = bitcast i8* %vtpm.89 to i32*
   store i32 2, i32* %0, align 4
-  ret %A* %vtpm.79
+  ret %A* %vtpm.87
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -235,18 +235,18 @@ abort:                                            ; preds = %entry
 
 define %B* @B_new() {
 entry:
-  %vtpm.87 = tail call i8* @malloc(i32 16)
-  %malloc.null = icmp eq i8* %vtpm.87, null
+  %vtpm.97 = tail call i8* @malloc(i32 16)
+  %malloc.null = icmp eq i8* %vtpm.97, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.88 = bitcast i8* %vtpm.87 to %B*
-  %vtpm.89 = bitcast i8* %vtpm.87 to %_B_vtable**
-  store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %vtpm.89, align 8
-  %vtpm.90 = getelementptr i8, i8* %vtpm.87, i64 8
-  %0 = bitcast i8* %vtpm.90 to i32*
+  %vtpm.98 = bitcast i8* %vtpm.97 to %B*
+  %vtpm.99 = bitcast i8* %vtpm.97 to %_B_vtable**
+  store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %vtpm.99, align 8
+  %vtpm.100 = getelementptr i8, i8* %vtpm.97, i64 8
+  %0 = bitcast i8* %vtpm.100 to i32*
   store i32 3, i32* %0, align 4
-  ret %B* %vtpm.88
+  ret %B* %vtpm.98
 
 abort:                                            ; preds = %entry
   tail call void @abort()
