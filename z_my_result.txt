@@ -9,7 +9,8 @@ block_o.out:
 890book_list.out:
 bools.out:
 box.out:
-7case-none.out:
+7caseloop_o.out:
+0case-none.out:
 case-order.out:
 main
 caseskip.out:

@@ -1270,13 +1270,13 @@ operand eq_class::code(CgenEnvironment *env) {
   // /TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
   operand op1 = e1->code(env), op2 = e2->code(env);
-  if (op1.get_typename() == "%Int*") {
+  if (op1.get_typename() == "%Int*" || op2.get_typename() == "%Int*") {
     op1 = conform(op1, INT32, env);
     op2 = conform(op2, INT32, env);
-  } else if (op1.get_typename() == "%Bool*") {
+  } else if (op1.get_typename() == "%Bool*" || op2.get_typename() == "%Bool*") {
     op1 = conform(op1, INT1, env);
     op2 = conform(op2, INT1, env);
-  } else {
+  } else if (op1.get_typename().find("%") != std::string::npos && op2.get_typename().find("%") != std::string::npos) {
     op1 = conform(op1, INT8_PTR, env);
     op2 = conform(op2, INT8_PTR, env);
   }

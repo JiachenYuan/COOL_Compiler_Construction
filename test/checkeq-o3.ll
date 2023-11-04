@@ -37,11 +37,11 @@ source_filename = "checkeq.ll"
 @global_str.6 = internal constant [15 x i8] c"true != false\0A\00"
 @String.6 = constant %String { %_String_vtable* @_String_vtable_prototype, i8* getelementptr inbounds ([15 x i8], [15 x i8]* @global_str.6, i32 0, i32 0) }
 @global_str.5 = internal constant [14 x i8] c"true = false\0A\00"
-@String.5 = constant %String { %_String_vtable* @_String_vtable_prototype, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @global_str.5, i32 0, i32 0) }
+@String.5 = local_unnamed_addr constant %String { %_String_vtable* @_String_vtable_prototype, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @global_str.5, i32 0, i32 0) }
 @global_str.4 = internal constant [8 x i8] c"1 != 0\0A\00"
 @String.4 = constant %String { %_String_vtable* @_String_vtable_prototype, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @global_str.4, i32 0, i32 0) }
 @global_str.3 = internal constant [7 x i8] c"1 = 0\0A\00"
-@String.3 = constant %String { %_String_vtable* @_String_vtable_prototype, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @global_str.3, i32 0, i32 0) }
+@String.3 = local_unnamed_addr constant %String { %_String_vtable* @_String_vtable_prototype, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @global_str.3, i32 0, i32 0) }
 @global_str.2 = internal constant [13 x i8] c"self != obj\0A\00"
 @String.2 = constant %String { %_String_vtable* @_String_vtable_prototype, i8* getelementptr inbounds ([13 x i8], [13 x i8]* @global_str.2, i32 0, i32 0) }
 @global_str.1 = internal constant [12 x i8] c"self = obj\0A\00"
@@ -61,10 +61,6 @@ declare %String* @Object_type_name(%Object*)
 
 declare %Object* @Object_copy(%Object*)
 
-declare void @Int_init(%Int*, i32) local_unnamed_addr
-
-declare void @Bool_init(%Bool*, i1) local_unnamed_addr
-
 declare i32 @String_length(%String*)
 
 declare %String* @String_concat(%String*, %String*)
@@ -81,8 +77,8 @@ declare i32 @IO_in_int(%IO*)
 
 define i32 @main() local_unnamed_addr {
 entry:
-  %vtpm.86.i = tail call i8* @malloc(i32 16)
-  %malloc.null.i = icmp eq i8* %vtpm.86.i, null
+  %vtpm.74.i = tail call i8* @malloc(i32 16)
+  %malloc.null.i = icmp eq i8* %vtpm.74.i, null
   br i1 %malloc.null.i, label %abort.i, label %Main_new.exit
 
 abort.i:                                          ; preds = %entry
@@ -90,13 +86,26 @@ abort.i:                                          ; preds = %entry
   unreachable
 
 Main_new.exit:                                    ; preds = %entry
-  %vtpm.87.i = bitcast i8* %vtpm.86.i to %Main*
-  %vtpm.88.i = bitcast i8* %vtpm.86.i to %_Main_vtable**
-  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.88.i, align 8
-  %vtpm.89.i = getelementptr i8, i8* %vtpm.86.i, i64 8
-  %0 = bitcast i8* %vtpm.89.i to %Object**
+  %vtpm.75.i = bitcast i8* %vtpm.74.i to %Main*
+  %vtpm.76.i = bitcast i8* %vtpm.74.i to %_Main_vtable**
+  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.76.i, align 8
+  %vtpm.77.i = getelementptr i8, i8* %vtpm.74.i, i64 8
+  %0 = bitcast i8* %vtpm.77.i to %Object**
   store %Object* null, %Object** %0, align 8
-  %main.retval = tail call %Object* @Main_main(%Main* nonnull %vtpm.87.i)
+  %1 = bitcast i8* %vtpm.74.i to %IO*
+  %vtpm.23.i = tail call %IO* @IO_out_string(%IO* nonnull %1, %String* nonnull @String.2)
+  %vtpm.35.i = load %_Main_vtable*, %_Main_vtable** %vtpm.76.i, align 8
+  %vtpm.36.i = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.35.i, i64 0, i32 7
+  %tmp.3.i = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.36.i, align 8
+  %vtpm.37.i = tail call %Main* %tmp.3.i(%Main* nonnull %vtpm.75.i, %String* nonnull @String.4)
+  %vtpm.49.i = load %_Main_vtable*, %_Main_vtable** %vtpm.76.i, align 8
+  %vtpm.50.i = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.49.i, i64 0, i32 7
+  %tmp.5.i = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.50.i, align 8
+  %vtpm.51.i = tail call %Main* %tmp.5.i(%Main* nonnull %vtpm.75.i, %String* nonnull @String.6)
+  %vtpm.65.i = load %_Main_vtable*, %_Main_vtable** %vtpm.76.i, align 8
+  %vtpm.66.i = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.65.i, i64 0, i32 7
+  %tmp.7.i = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.66.i, align 8
+  %vtpm.67.i = tail call %Main* %tmp.7.i(%Main* nonnull %vtpm.75.i, %String* nonnull @String.10)
   ret i32 0
 }
 
@@ -114,60 +123,46 @@ define %Object* @Main_main(%Main* %self) {
 entry:
   %vtpm.7 = getelementptr %Main, %Main* %self, i64 0, i32 1
   %0 = bitcast %Object** %vtpm.7 to i8**
-  %vtpm.82 = load i8*, i8** %0, align 8
+  %vtpm.81 = load i8*, i8** %0, align 8
   %vtpm.9 = bitcast %Main* %self to i8*
-  %vtpm.11 = icmp eq i8* %vtpm.82, %vtpm.9
+  %vtpm.11 = icmp eq i8* %vtpm.81, %vtpm.9
   %vtpm.14 = getelementptr %Main, %Main* %self, i64 0, i32 0
   %vtpm.15 = load %_Main_vtable*, %_Main_vtable** %vtpm.14, align 8
   %vtpm.16 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.15, i64 0, i32 7
   %tmp.0 = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.16, align 8
   %String.1.String.2 = select i1 %vtpm.11, %String* @String.1, %String* @String.2
   %vtpm.23 = tail call %Main* %tmp.0(%Main* nonnull %self, %String* nonnull %String.1.String.2)
-  %vtpm.25 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.25, i32 1)
-  %vtpm.28 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.28, i32 0)
-  %vtpm.31 = icmp eq %Int* %vtpm.25, %vtpm.28
-  %String.4.sink = select i1 %vtpm.31, %String* @String.3, %String* @String.4
-  %vtpm.40 = getelementptr %Main, %Main* %self, i64 0, i32 0
-  %vtpm.41 = load %_Main_vtable*, %_Main_vtable** %vtpm.40, align 8
-  %vtpm.42 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.41, i64 0, i32 7
-  %tmp.3 = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.42, align 8
-  %vtpm.43 = tail call %Main* %tmp.3(%Main* nonnull %self, %String* nonnull %String.4.sink)
-  %vtpm.45 = tail call %Bool* @Bool_new()
-  tail call void @Bool_init(%Bool* %vtpm.45, i1 true)
-  %vtpm.48 = tail call %Bool* @Bool_new()
-  tail call void @Bool_init(%Bool* %vtpm.48, i1 false)
-  %vtpm.51 = icmp eq %Bool* %vtpm.45, %vtpm.48
-  %String.6.sink = select i1 %vtpm.51, %String* @String.5, %String* @String.6
-  %vtpm.60 = getelementptr %Main, %Main* %self, i64 0, i32 0
-  %vtpm.61 = load %_Main_vtable*, %_Main_vtable** %vtpm.60, align 8
-  %vtpm.62 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.61, i64 0, i32 7
-  %tmp.5 = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.62, align 8
-  %vtpm.63 = tail call %Main* %tmp.5(%Main* nonnull %self, %String* nonnull %String.6.sink)
-  %vtpm.76 = getelementptr %Main, %Main* %self, i64 0, i32 0
-  %vtpm.77 = load %_Main_vtable*, %_Main_vtable** %vtpm.76, align 8
-  %vtpm.78 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.77, i64 0, i32 7
-  %tmp.7 = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.78, align 8
-  %vtpm.79 = tail call %Main* %tmp.7(%Main* nonnull %self, %String* nonnull @String.10)
-  %vtpm.81 = bitcast %Main* %vtpm.79 to %Object*
-  ret %Object* %vtpm.81
+  %vtpm.34 = getelementptr %Main, %Main* %self, i64 0, i32 0
+  %vtpm.35 = load %_Main_vtable*, %_Main_vtable** %vtpm.34, align 8
+  %vtpm.36 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.35, i64 0, i32 7
+  %tmp.3 = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.36, align 8
+  %vtpm.37 = tail call %Main* %tmp.3(%Main* nonnull %self, %String* nonnull @String.4)
+  %vtpm.49 = load %_Main_vtable*, %_Main_vtable** %vtpm.34, align 8
+  %vtpm.50 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.49, i64 0, i32 7
+  %tmp.5 = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.50, align 8
+  %vtpm.51 = tail call %Main* %tmp.5(%Main* nonnull %self, %String* nonnull @String.6)
+  %vtpm.65 = load %_Main_vtable*, %_Main_vtable** %vtpm.34, align 8
+  %vtpm.66 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.65, i64 0, i32 7
+  %tmp.7 = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.66, align 8
+  %vtpm.67 = tail call %Main* %tmp.7(%Main* nonnull %self, %String* nonnull @String.10)
+  %vtpm.69 = bitcast %Main* %vtpm.67 to %Object*
+  ret %Object* %vtpm.69
 }
 
 define %Main* @Main_new() {
 entry:
-  %vtpm.86 = tail call i8* @malloc(i32 16)
-  %malloc.null = icmp eq i8* %vtpm.86, null
+  %vtpm.74 = tail call i8* @malloc(i32 16)
+  %malloc.null = icmp eq i8* %vtpm.74, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.87 = bitcast i8* %vtpm.86 to %Main*
-  %vtpm.88 = bitcast i8* %vtpm.86 to %_Main_vtable**
-  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.88, align 8
-  %vtpm.89 = getelementptr i8, i8* %vtpm.86, i64 8
-  %0 = bitcast i8* %vtpm.89 to %Object**
+  %vtpm.75 = bitcast i8* %vtpm.74 to %Main*
+  %vtpm.76 = bitcast i8* %vtpm.74 to %_Main_vtable**
+  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.76, align 8
+  %vtpm.77 = getelementptr i8, i8* %vtpm.74, i64 8
+  %0 = bitcast i8* %vtpm.77 to %Object**
   store %Object* null, %Object** %0, align 8
-  ret %Main* %vtpm.87
+  ret %Main* %vtpm.75
 
 abort:                                            ; preds = %entry
   tail call void @abort()

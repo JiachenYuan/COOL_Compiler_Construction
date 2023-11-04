@@ -45,8 +45,6 @@ declare %String* @Object_type_name(%Object*)
 
 declare %Object* @Object_copy(%Object*)
 
-declare void @Int_init(%Int*, i32) local_unnamed_addr
-
 declare i32 @String_length(%String*)
 
 declare %String* @String_concat(%String*, %String*)
@@ -63,8 +61,8 @@ declare i32 @IO_in_int(%IO*)
 
 define i32 @main() local_unnamed_addr {
 entry:
-  %vtpm.34.i = tail call i8* @malloc(i32 8)
-  %malloc.null.i = icmp eq i8* %vtpm.34.i, null
+  %vtpm.28.i = tail call i8* @malloc(i32 8)
+  %malloc.null.i = icmp eq i8* %vtpm.28.i, null
   br i1 %malloc.null.i, label %abort.i, label %Main_main.exit
 
 abort.i:                                          ; preds = %entry
@@ -72,19 +70,10 @@ abort.i:                                          ; preds = %entry
   unreachable
 
 Main_main.exit:                                   ; preds = %entry
-  %vtpm.35.i = bitcast i8* %vtpm.34.i to %Main*
-  %vtpm.36.i = bitcast i8* %vtpm.34.i to %_Main_vtable**
-  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.36.i, align 8
-  %vtpm.1.i = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.1.i, i32 2)
-  %vtpm.4.i = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.4.i, i32 5)
-  %vtpm.7.i = icmp eq %Int* %vtpm.1.i, %vtpm.4.i
-  %vtpm.20.i = load %_Main_vtable*, %_Main_vtable** %vtpm.36.i, align 8
-  %vtpm.21.i = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.20.i, i64 0, i32 7
-  %tmp.1.i = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.21.i, align 8
-  %String.1.String.2.i = select i1 %vtpm.7.i, %String* @String.1, %String* @String.2
-  %vtpm.28.i = tail call %Main* %tmp.1.i(%Main* nonnull %vtpm.35.i, %String* nonnull %String.1.String.2.i)
+  %vtpm.30.i = bitcast i8* %vtpm.28.i to %_Main_vtable**
+  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.30.i, align 8
+  %0 = bitcast i8* %vtpm.28.i to %IO*
+  %vtpm.22.i = tail call %IO* @IO_out_string(%IO* nonnull %0, %String* nonnull @String.2)
   ret i32 0
 }
 
@@ -98,33 +87,29 @@ declare %String* @String_new()
 
 declare %IO* @IO_new()
 
-define i1 @Main_func(%Main* nocapture readnone %self) {
+; Function Attrs: mustprogress nofree norecurse nosync nounwind readnone willreturn
+define i1 @Main_func(%Main* nocapture readnone %self) #0 {
 entry:
-  %vtpm.1 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.1, i32 2)
-  %vtpm.4 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.4, i32 5)
-  %vtpm.7 = icmp eq %Int* %vtpm.1, %vtpm.4
-  ret i1 %vtpm.7
+  ret i1 false
 }
 
 define %Main* @Main_main(%Main* %self) {
 entry:
-  %vtpm.12 = icmp eq %Main* %self, null
-  br i1 %vtpm.12, label %abort, label %ok.0
+  %vtpm.6 = icmp eq %Main* %self, null
+  br i1 %vtpm.6, label %abort, label %ok.0
 
 ok.0:                                             ; preds = %entry
-  %vtpm.13 = getelementptr %Main, %Main* %self, i64 0, i32 0
-  %vtpm.14 = load %_Main_vtable*, %_Main_vtable** %vtpm.13, align 8
-  %vtpm.15 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.14, i64 0, i32 11
-  %tmp.0 = load i1 (%Main*)*, i1 (%Main*)** %vtpm.15, align 8
-  %vtpm.16 = tail call i1 %tmp.0(%Main* nonnull %self)
-  %vtpm.20 = load %_Main_vtable*, %_Main_vtable** %vtpm.13, align 8
-  %vtpm.21 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.20, i64 0, i32 7
-  %tmp.1 = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.21, align 8
-  %String.1.String.2 = select i1 %vtpm.16, %String* @String.1, %String* @String.2
-  %vtpm.28 = tail call %Main* %tmp.1(%Main* nonnull %self, %String* nonnull %String.1.String.2)
-  ret %Main* %vtpm.28
+  %vtpm.7 = getelementptr %Main, %Main* %self, i64 0, i32 0
+  %vtpm.8 = load %_Main_vtable*, %_Main_vtable** %vtpm.7, align 8
+  %vtpm.9 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.8, i64 0, i32 11
+  %tmp.0 = load i1 (%Main*)*, i1 (%Main*)** %vtpm.9, align 8
+  %vtpm.10 = tail call i1 %tmp.0(%Main* nonnull %self)
+  %vtpm.14 = load %_Main_vtable*, %_Main_vtable** %vtpm.7, align 8
+  %vtpm.15 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.14, i64 0, i32 7
+  %tmp.1 = load %Main* (%Main*, %String*)*, %Main* (%Main*, %String*)** %vtpm.15, align 8
+  %String.1.String.2 = select i1 %vtpm.10, %String* @String.1, %String* @String.2
+  %vtpm.22 = tail call %Main* %tmp.1(%Main* nonnull %self, %String* nonnull %String.1.String.2)
+  ret %Main* %vtpm.22
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -133,17 +118,19 @@ abort:                                            ; preds = %entry
 
 define %Main* @Main_new() {
 entry:
-  %vtpm.34 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.34, null
+  %vtpm.28 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.28, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.35 = bitcast i8* %vtpm.34 to %Main*
-  %vtpm.36 = bitcast i8* %vtpm.34 to %_Main_vtable**
-  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.36, align 8
-  ret %Main* %vtpm.35
+  %vtpm.29 = bitcast i8* %vtpm.28 to %Main*
+  %vtpm.30 = bitcast i8* %vtpm.28 to %_Main_vtable**
+  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.30, align 8
+  ret %Main* %vtpm.29
 
 abort:                                            ; preds = %entry
   tail call void @abort()
   unreachable
 }
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind readnone willreturn }

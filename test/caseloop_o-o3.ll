@@ -127,8 +127,8 @@ declare i32 @IO_in_int(%IO*)
 
 define i32 @main() local_unnamed_addr {
 entry:
-  %vtpm.275.i = tail call i8* @malloc(i32 8)
-  %malloc.null.i = icmp eq i8* %vtpm.275.i, null
+  %vtpm.263.i = tail call i8* @malloc(i32 8)
+  %malloc.null.i = icmp eq i8* %vtpm.263.i, null
   br i1 %malloc.null.i, label %abort.i, label %Main_new.exit
 
 abort.i:                                          ; preds = %entry
@@ -136,10 +136,10 @@ abort.i:                                          ; preds = %entry
   unreachable
 
 Main_new.exit:                                    ; preds = %entry
-  %vtpm.276.i = bitcast i8* %vtpm.275.i to %Main*
-  %vtpm.277.i = bitcast i8* %vtpm.275.i to %_Main_vtable**
-  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.277.i, align 8
-  %main.retval = tail call %Object* @Main_main(%Main* nonnull %vtpm.276.i)
+  %vtpm.264.i = bitcast i8* %vtpm.263.i to %Main*
+  %vtpm.265.i = bitcast i8* %vtpm.263.i to %_Main_vtable**
+  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.265.i, align 8
+  %main.retval = tail call %Object* @Main_main(%Main* nonnull %vtpm.264.i)
   ret i32 0
 }
 
@@ -155,8 +155,8 @@ declare %IO* @IO_new()
 
 define %Object* @Main_main(%Main* %self) {
 entry:
-  %vtpm.282.i = tail call i8* @malloc(i32 8)
-  %malloc.null.i = icmp eq i8* %vtpm.282.i, null
+  %vtpm.270.i = tail call i8* @malloc(i32 8)
+  %malloc.null.i = icmp eq i8* %vtpm.270.i, null
   br i1 %malloc.null.i, label %abort.i, label %A_new.exit
 
 abort.i:                                          ; preds = %entry
@@ -164,10 +164,10 @@ abort.i:                                          ; preds = %entry
   unreachable
 
 A_new.exit:                                       ; preds = %entry
-  %vtpm.284.i = bitcast i8* %vtpm.282.i to %_A_vtable**
-  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.284.i, align 8
-  %vtpm.394.i = tail call i8* @malloc(i32 8)
-  %malloc.null.i41 = icmp eq i8* %vtpm.394.i, null
+  %vtpm.272.i = bitcast i8* %vtpm.270.i to %_A_vtable**
+  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.272.i, align 8
+  %vtpm.382.i = tail call i8* @malloc(i32 8)
+  %malloc.null.i41 = icmp eq i8* %vtpm.382.i, null
   br i1 %malloc.null.i41, label %abort.i42, label %Q_new.exit
 
 abort.i42:                                        ; preds = %A_new.exit
@@ -175,10 +175,14 @@ abort.i42:                                        ; preds = %A_new.exit
   unreachable
 
 Q_new.exit:                                       ; preds = %A_new.exit
-  %vtpm.396.i = bitcast i8* %vtpm.394.i to %_Q_vtable**
-  store %_Q_vtable* @_Q_vtable_prototype, %_Q_vtable** %vtpm.396.i, align 8
-  %vtpm.49 = bitcast i8* %vtpm.394.i to %_Object_vtable**
+  %vtpm.384.i = bitcast i8* %vtpm.382.i to %_Q_vtable**
+  store %_Q_vtable* @_Q_vtable_prototype, %_Q_vtable** %vtpm.384.i, align 8
+  %vtpm.49 = bitcast i8* %vtpm.382.i to %_Object_vtable**
   br label %ok.0
+
+while.3.preheader:                                ; preds = %case.exit.1
+  %vtpm.151 = bitcast i8* %vtpm.270.i to %_Object_vtable**
+  br label %ok.1
 
 ok.0:                                             ; preds = %Q_new.exit, %case.exit.1
   %vtpm.0.062 = phi i32 [ 0, %Q_new.exit ], [ %vtpm.141, %case.exit.1 ]
@@ -340,41 +344,33 @@ src_lte_mc.6.1:                                   ; preds = %case.6.1
 
 case.exit.1:                                      ; preds = %src_lte_mc.6.1, %src_lte_mc.7.1, %src_lte_mc.8.1, %src_lte_mc.9.1, %src_lte_mc.10.1, %src_lte_mc.11.1, %src_lte_mc.12.1, %src_lte_mc.13.1, %src_lte_mc.14.1, %src_lte_mc.15.1, %src_lte_mc.16.1, %src_lte_mc.17.1, %src_lte_mc.18.1, %src_lte_mc.19.1, %src_lte_mc.20.1, %src_lte_mc.21.1, %src_lte_mc.22.1
   %tmp.0.0 = phi %Int* [ %vtpm.136, %src_lte_mc.6.1 ], [ %vtpm.131, %src_lte_mc.7.1 ], [ %vtpm.126, %src_lte_mc.8.1 ], [ %vtpm.121, %src_lte_mc.9.1 ], [ %vtpm.116, %src_lte_mc.10.1 ], [ %vtpm.111, %src_lte_mc.11.1 ], [ %vtpm.106, %src_lte_mc.12.1 ], [ %vtpm.101, %src_lte_mc.13.1 ], [ %vtpm.96, %src_lte_mc.14.1 ], [ %vtpm.91, %src_lte_mc.15.1 ], [ %vtpm.86, %src_lte_mc.16.1 ], [ %vtpm.81, %src_lte_mc.17.1 ], [ %vtpm.76, %src_lte_mc.18.1 ], [ %vtpm.71, %src_lte_mc.19.1 ], [ %vtpm.66, %src_lte_mc.20.1 ], [ %vtpm.61, %src_lte_mc.21.1 ], [ %vtpm.56, %src_lte_mc.22.1 ]
-  %vtpm.141 = add nuw nsw i32 %vtpm.0.062, 1
-  %vtpm.47 = icmp ult i32 %vtpm.0.062, 99
-  br i1 %vtpm.47, label %ok.0, label %loop_end.0
-
-loop_end.0:                                       ; preds = %case.exit.1
   %vtpm.138 = getelementptr %Int, %Int* %tmp.0.0, i64 0, i32 1
   %vtpm.139 = load i32, i32* %vtpm.138, align 4
-  %vtpm.143 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.143, i32 %vtpm.139)
-  %vtpm.146 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.146, i32 17)
-  %vtpm.157 = bitcast i8* %vtpm.282.i to %_Object_vtable**
-  br label %ok.1
+  %vtpm.141 = add nuw nsw i32 %vtpm.0.062, 1
+  %vtpm.47 = icmp ult i32 %vtpm.0.062, 99
+  br i1 %vtpm.47, label %ok.0, label %while.3.preheader
 
-ok.1:                                             ; preds = %loop_end.0, %case.exit.4
-  %vtpm.0.163 = phi i32 [ 0, %loop_end.0 ], [ %vtpm.249, %case.exit.4 ]
-  %vtpm.158 = load %_Object_vtable*, %_Object_vtable** %vtpm.157, align 8
-  %vtpm.159 = getelementptr %_Object_vtable, %_Object_vtable* %vtpm.158, i64 0, i32 0
-  %vtpm.160 = load i32, i32* %vtpm.159, align 4
-  %.not = icmp eq i32 %vtpm.160, 22
+ok.1:                                             ; preds = %while.3.preheader, %case.exit.4
+  %vtpm.0.163 = phi i32 [ 0, %while.3.preheader ], [ %vtpm.243, %case.exit.4 ]
+  %vtpm.152 = load %_Object_vtable*, %_Object_vtable** %vtpm.151, align 8
+  %vtpm.153 = getelementptr %_Object_vtable, %_Object_vtable* %vtpm.152, i64 0, i32 0
+  %vtpm.154 = load i32, i32* %vtpm.153, align 4
+  %.not = icmp eq i32 %vtpm.154, 22
   br i1 %.not, label %src_lte_mc.22.4, label %case.21.4
 
 src_lte_mc.22.4:                                  ; preds = %ok.1
-  %vtpm.164 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.164, i32 17)
+  %vtpm.158 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.158, i32 17)
   br label %case.exit.4
 
 case.21.4:                                        ; preds = %ok.1
-  %9 = add i32 %vtpm.160, -23
+  %9 = add i32 %vtpm.154, -23
   %10 = icmp ult i32 %9, -2
   br i1 %10, label %case.20.4, label %src_lte_mc.21.4
 
 src_lte_mc.21.4:                                  ; preds = %case.21.4
-  %vtpm.169 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.169, i32 16)
+  %vtpm.163 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.163, i32 16)
   br label %case.exit.4
 
 case.20.4:                                        ; preds = %case.21.4
@@ -382,8 +378,8 @@ case.20.4:                                        ; preds = %case.21.4
   br i1 %.not43, label %src_lte_mc.20.4, label %case.19.4
 
 src_lte_mc.20.4:                                  ; preds = %case.20.4
-  %vtpm.174 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.174, i32 15)
+  %vtpm.168 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.168, i32 15)
   br label %case.exit.4
 
 case.19.4:                                        ; preds = %case.20.4
@@ -391,8 +387,8 @@ case.19.4:                                        ; preds = %case.20.4
   br i1 %11, label %case.18.4, label %src_lte_mc.19.4
 
 src_lte_mc.19.4:                                  ; preds = %case.19.4
-  %vtpm.179 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.179, i32 14)
+  %vtpm.173 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.173, i32 14)
   br label %case.exit.4
 
 case.18.4:                                        ; preds = %case.19.4
@@ -400,8 +396,8 @@ case.18.4:                                        ; preds = %case.19.4
   br i1 %.not44, label %src_lte_mc.18.4, label %case.17.4
 
 src_lte_mc.18.4:                                  ; preds = %case.18.4
-  %vtpm.184 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.184, i32 13)
+  %vtpm.178 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.178, i32 13)
   br label %case.exit.4
 
 case.17.4:                                        ; preds = %case.18.4
@@ -409,8 +405,8 @@ case.17.4:                                        ; preds = %case.18.4
   br i1 %12, label %case.16.4, label %src_lte_mc.17.4
 
 src_lte_mc.17.4:                                  ; preds = %case.17.4
-  %vtpm.189 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.189, i32 12)
+  %vtpm.183 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.183, i32 12)
   br label %case.exit.4
 
 case.16.4:                                        ; preds = %case.17.4
@@ -418,8 +414,8 @@ case.16.4:                                        ; preds = %case.17.4
   br i1 %.not45, label %src_lte_mc.16.4, label %case.15.4
 
 src_lte_mc.16.4:                                  ; preds = %case.16.4
-  %vtpm.194 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.194, i32 11)
+  %vtpm.188 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.188, i32 11)
   br label %case.exit.4
 
 case.15.4:                                        ; preds = %case.16.4
@@ -427,8 +423,8 @@ case.15.4:                                        ; preds = %case.16.4
   br i1 %13, label %case.14.4, label %src_lte_mc.15.4
 
 src_lte_mc.15.4:                                  ; preds = %case.15.4
-  %vtpm.199 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.199, i32 10)
+  %vtpm.193 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.193, i32 10)
   br label %case.exit.4
 
 case.14.4:                                        ; preds = %case.15.4
@@ -436,8 +432,8 @@ case.14.4:                                        ; preds = %case.15.4
   br i1 %.not46, label %src_lte_mc.14.4, label %case.13.4
 
 src_lte_mc.14.4:                                  ; preds = %case.14.4
-  %vtpm.204 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.204, i32 9)
+  %vtpm.198 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.198, i32 9)
   br label %case.exit.4
 
 case.13.4:                                        ; preds = %case.14.4
@@ -445,8 +441,8 @@ case.13.4:                                        ; preds = %case.14.4
   br i1 %14, label %case.12.4, label %src_lte_mc.13.4
 
 src_lte_mc.13.4:                                  ; preds = %case.13.4
-  %vtpm.209 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.209, i32 8)
+  %vtpm.203 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.203, i32 8)
   br label %case.exit.4
 
 case.12.4:                                        ; preds = %case.13.4
@@ -454,8 +450,8 @@ case.12.4:                                        ; preds = %case.13.4
   br i1 %.not47, label %src_lte_mc.12.4, label %case.11.4
 
 src_lte_mc.12.4:                                  ; preds = %case.12.4
-  %vtpm.214 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.214, i32 7)
+  %vtpm.208 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.208, i32 7)
   br label %case.exit.4
 
 case.11.4:                                        ; preds = %case.12.4
@@ -463,8 +459,8 @@ case.11.4:                                        ; preds = %case.12.4
   br i1 %15, label %case.10.4, label %src_lte_mc.11.4
 
 src_lte_mc.11.4:                                  ; preds = %case.11.4
-  %vtpm.219 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.219, i32 6)
+  %vtpm.213 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.213, i32 6)
   br label %case.exit.4
 
 case.10.4:                                        ; preds = %case.11.4
@@ -472,8 +468,8 @@ case.10.4:                                        ; preds = %case.11.4
   br i1 %.not48, label %src_lte_mc.10.4, label %case.9.4
 
 src_lte_mc.10.4:                                  ; preds = %case.10.4
-  %vtpm.224 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.224, i32 5)
+  %vtpm.218 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.218, i32 5)
   br label %case.exit.4
 
 case.9.4:                                         ; preds = %case.10.4
@@ -481,8 +477,8 @@ case.9.4:                                         ; preds = %case.10.4
   br i1 %16, label %case.8.4, label %src_lte_mc.9.4
 
 src_lte_mc.9.4:                                   ; preds = %case.9.4
-  %vtpm.229 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.229, i32 4)
+  %vtpm.223 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.223, i32 4)
   br label %case.exit.4
 
 case.8.4:                                         ; preds = %case.9.4
@@ -490,8 +486,8 @@ case.8.4:                                         ; preds = %case.9.4
   br i1 %.not49, label %src_lte_mc.8.4, label %case.7.4
 
 src_lte_mc.8.4:                                   ; preds = %case.8.4
-  %vtpm.234 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.234, i32 3)
+  %vtpm.228 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.228, i32 3)
   br label %case.exit.4
 
 case.7.4:                                         ; preds = %case.8.4
@@ -499,8 +495,8 @@ case.7.4:                                         ; preds = %case.8.4
   br i1 %17, label %case.6.4, label %src_lte_mc.7.4
 
 src_lte_mc.7.4:                                   ; preds = %case.7.4
-  %vtpm.239 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.239, i32 2)
+  %vtpm.233 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.233, i32 2)
   br label %case.exit.4
 
 case.6.4:                                         ; preds = %case.7.4
@@ -508,39 +504,35 @@ case.6.4:                                         ; preds = %case.7.4
   br i1 %.not50, label %src_lte_mc.6.4, label %abort
 
 src_lte_mc.6.4:                                   ; preds = %case.6.4
-  %vtpm.244 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.244, i32 1)
+  %vtpm.238 = tail call %Int* @Int_new()
+  tail call void @Int_init(%Int* %vtpm.238, i32 1)
   br label %case.exit.4
 
 case.exit.4:                                      ; preds = %src_lte_mc.6.4, %src_lte_mc.7.4, %src_lte_mc.8.4, %src_lte_mc.9.4, %src_lte_mc.10.4, %src_lte_mc.11.4, %src_lte_mc.12.4, %src_lte_mc.13.4, %src_lte_mc.14.4, %src_lte_mc.15.4, %src_lte_mc.16.4, %src_lte_mc.17.4, %src_lte_mc.18.4, %src_lte_mc.19.4, %src_lte_mc.20.4, %src_lte_mc.21.4, %src_lte_mc.22.4
-  %tmp.1.0 = phi %Int* [ %vtpm.244, %src_lte_mc.6.4 ], [ %vtpm.239, %src_lte_mc.7.4 ], [ %vtpm.234, %src_lte_mc.8.4 ], [ %vtpm.229, %src_lte_mc.9.4 ], [ %vtpm.224, %src_lte_mc.10.4 ], [ %vtpm.219, %src_lte_mc.11.4 ], [ %vtpm.214, %src_lte_mc.12.4 ], [ %vtpm.209, %src_lte_mc.13.4 ], [ %vtpm.204, %src_lte_mc.14.4 ], [ %vtpm.199, %src_lte_mc.15.4 ], [ %vtpm.194, %src_lte_mc.16.4 ], [ %vtpm.189, %src_lte_mc.17.4 ], [ %vtpm.184, %src_lte_mc.18.4 ], [ %vtpm.179, %src_lte_mc.19.4 ], [ %vtpm.174, %src_lte_mc.20.4 ], [ %vtpm.169, %src_lte_mc.21.4 ], [ %vtpm.164, %src_lte_mc.22.4 ]
-  %vtpm.249 = add nuw nsw i32 %vtpm.0.163, 1
-  %vtpm.155 = icmp ult i32 %vtpm.0.163, 9
-  br i1 %vtpm.155, label %ok.1, label %loop_end.3
+  %tmp.1.0 = phi %Int* [ %vtpm.238, %src_lte_mc.6.4 ], [ %vtpm.233, %src_lte_mc.7.4 ], [ %vtpm.228, %src_lte_mc.8.4 ], [ %vtpm.223, %src_lte_mc.9.4 ], [ %vtpm.218, %src_lte_mc.10.4 ], [ %vtpm.213, %src_lte_mc.11.4 ], [ %vtpm.208, %src_lte_mc.12.4 ], [ %vtpm.203, %src_lte_mc.13.4 ], [ %vtpm.198, %src_lte_mc.14.4 ], [ %vtpm.193, %src_lte_mc.15.4 ], [ %vtpm.188, %src_lte_mc.16.4 ], [ %vtpm.183, %src_lte_mc.17.4 ], [ %vtpm.178, %src_lte_mc.18.4 ], [ %vtpm.173, %src_lte_mc.19.4 ], [ %vtpm.168, %src_lte_mc.20.4 ], [ %vtpm.163, %src_lte_mc.21.4 ], [ %vtpm.158, %src_lte_mc.22.4 ]
+  %vtpm.240 = getelementptr %Int, %Int* %tmp.1.0, i64 0, i32 1
+  %vtpm.241 = load i32, i32* %vtpm.240, align 4
+  %vtpm.243 = add nuw nsw i32 %vtpm.0.163, 1
+  %vtpm.149 = icmp ult i32 %vtpm.0.163, 9
+  br i1 %vtpm.149, label %ok.1, label %loop_end.3
 
 loop_end.3:                                       ; preds = %case.exit.4
-  %vtpm.246 = getelementptr %Int, %Int* %tmp.1.0, i64 0, i32 1
-  %vtpm.247 = load i32, i32* %vtpm.246, align 4
-  %vtpm.251 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.251, i32 %vtpm.247)
-  %vtpm.254 = tail call %Int* @Int_new()
-  tail call void @Int_init(%Int* %vtpm.254, i32 1)
-  %vtpm.264 = icmp eq %Main* %self, null
-  br i1 %vtpm.264, label %abort, label %ok.2
+  %vtpm.252 = icmp eq %Main* %self, null
+  br i1 %vtpm.252, label %abort, label %ok.2
 
 ok.2:                                             ; preds = %loop_end.3
-  %vtpm.257.not = icmp eq %Int* %vtpm.251, %vtpm.254
-  %vtpm.149.not = icmp ne %Int* %vtpm.143, %vtpm.146
-  %. = zext i1 %vtpm.149.not to i32
-  %vtpm.260 = select i1 %vtpm.149.not, i32 2, i32 1
-  %vtpm.1.1 = select i1 %vtpm.257.not, i32 %., i32 %vtpm.260
-  %vtpm.265 = getelementptr %Main, %Main* %self, i64 0, i32 0
-  %vtpm.266 = load %_Main_vtable*, %_Main_vtable** %vtpm.265, align 8
-  %vtpm.267 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.266, i64 0, i32 8
-  %tmp.6 = load %Main* (%Main*, i32)*, %Main* (%Main*, i32)** %vtpm.267, align 8
-  %vtpm.268 = tail call %Main* %tmp.6(%Main* nonnull %self, i32 %vtpm.1.1)
-  %vtpm.270 = bitcast %Main* %self to %Object*
-  ret %Object* %vtpm.270
+  %vtpm.245.not = icmp eq i32 %vtpm.241, 1
+  %vtpm.143.not = icmp ne i32 %vtpm.139, 17
+  %. = zext i1 %vtpm.143.not to i32
+  %vtpm.248 = select i1 %vtpm.143.not, i32 2, i32 1
+  %vtpm.1.1 = select i1 %vtpm.245.not, i32 %., i32 %vtpm.248
+  %vtpm.253 = getelementptr %Main, %Main* %self, i64 0, i32 0
+  %vtpm.254 = load %_Main_vtable*, %_Main_vtable** %vtpm.253, align 8
+  %vtpm.255 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.254, i64 0, i32 8
+  %tmp.6 = load %Main* (%Main*, i32)*, %Main* (%Main*, i32)** %vtpm.255, align 8
+  %vtpm.256 = tail call %Main* %tmp.6(%Main* nonnull %self, i32 %vtpm.1.1)
+  %vtpm.258 = bitcast %Main* %self to %Object*
+  ret %Object* %vtpm.258
 
 abort:                                            ; preds = %case.6.1, %case.6.4, %loop_end.3
   tail call void @abort()
@@ -549,15 +541,15 @@ abort:                                            ; preds = %case.6.1, %case.6.4
 
 define %Main* @Main_new() {
 entry:
-  %vtpm.275 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.275, null
+  %vtpm.263 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.263, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.276 = bitcast i8* %vtpm.275 to %Main*
-  %vtpm.277 = bitcast i8* %vtpm.275 to %_Main_vtable**
-  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.277, align 8
-  ret %Main* %vtpm.276
+  %vtpm.264 = bitcast i8* %vtpm.263 to %Main*
+  %vtpm.265 = bitcast i8* %vtpm.263 to %_Main_vtable**
+  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.265, align 8
+  ret %Main* %vtpm.264
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -566,15 +558,15 @@ abort:                                            ; preds = %entry
 
 define %A* @A_new() {
 entry:
-  %vtpm.282 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.282, null
+  %vtpm.270 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.270, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.283 = bitcast i8* %vtpm.282 to %A*
-  %vtpm.284 = bitcast i8* %vtpm.282 to %_A_vtable**
-  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.284, align 8
-  ret %A* %vtpm.283
+  %vtpm.271 = bitcast i8* %vtpm.270 to %A*
+  %vtpm.272 = bitcast i8* %vtpm.270 to %_A_vtable**
+  store %_A_vtable* @_A_vtable_prototype, %_A_vtable** %vtpm.272, align 8
+  ret %A* %vtpm.271
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -583,15 +575,15 @@ abort:                                            ; preds = %entry
 
 define %B* @B_new() {
 entry:
-  %vtpm.289 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.289, null
+  %vtpm.277 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.277, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.290 = bitcast i8* %vtpm.289 to %B*
-  %vtpm.291 = bitcast i8* %vtpm.289 to %_B_vtable**
-  store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %vtpm.291, align 8
-  ret %B* %vtpm.290
+  %vtpm.278 = bitcast i8* %vtpm.277 to %B*
+  %vtpm.279 = bitcast i8* %vtpm.277 to %_B_vtable**
+  store %_B_vtable* @_B_vtable_prototype, %_B_vtable** %vtpm.279, align 8
+  ret %B* %vtpm.278
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -600,15 +592,15 @@ abort:                                            ; preds = %entry
 
 define %C* @C_new() {
 entry:
-  %vtpm.296 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.296, null
+  %vtpm.284 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.284, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.297 = bitcast i8* %vtpm.296 to %C*
-  %vtpm.298 = bitcast i8* %vtpm.296 to %_C_vtable**
-  store %_C_vtable* @_C_vtable_prototype, %_C_vtable** %vtpm.298, align 8
-  ret %C* %vtpm.297
+  %vtpm.285 = bitcast i8* %vtpm.284 to %C*
+  %vtpm.286 = bitcast i8* %vtpm.284 to %_C_vtable**
+  store %_C_vtable* @_C_vtable_prototype, %_C_vtable** %vtpm.286, align 8
+  ret %C* %vtpm.285
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -617,15 +609,15 @@ abort:                                            ; preds = %entry
 
 define %D* @D_new() {
 entry:
-  %vtpm.303 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.303, null
+  %vtpm.291 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.291, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.304 = bitcast i8* %vtpm.303 to %D*
-  %vtpm.305 = bitcast i8* %vtpm.303 to %_D_vtable**
-  store %_D_vtable* @_D_vtable_prototype, %_D_vtable** %vtpm.305, align 8
-  ret %D* %vtpm.304
+  %vtpm.292 = bitcast i8* %vtpm.291 to %D*
+  %vtpm.293 = bitcast i8* %vtpm.291 to %_D_vtable**
+  store %_D_vtable* @_D_vtable_prototype, %_D_vtable** %vtpm.293, align 8
+  ret %D* %vtpm.292
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -634,15 +626,15 @@ abort:                                            ; preds = %entry
 
 define %E* @E_new() {
 entry:
-  %vtpm.310 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.310, null
+  %vtpm.298 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.298, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.311 = bitcast i8* %vtpm.310 to %E*
-  %vtpm.312 = bitcast i8* %vtpm.310 to %_E_vtable**
-  store %_E_vtable* @_E_vtable_prototype, %_E_vtable** %vtpm.312, align 8
-  ret %E* %vtpm.311
+  %vtpm.299 = bitcast i8* %vtpm.298 to %E*
+  %vtpm.300 = bitcast i8* %vtpm.298 to %_E_vtable**
+  store %_E_vtable* @_E_vtable_prototype, %_E_vtable** %vtpm.300, align 8
+  ret %E* %vtpm.299
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -651,15 +643,15 @@ abort:                                            ; preds = %entry
 
 define %F* @F_new() {
 entry:
-  %vtpm.317 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.317, null
+  %vtpm.305 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.305, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.318 = bitcast i8* %vtpm.317 to %F*
-  %vtpm.319 = bitcast i8* %vtpm.317 to %_F_vtable**
-  store %_F_vtable* @_F_vtable_prototype, %_F_vtable** %vtpm.319, align 8
-  ret %F* %vtpm.318
+  %vtpm.306 = bitcast i8* %vtpm.305 to %F*
+  %vtpm.307 = bitcast i8* %vtpm.305 to %_F_vtable**
+  store %_F_vtable* @_F_vtable_prototype, %_F_vtable** %vtpm.307, align 8
+  ret %F* %vtpm.306
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -668,15 +660,15 @@ abort:                                            ; preds = %entry
 
 define %G* @G_new() {
 entry:
-  %vtpm.324 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.324, null
+  %vtpm.312 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.312, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.325 = bitcast i8* %vtpm.324 to %G*
-  %vtpm.326 = bitcast i8* %vtpm.324 to %_G_vtable**
-  store %_G_vtable* @_G_vtable_prototype, %_G_vtable** %vtpm.326, align 8
-  ret %G* %vtpm.325
+  %vtpm.313 = bitcast i8* %vtpm.312 to %G*
+  %vtpm.314 = bitcast i8* %vtpm.312 to %_G_vtable**
+  store %_G_vtable* @_G_vtable_prototype, %_G_vtable** %vtpm.314, align 8
+  ret %G* %vtpm.313
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -685,15 +677,15 @@ abort:                                            ; preds = %entry
 
 define %H* @H_new() {
 entry:
-  %vtpm.331 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.331, null
+  %vtpm.319 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.319, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.332 = bitcast i8* %vtpm.331 to %H*
-  %vtpm.333 = bitcast i8* %vtpm.331 to %_H_vtable**
-  store %_H_vtable* @_H_vtable_prototype, %_H_vtable** %vtpm.333, align 8
-  ret %H* %vtpm.332
+  %vtpm.320 = bitcast i8* %vtpm.319 to %H*
+  %vtpm.321 = bitcast i8* %vtpm.319 to %_H_vtable**
+  store %_H_vtable* @_H_vtable_prototype, %_H_vtable** %vtpm.321, align 8
+  ret %H* %vtpm.320
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -702,15 +694,15 @@ abort:                                            ; preds = %entry
 
 define %I* @I_new() {
 entry:
-  %vtpm.338 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.338, null
+  %vtpm.326 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.326, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.339 = bitcast i8* %vtpm.338 to %I*
-  %vtpm.340 = bitcast i8* %vtpm.338 to %_I_vtable**
-  store %_I_vtable* @_I_vtable_prototype, %_I_vtable** %vtpm.340, align 8
-  ret %I* %vtpm.339
+  %vtpm.327 = bitcast i8* %vtpm.326 to %I*
+  %vtpm.328 = bitcast i8* %vtpm.326 to %_I_vtable**
+  store %_I_vtable* @_I_vtable_prototype, %_I_vtable** %vtpm.328, align 8
+  ret %I* %vtpm.327
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -719,15 +711,15 @@ abort:                                            ; preds = %entry
 
 define %J* @J_new() {
 entry:
-  %vtpm.345 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.345, null
+  %vtpm.333 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.333, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.346 = bitcast i8* %vtpm.345 to %J*
-  %vtpm.347 = bitcast i8* %vtpm.345 to %_J_vtable**
-  store %_J_vtable* @_J_vtable_prototype, %_J_vtable** %vtpm.347, align 8
-  ret %J* %vtpm.346
+  %vtpm.334 = bitcast i8* %vtpm.333 to %J*
+  %vtpm.335 = bitcast i8* %vtpm.333 to %_J_vtable**
+  store %_J_vtable* @_J_vtable_prototype, %_J_vtable** %vtpm.335, align 8
+  ret %J* %vtpm.334
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -736,15 +728,15 @@ abort:                                            ; preds = %entry
 
 define %K* @K_new() {
 entry:
-  %vtpm.352 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.352, null
+  %vtpm.340 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.340, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.353 = bitcast i8* %vtpm.352 to %K*
-  %vtpm.354 = bitcast i8* %vtpm.352 to %_K_vtable**
-  store %_K_vtable* @_K_vtable_prototype, %_K_vtable** %vtpm.354, align 8
-  ret %K* %vtpm.353
+  %vtpm.341 = bitcast i8* %vtpm.340 to %K*
+  %vtpm.342 = bitcast i8* %vtpm.340 to %_K_vtable**
+  store %_K_vtable* @_K_vtable_prototype, %_K_vtable** %vtpm.342, align 8
+  ret %K* %vtpm.341
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -753,15 +745,15 @@ abort:                                            ; preds = %entry
 
 define %L* @L_new() {
 entry:
-  %vtpm.359 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.359, null
+  %vtpm.347 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.347, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.360 = bitcast i8* %vtpm.359 to %L*
-  %vtpm.361 = bitcast i8* %vtpm.359 to %_L_vtable**
-  store %_L_vtable* @_L_vtable_prototype, %_L_vtable** %vtpm.361, align 8
-  ret %L* %vtpm.360
+  %vtpm.348 = bitcast i8* %vtpm.347 to %L*
+  %vtpm.349 = bitcast i8* %vtpm.347 to %_L_vtable**
+  store %_L_vtable* @_L_vtable_prototype, %_L_vtable** %vtpm.349, align 8
+  ret %L* %vtpm.348
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -770,15 +762,15 @@ abort:                                            ; preds = %entry
 
 define %M* @M_new() {
 entry:
-  %vtpm.366 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.366, null
+  %vtpm.354 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.354, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.367 = bitcast i8* %vtpm.366 to %M*
-  %vtpm.368 = bitcast i8* %vtpm.366 to %_M_vtable**
-  store %_M_vtable* @_M_vtable_prototype, %_M_vtable** %vtpm.368, align 8
-  ret %M* %vtpm.367
+  %vtpm.355 = bitcast i8* %vtpm.354 to %M*
+  %vtpm.356 = bitcast i8* %vtpm.354 to %_M_vtable**
+  store %_M_vtable* @_M_vtable_prototype, %_M_vtable** %vtpm.356, align 8
+  ret %M* %vtpm.355
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -787,15 +779,15 @@ abort:                                            ; preds = %entry
 
 define %N* @N_new() {
 entry:
-  %vtpm.373 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.373, null
+  %vtpm.361 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.361, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.374 = bitcast i8* %vtpm.373 to %N*
-  %vtpm.375 = bitcast i8* %vtpm.373 to %_N_vtable**
-  store %_N_vtable* @_N_vtable_prototype, %_N_vtable** %vtpm.375, align 8
-  ret %N* %vtpm.374
+  %vtpm.362 = bitcast i8* %vtpm.361 to %N*
+  %vtpm.363 = bitcast i8* %vtpm.361 to %_N_vtable**
+  store %_N_vtable* @_N_vtable_prototype, %_N_vtable** %vtpm.363, align 8
+  ret %N* %vtpm.362
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -804,15 +796,15 @@ abort:                                            ; preds = %entry
 
 define %O* @O_new() {
 entry:
-  %vtpm.380 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.380, null
+  %vtpm.368 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.368, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.381 = bitcast i8* %vtpm.380 to %O*
-  %vtpm.382 = bitcast i8* %vtpm.380 to %_O_vtable**
-  store %_O_vtable* @_O_vtable_prototype, %_O_vtable** %vtpm.382, align 8
-  ret %O* %vtpm.381
+  %vtpm.369 = bitcast i8* %vtpm.368 to %O*
+  %vtpm.370 = bitcast i8* %vtpm.368 to %_O_vtable**
+  store %_O_vtable* @_O_vtable_prototype, %_O_vtable** %vtpm.370, align 8
+  ret %O* %vtpm.369
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -821,15 +813,15 @@ abort:                                            ; preds = %entry
 
 define %P* @P_new() {
 entry:
-  %vtpm.387 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.387, null
+  %vtpm.375 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.375, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.388 = bitcast i8* %vtpm.387 to %P*
-  %vtpm.389 = bitcast i8* %vtpm.387 to %_P_vtable**
-  store %_P_vtable* @_P_vtable_prototype, %_P_vtable** %vtpm.389, align 8
-  ret %P* %vtpm.388
+  %vtpm.376 = bitcast i8* %vtpm.375 to %P*
+  %vtpm.377 = bitcast i8* %vtpm.375 to %_P_vtable**
+  store %_P_vtable* @_P_vtable_prototype, %_P_vtable** %vtpm.377, align 8
+  ret %P* %vtpm.376
 
 abort:                                            ; preds = %entry
   tail call void @abort()
@@ -838,15 +830,15 @@ abort:                                            ; preds = %entry
 
 define %Q* @Q_new() {
 entry:
-  %vtpm.394 = tail call i8* @malloc(i32 8)
-  %malloc.null = icmp eq i8* %vtpm.394, null
+  %vtpm.382 = tail call i8* @malloc(i32 8)
+  %malloc.null = icmp eq i8* %vtpm.382, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.395 = bitcast i8* %vtpm.394 to %Q*
-  %vtpm.396 = bitcast i8* %vtpm.394 to %_Q_vtable**
-  store %_Q_vtable* @_Q_vtable_prototype, %_Q_vtable** %vtpm.396, align 8
-  ret %Q* %vtpm.395
+  %vtpm.383 = bitcast i8* %vtpm.382 to %Q*
+  %vtpm.384 = bitcast i8* %vtpm.382 to %_Q_vtable**
+  store %_Q_vtable* @_Q_vtable_prototype, %_Q_vtable** %vtpm.384, align 8
+  ret %Q* %vtpm.383
 
 abort:                                            ; preds = %entry
   tail call void @abort()
