@@ -864,7 +864,7 @@ void CgenNode::code_init_function(CgenEnvironment *env) {
     // Also need to add bindings to symbol table since second pass might need attribute's vreg
     // Entry e(attr_name, 0);
     // Symbol symbol = &e;
-    Symbol symbol = attrs_as_features[attr_name]->get_name();
+    // Symbol symbol = attrs_as_features[attr_name]->get_name();
 // ! Not sure if I should remove the binding here
     // env->add_binding(symbol, &attr_ptr);
   }
