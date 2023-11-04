@@ -158,7 +158,8 @@ declare i32 @IO_in_int(%IO*)
 
 @str.Main = internal constant [5 x i8] c"Main\00"
 %Main = type {
-	%_Main_vtable*
+	%_Main_vtable*,
+	i32
 }
 
 %_Main_vtable = type {
@@ -169,7 +170,11 @@ declare i32 @IO_in_int(%IO*)
 	%Object* (%Main*) *,
 	%String* (%Main*) *,
 	%Main* (%Main*) *,
-	i1 (%Main*) *
+	%Main* (%Main*,%String*) *,
+	%Main* (%Main*,i32) *,
+	%String* (%Main*) *,
+	i32 (%Main*) *,
+	%Object* (%Main*) *
 }
 
 @_Main_vtable_prototype = constant %_Main_vtable {
@@ -180,7 +185,11 @@ declare i32 @IO_in_int(%IO*)
 	%Object* (%Main*) * bitcast (%Object* (%Object*) * @Object_abort to %Object* (%Main*) *),
 	%String* (%Main*) * bitcast (%String* (%Object*) * @Object_type_name to %String* (%Main*) *),
 	%Main* (%Main*) * bitcast (%Object* (%Object*) * @Object_copy to %Main* (%Main*) *),
-	i1 (%Main*) * @Main_main
+	%Main* (%Main*,%String*) * bitcast (%IO* (%IO*,%String*) * @IO_out_string to %Main* (%Main*,%String*) *),
+	%Main* (%Main*,i32) * bitcast (%IO* (%IO*,i32) * @IO_out_int to %Main* (%Main*,i32) *),
+	%String* (%Main*) * bitcast (%String* (%IO*) * @IO_in_string to %String* (%Main*) *),
+	i32 (%Main*) * bitcast (i32 (%IO*) * @IO_in_int to i32 (%Main*) *),
+	%Object* (%Main*) * @Main_main
 }
 
 @global_str.1 = internal constant [14 x i8] c"<basic class>\00"
@@ -189,17 +198,17 @@ declare i32 @IO_in_int(%IO*)
 	i8* getelementptr ([14 x i8], [14 x i8]* @global_str.1, i32 0, i32 0)
 }
 
-@global_str.0 = internal constant [9 x i8] c"arith.cl\00"
+@global_str.0 = internal constant [12 x i8] c"assign1o.cl\00"
 @String.0 = constant %String {
 	%_String_vtable* @_String_vtable_prototype,
-	i8* getelementptr ([9 x i8], [9 x i8]* @global_str.0, i32 0, i32 0)
+	i8* getelementptr ([12 x i8], [12 x i8]* @global_str.0, i32 0, i32 0)
 }
 
 define i32 @main() {
 
 entry:
 	%main.obj = call %Main* @Main_new(  )
-	%main.retval = call i1(%Main* ) @Main_main( %Main* %main.obj )
+	%main.retval = call %Object*(%Main* ) @Main_main( %Main* %main.obj )
 	ret i32 0
 }
 
@@ -208,17 +217,30 @@ declare %Int* @Int_new()
 declare %Bool* @Bool_new()
 declare %String* @String_new()
 declare %IO* @IO_new()
-define i1 @Main_main(%Main* %self) {
+define %Object* @Main_main(%Main* %self) {
 
 entry:
-	%vtpm.0 = alloca i32
-	%vtpm.1 = alloca i1
-	%vtpm.2 = alloca %Main*
-	store %Main* %self, %Main** %vtpm.2
-	store i1 true, i1* %vtpm.1
-	store i32 2, i32* %vtpm.0
-	%vtpm.3 = load i1, i1* %vtpm.1
-	ret i1 %vtpm.3
+	%vtpm.0 = alloca %Main*
+	store %Main* %self, %Main** %vtpm.0
+	%vtpm.1 = load %Main*, %Main** %vtpm.0
+	%vtpm.2 = getelementptr %Main, %Main* %vtpm.1, i32 0, i32 1
+	store i32 7656, i32* %vtpm.2
+	%vtpm.3 = load %Main*, %Main** %vtpm.0
+	%vtpm.4 = getelementptr %Main, %Main* %vtpm.3, i32 0, i32 1
+	%vtpm.5 = load i32, i32* %vtpm.4
+	%vtpm.6 = load %Main*, %Main** %vtpm.0
+	%vtpm.7 = icmp eq %Main* %vtpm.6, null
+	br i1 %vtpm.7, label %abort, label %ok.0
+
+ok.0:
+	%vtpm.8 = getelementptr %Main, %Main* %vtpm.6, i32 0, i32 0
+	%vtpm.9 = load %_Main_vtable*, %_Main_vtable** %vtpm.8
+	%vtpm.10 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.9, i32 0, i32 8
+	%vtpm.11 = load %Main* (%Main*,i32) *, %Main* (%Main*,i32) ** %vtpm.10
+	%vtpm.12 = call %Main*(%Main*, i32 ) %vtpm.11( %Main* %vtpm.6, i32 %vtpm.5 )
+	%vtpm.13 = load %Main*, %Main** %vtpm.0
+	%vtpm.14 = bitcast %Main* %vtpm.13 to %Object*
+	ret %Object* %vtpm.14
 
 abort:
 	call void @abort(  )
@@ -228,19 +250,23 @@ abort:
 define %Main* @Main_new() {
 
 entry:
-	%vtpm.5 = alloca %Main*
-	%vtpm.6 = getelementptr %_Main_vtable, %_Main_vtable* @_Main_vtable_prototype, i32 0, i32 1
-	%vtpm.7 = load i32, i32* %vtpm.6
-	%vtpm.8 = call i8*(i32 ) @malloc( i32 %vtpm.7 )
-	%vtpm.9 = bitcast i8* %vtpm.8 to %Main*
-	%malloc.null = icmp eq %Main* %vtpm.9, null
+	%vtpm.16 = alloca %Main*
+	%vtpm.17 = getelementptr %_Main_vtable, %_Main_vtable* @_Main_vtable_prototype, i32 0, i32 1
+	%vtpm.18 = load i32, i32* %vtpm.17
+	%vtpm.19 = call i8*(i32 ) @malloc( i32 %vtpm.18 )
+	%vtpm.20 = bitcast i8* %vtpm.19 to %Main*
+	%malloc.null = icmp eq %Main* %vtpm.20, null
 	br i1 %malloc.null, label %abort, label %okay
 
 okay:
-	%vtpm.10 = getelementptr %Main, %Main* %vtpm.9, i32 0, i32 0
-	store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.10
-	store %Main* %vtpm.9, %Main** %vtpm.5
-	ret %Main* %vtpm.9
+	%vtpm.21 = getelementptr %Main, %Main* %vtpm.20, i32 0, i32 0
+	store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.21
+	store %Main* %vtpm.20, %Main** %vtpm.16
+	%vtpm.22 = getelementptr %Main, %Main* %vtpm.20, i32 0, i32 1
+	store i32 0, i32* %vtpm.22
+	%vtpm.23 = getelementptr %Main, %Main* %vtpm.20, i32 0, i32 1
+	store i32 5, i32* %vtpm.23
+	ret %Main* %vtpm.20
 
 abort:
 	call void @abort(  )

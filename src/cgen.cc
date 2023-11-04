@@ -355,11 +355,24 @@ void CgenClassTable::code_module() {
 void CgenClassTable::code_classes(CgenNode *c) {
   // TODO: add code here
 
+  // if (cgen_debug) {
+  //   using namespace std;
+  //   std::cerr << ">>> code_class:  " << c->get_type_name() << std::endl;
+  //   std::cerr << ">>> it has " << c->get_children().size() << " children" << std::endl;
+  // }
   // Code itself, then call children's code_class recursively
   c->code_class();
 
   for (CgenNode* child : c->get_children()) {
-    child->code_class();
+    if (cgen_debug) {
+      using namespace std;
+      std::cerr << ">>> code_class:  " << child->get_type_name() << std::endl;
+    }
+    // Add to set that tracks which classes has already be genenerated
+    if (generated_classes.find(child->get_type_name()) == generated_classes.end()) {
+      generated_classes.insert(child->get_type_name());
+      child->code_class();
+    }
   }
 
 }
@@ -729,6 +742,15 @@ void CgenNode::code_class() {
     // Need to declare _new method
     ValuePrinter vp(*ct_stream);
     vp.declare(op_type(get_type_name(), 1), get_init_function_name(), {});
+    CgenClassTable* ct = get_classtable();
+    for (CgenNode* child : get_children()) {
+      // Add to set that tracks which classes has already be genenerated
+      if (ct->generated_classes.find(child->get_type_name()) == ct->generated_classes.end()) {
+        ct->generated_classes.insert(child->get_type_name());
+        child->code_class();
+      }
+      // child->code_class();
+    }
     return;
   }
   // TODO: add code here
@@ -738,8 +760,16 @@ void CgenNode::code_class() {
   //   if (feature.)
   //   feature->code(&env);
   // }
+  if (cgen_debug) {
+      using namespace std;
+      std::cerr << ">>> generating " << methods_as_features.size() << " methods"  << std::endl;
+  }
   for (auto& [method_name, method_tree_node] : methods_as_features) {
     CgenEnvironment env(*ct_stream, this);
+    if (cgen_debug) {
+      using namespace std;
+      std::cerr << ">>> generating method " << method_name << std::endl;
+    }
     method_tree_node->code(&env);
   }
 
@@ -987,14 +1017,46 @@ operand assign_class::code(CgenEnvironment *env) {
   operand value = expr->code(env);
   // operand* decl_var = env->find_in_scopes(name);
   // vp.store(value, *decl_var);
-  VarRegAndPos var_reg_and_pos = get_vreg_of_variable(env, name);
-  operand variable_vreg = var_reg_and_pos.var; 
-  operand variable_pos = var_reg_and_pos.pos;
+  // VarRegAndPos var_reg_and_pos = get_vreg_of_variable(env, name);
+  // operand variable_vreg = var_reg_and_pos.var; 
+  // operand variable_pos = var_reg_and_pos.pos;
 
-  op_type target_type = variable_vreg.get_type();
+  operand var_holder;
+  op_type var_type;
+  operand* var = env->find_in_scopes(name);
+  if (var != nullptr) {
+    // Found it in symbol table
+    var_holder = *var;
+    var_type = var_holder.get_type().get_deref_type();
+
+  } else {
+    operand self_pptr = *env->find_in_scopes(self);
+    CgenNode* cur_class = env->get_class();
+    operand self_ptr = vp.load(op_type(env->get_class()->get_type_name(), 1), self_pptr);
+    op_type attr_type = cur_class->attr_list[name->get_string()];
+    int attr_index_in_record = cur_class->obj_record_index_of_attributes[name->get_string()];
+    operand attr_ptr = vp.getelementptr(
+      op_type(env->get_class()->get_type_name()),
+      self_ptr,
+      int_value(0),
+      int_value(attr_index_in_record),
+      attr_type.get_ptr_type()
+    );
+    var_holder = attr_ptr;
+    var_type = attr_type;
+  }
+
+  // op_type target_type = variable_vreg.get_type();
   // op_type target_type = variable_vreg.get_type().get_deref_type();
-  operand conformed_value = conform(value, target_type, env);
-  vp.store(conformed_value, variable_pos);
+  
+  
+  if (cgen_debug) {
+    std::cerr << ">>> Conform due to assign" << std::endl;
+    std::cerr << ">>> The value is " << value.get_name() << " with type " << value.get_typename() << std::endl;
+    std::cerr << ">>> var_type's type is " << var_type.get_name() << std::endl;
+  }
+  operand conformed_value = conform(value, var_type, env);
+  vp.store(conformed_value, var_holder);
   return value;
 }
 
@@ -1364,11 +1426,11 @@ operand dispatch_class::code(CgenEnvironment *env) {
   }
   param_list.insert(param_list.begin(), expr_code);
 
-  // operand isNull = vp.icmp(EQ, expr_code, null_value(EMPTY));
-  // std::string new_ok_label = env->new_ok_label();
-  // vp.branch_cond(isNull, "abort", new_ok_label);
+  operand isNull = vp.icmp(EQ, expr_code, null_value(EMPTY));
+  std::string new_ok_label = env->new_ok_label();
+  vp.branch_cond(isNull, "abort", new_ok_label);
   
-  // vp.begin_block(new_ok_label);
+  vp.begin_block(new_ok_label);
 
   // 2. get function ptr from correct vtable
 
@@ -2066,7 +2128,7 @@ operand conform(operand src, op_type type, CgenEnvironment *env) {
   ValuePrinter vp(*env->cur_stream);
   if (src.get_typename() == type.get_name()) {
     return src;
-  } else if (src.get_type().get_name() == "%Int*" && type.get_name() == "i32") {
+  } else if (src.get_typename() == "%Int*" && type.get_id() == INT32) {
     // Unbox Int to i32
     operand i32_ptr = vp.getelementptr(
       op_type("Int"),
@@ -2077,7 +2139,7 @@ operand conform(operand src, op_type type, CgenEnvironment *env) {
     );
     operand i32_val = vp.load(op_type(INT32), i32_ptr);
     return i32_val;
-  } else if (src.get_type().get_name() == "i32" && type.get_name() == "%Int*") {
+  } else if (src.get_type().get_id() == INT32 && type.get_name() == "%Int*") {
     // Box i32 to Int. Need allocation
     operand Int_obj = vp.call({}, op_type("Int").get_ptr_type(), "Int_new", true, {});
     vp.call(
@@ -2088,7 +2150,7 @@ operand conform(operand src, op_type type, CgenEnvironment *env) {
       {Int_obj, src}
     );
     return Int_obj;
-  } else if (src.get_type().get_name() == "%Bool*" && type.get_name() == "i1") {
+  } else if (src.get_typename() == "%Bool*" && type.get_id() == INT1) {
     // Unbox Bool to i1
     operand i1_ptr = vp.getelementptr(
       op_type("Bool"),
@@ -2100,7 +2162,7 @@ operand conform(operand src, op_type type, CgenEnvironment *env) {
     operand i1_val = vp.load(op_type(INT1), i1_ptr);
     return i1_val;
 
-  } else if (src.get_type().get_name() == "i1" && type.get_name() == "%Bool*") {
+  } else if (src.get_type().get_id() == INT1 && type.get_name() == "%Bool*") {
     // Box i1 to Bool. Need allocation
     operand Bool_obj = vp.call({}, op_type("Bool").get_ptr_type(), "Bool_new", true, {});
     vp.call(
@@ -2121,6 +2183,11 @@ operand conform(operand src, op_type type, CgenEnvironment *env) {
     return vp.bitcast(bool_obj_ptr, type);
   } else {
     // If not conversion about Int and Bool, then just bitcast
+    if (cgen_debug) {
+      using namespace std;
+      cerr << ">>> Cast src type: " << src.get_typename() << " and vreg name is: " << src.get_name() << endl;
+      cerr << ">>> Cast dst type: " << type.get_name() << endl;
+    }
     return vp.bitcast(src, type);
   }
 }
@@ -2148,7 +2215,7 @@ VarRegAndPos get_vreg_of_variable(CgenEnvironment *env, Symbol name) {
       self_ptr,
       int_value(0),
       int_value(attr_index_in_record),
-      op_type(attr_type.get_name().substr(1), 1)
+      attr_type.get_ptr_type() 
     );
     operand attr = vp.load(attr_type, attr_ptr);
     return VarRegAndPos{attr, attr_ptr};

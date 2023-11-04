@@ -76,6 +76,8 @@ public:
   std::ostream *ct_stream;
   // mapping from global string to virtual register name that stores the corresponding String object in LLVM
   std::unordered_map<std::string, std::string> string_literal_vreg_names;
+  // Set of already generated classes, so that no re-definition would happen
+  std::unordered_set<std::string> generated_classes;
   // Main_main method node
   CgenNode* main_class;  
 };
