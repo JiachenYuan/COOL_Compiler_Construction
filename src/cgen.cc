@@ -791,6 +791,8 @@ void CgenNode::code_init_function(CgenEnvironment *env) {
   //* Begin block entry:
   vp.begin_block("entry");
   operand instance_pptr = vp.alloca_mem(op_type(get_type_name(), 1));
+  
+
   operand instance_sizeof_ptr = vp.getelementptr(
     op_type(get_vtable_type_name()),
     global_value(op_type(get_vtable_type_name(), 1), get_vtable_name()),
@@ -1245,8 +1247,16 @@ operand eq_class::code(CgenEnvironment *env) {
   // /TODO: add code here and replace `return operand()`
   ValuePrinter vp(*env->cur_stream);
   operand op1 = e1->code(env), op2 = e2->code(env);
-  op1 = conform(op1, INT32, env);
-  op2 = conform(op2, INT32, env);
+  if (op1.get_typename() == "%Int*") {
+    op1 = conform(op1, INT32, env);
+    op2 = conform(op2, INT32, env);
+  } else if (op1.get_typename() == "%Bool*") {
+    op1 = conform(op1, INT1, env);
+    op2 = conform(op2, INT1, env);
+  } else {
+    op1 = conform(op1, INT8_PTR, env);
+    op2 = conform(op2, INT8_PTR, env);
+  }
   return vp.icmp(EQ, op1, op2);
 }
 
@@ -1362,8 +1372,10 @@ operand static_dispatch_class::code(CgenEnvironment *env) {
     global_value(op_type(vtable_type_name, 1), vtable_name),
     int_value(0),
     int_value(method_index_in_vtable),
-    op_type(method_type.get_name().substr(1), 1));  
-  operand method = vp.load(method_type, ptr_to_method);
+    method_type.get_ptr_type()
+  );  
+  operand method(method_type, env->new_name());
+  vp.load(*env->cur_stream, method_type, ptr_to_method, method);
   // 3. Conform parameters 
   for (std::size_t i=0; i<param_list.size(); i++) {
     operand conformed = conform(param_list[i], method_type.args[i], env);
@@ -1371,13 +1383,13 @@ operand static_dispatch_class::code(CgenEnvironment *env) {
   }
   // 4. call
   operand ret = vp.call(method_type.args, method_type.res, method.get_name().substr(1), false, param_list);
-  //! todo:adsfassssssssssssssssssssssssssssssssssssssssssssssssssss
+  // Special treatment if the return type of the method to be called is SELF_TYPE
   std::string method_ret_type_from_COOL = designated_class->method_types_in_COOL[method_name].res.get_name();
   if (method_ret_type_from_COOL.find("SELF_TYPE") != std::string::npos) {
-    // Original return type is SELF_TYPE, so the call would return a "designated_class*", but we want a "current_class*"
+    // Original return type is SELF_TYPE, so the call would return a "designated_class*", but we want a "expr_code*"
     // So need one more conform
-    CgenNode* cur_class = env->get_class();
-    operand conformed_ret = conform(ret, op_type(cur_class->get_type_name(), 1), env);
+    op_type target_type = expr_code.get_type();
+    operand conformed_ret = conform(ret, target_type, env);
     return conformed_ret;
   }
   return ret;
@@ -1470,9 +1482,12 @@ operand dispatch_class::code(CgenEnvironment *env) {
     vtable_ptr,
     int_value(0),
     int_value(method_index_in_vtable),
-    op_type(method_type.get_name().substr(1), 1));  
+    method_type.get_ptr_type()
+    // op_type(method_type.get_name().substr(1), 1)
+  );  
   
-  operand method = vp.load(method_type, ptr_to_method);
+  operand method(method_type, env->new_name());
+  vp.load(*env->cur_stream, method_type, ptr_to_method, method);
 
   // 3. Conform parameters (excluding the first implicit parameter)
   for (std::size_t i=0; i<param_list.size(); i++) {
@@ -1879,7 +1894,6 @@ void let_class::make_alloca(CgenEnvironment *env) {
   // /TODO: add code here
   ValuePrinter vp(*env->cur_stream);
   init->make_alloca(env);
-  body->make_alloca(env);
 
   CgenNode* declared_type = env->type_to_class(type_decl);
   std::string declared_type_name = declared_type->get_type_name();
@@ -1894,6 +1908,8 @@ void let_class::make_alloca(CgenEnvironment *env) {
     id_type = op_type(declared_type_name, 1);
     id_op = vp.alloca_mem(id_type);
   }
+
+  body->make_alloca(env);
 }
 
 void plus_class::make_alloca(CgenEnvironment *env) {
@@ -2009,7 +2025,12 @@ void static_dispatch_class::make_alloca(CgenEnvironment *env) {
 #ifndef MP3
   assert(0 && "Unsupported case for phase 1");
 #else
-    // TODO: add code here
+    // /TODO: add code here
+    expr->make_alloca(env);
+    for (int i=actual->first(); actual->more(i); i=actual->next(i)) {
+      Expression param_exp = actual->nth(i);
+      param_exp->make_alloca(env);
+    }
 #endif
 }
 
@@ -2019,7 +2040,7 @@ void string_const_class::make_alloca(CgenEnvironment *env) {
 #ifndef MP3
   assert(0 && "Unsupported case for phase 1");
 #else
-    // TODO: add code here
+    // /TODO: add code here
 #endif
 }
 
@@ -2029,7 +2050,13 @@ void dispatch_class::make_alloca(CgenEnvironment *env) {
 #ifndef MP3
   assert(0 && "Unsupported case for phase 1");
 #else
-    // TODO: add code here
+    // /TODO: add code here
+    expr->make_alloca(env);
+    for (int i=actual->first(); actual->more(i); i=actual->next(i)) {
+      Expression param_exp = actual->nth(i);
+      param_exp->make_alloca(env);
+    }
+
 #endif
 }
 
@@ -2066,7 +2093,7 @@ void new__class::make_alloca(CgenEnvironment *env) {
 #ifndef MP3
   assert(0 && "Unsupported case for phase 1");
 #else
-    // TODO: add code here
+    // /TODO: add code here
 #endif
 }
 
@@ -2076,7 +2103,8 @@ void isvoid_class::make_alloca(CgenEnvironment *env) {
 #ifndef MP3
   assert(0 && "Unsupported case for phase 1");
 #else
-    // TODO: add code here
+    // /TODO: add code here
+    e1->make_alloca(env);
 #endif
 }
 
@@ -2113,7 +2141,8 @@ void attr_class::make_alloca(CgenEnvironment *env) {
 #ifndef MP3
   assert(0 && "Unsupported case for phase 1");
 #else
-  // TODO: add code here
+  // /TODO: add code here
+  init->make_alloca(env);
 #endif
 }
 
@@ -2124,7 +2153,7 @@ void attr_class::make_alloca(CgenEnvironment *env) {
 // It should only be called when this condition holds.
 // (It's needed by the supplied code for typecase)
 operand conform(operand src, op_type type, CgenEnvironment *env) {
-  // TODO: add code here
+  // /TODO: add code here
   ValuePrinter vp(*env->cur_stream);
   if (src.get_typename() == type.get_name()) {
     return src;

@@ -1,0 +1,121 @@
+#24
+_program
+  #3
+  _class
+    A
+    Object
+    "caseskip.cl"
+    (
+    )
+  #4
+  _class
+    B
+    A
+    "caseskip.cl"
+    (
+    )
+  #5
+  _class
+    B1
+    B
+    "caseskip.cl"
+    (
+    )
+  #6
+  _class
+    B2
+    B
+    "caseskip.cl"
+    (
+    )
+  #7
+  _class
+    E
+    A
+    "caseskip.cl"
+    (
+    )
+  #8
+  _class
+    F
+    A
+    "caseskip.cl"
+    (
+    )
+  #24
+  _class
+    Main
+    IO
+    "caseskip.cl"
+    (
+    #23
+    _method
+      main
+      Object
+      #23
+      _let
+        b
+        B
+        #13
+        _new
+          B
+        : B
+        #23
+        _let
+          x
+          Object
+          #14
+          _no_expr
+          : _no_type
+          #23
+          _let
+            result
+            Int
+            #16
+            _no_expr
+            : _no_type
+            #22
+            _dispatch
+              #22
+              _object
+                self
+              : SELF_TYPE
+              out_int
+              (
+              #22
+              _typcase
+                #18
+                _object
+                  b
+                : B
+                #19
+                _branch
+                  x
+                  A
+                  #19
+                  _int
+                    2
+                  : Int
+                #20
+                _branch
+                  x
+                  B1
+                  #20
+                  _int
+                    3
+                  : Int
+                #21
+                _branch
+                  x
+                  E
+                  #21
+                  _int
+                    17
+                  : Int
+              : Int
+              )
+            : SELF_TYPE
+          : SELF_TYPE
+        : SELF_TYPE
+      : SELF_TYPE
+    )

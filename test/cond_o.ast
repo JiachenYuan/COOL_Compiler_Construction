@@ -1,0 +1,70 @@
+#7
+_program
+  #7
+  _class
+    Main
+    IO
+    "cond_o.cl"
+    (
+    #5
+    _method
+      func
+      Int
+      #5
+      _cond
+        #5
+        _bool
+          1
+        : Bool
+        #5
+        _cond
+          #5
+          _bool
+            0
+          : Bool
+          #5
+          _int
+            4
+          : Int
+          #5
+          _int
+            8
+          : Int
+        : Int
+        #5
+        _int
+          6
+        : Int
+      : Int
+    #6
+    _method
+      main
+      Object
+      #6
+      _block
+        #6
+        _dispatch
+          #6
+          _object
+            self
+          : SELF_TYPE
+          out_int
+          (
+          #6
+          _dispatch
+            #6
+            _object
+              self
+            : SELF_TYPE
+            func
+            (
+            )
+          : Int
+          )
+        : SELF_TYPE
+        #6
+        _object
+          self
+        : SELF_TYPE
+      : SELF_TYPE
+    )

@@ -1,0 +1,45 @@
+#10
+_program
+  #5
+  _class
+    A
+    Object
+    "dispatch6_o.cl"
+    (
+    #4
+    _method
+      f
+      Int
+      #4
+      _int
+        5
+      : Int
+    )
+  #10
+  _class
+    Main
+    IO
+    "dispatch6_o.cl"
+    (
+    #8
+    _attr
+      a
+      A
+      #8
+      _no_expr
+      : _no_type
+    #9
+    _method
+      main
+      Int
+      #9
+      _dispatch
+        #9
+        _object
+          a
+        : A
+        f
+        (
+        )
+      : Int
+    )

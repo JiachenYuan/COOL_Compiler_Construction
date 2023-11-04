@@ -1,0 +1,55 @@
+#7
+_program
+  #7
+  _class
+    Main
+    IO
+    "divide_o.cl"
+    (
+    #5
+    _method
+      func
+      Int
+      #5
+      _divide
+        #5
+        _int
+          5
+        : Int
+        #5
+        _int
+          2
+        : Int
+      : Int
+    #6
+    _method
+      main
+      Object
+      #6
+      _block
+        #6
+        _dispatch
+          #6
+          _object
+            self
+          : SELF_TYPE
+          out_int
+          (
+          #6
+          _dispatch
+            #6
+            _object
+              self
+            : SELF_TYPE
+            func
+            (
+            )
+          : Int
+          )
+        : SELF_TYPE
+        #6
+        _object
+          self
+        : SELF_TYPE
+      : SELF_TYPE
+    )

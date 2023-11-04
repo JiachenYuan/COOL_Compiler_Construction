@@ -57,8 +57,8 @@ declare i32 @IO_in_int(%IO*)
 
 define i32 @main() local_unnamed_addr {
 entry:
-  %vtpm.19.i = tail call i8* @malloc(i32 16)
-  %malloc.null.i = icmp eq i8* %vtpm.19.i, null
+  %vtpm.18.i = tail call i8* @malloc(i32 16)
+  %malloc.null.i = icmp eq i8* %vtpm.18.i, null
   br i1 %malloc.null.i, label %abort.i, label %Main_new.exit
 
 abort.i:                                          ; preds = %entry
@@ -66,13 +66,13 @@ abort.i:                                          ; preds = %entry
   unreachable
 
 Main_new.exit:                                    ; preds = %entry
-  %vtpm.21.i = bitcast i8* %vtpm.19.i to %_Main_vtable**
-  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.21.i, align 8
-  %vtpm.22.i = getelementptr i8, i8* %vtpm.19.i, i64 8
-  %0 = bitcast i8* %vtpm.22.i to i32*
+  %vtpm.20.i = bitcast i8* %vtpm.18.i to %_Main_vtable**
+  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.20.i, align 8
+  %vtpm.21.i = getelementptr i8, i8* %vtpm.18.i, i64 8
+  %0 = bitcast i8* %vtpm.21.i to i32*
   store i32 7656, i32* %0, align 4
-  %1 = bitcast i8* %vtpm.19.i to %IO*
-  %vtpm.12.i = tail call %IO* @IO_out_int(%IO* nonnull %1, i32 7656)
+  %1 = bitcast i8* %vtpm.18.i to %IO*
+  %vtpm.11.i = tail call %IO* @IO_out_int(%IO* nonnull %1, i32 7656)
   ret i32 0
 }
 
@@ -93,26 +93,26 @@ ok.0:
   %vtpm.8 = getelementptr %Main, %Main* %self, i64 0, i32 0
   %vtpm.9 = load %_Main_vtable*, %_Main_vtable** %vtpm.8, align 8
   %vtpm.10 = getelementptr %_Main_vtable, %_Main_vtable* %vtpm.9, i64 0, i32 8
-  %vtpm.11 = load %Main* (%Main*, i32)*, %Main* (%Main*, i32)** %vtpm.10, align 8
-  %vtpm.12 = tail call %Main* %vtpm.11(%Main* nonnull %self, i32 7656)
-  %vtpm.14 = bitcast %Main* %self to %Object*
-  ret %Object* %vtpm.14
+  %tmp.0 = load %Main* (%Main*, i32)*, %Main* (%Main*, i32)** %vtpm.10, align 8
+  %vtpm.11 = tail call %Main* %tmp.0(%Main* nonnull %self, i32 7656)
+  %vtpm.13 = bitcast %Main* %self to %Object*
+  ret %Object* %vtpm.13
 }
 
 define %Main* @Main_new() {
 entry:
-  %vtpm.19 = tail call i8* @malloc(i32 16)
-  %malloc.null = icmp eq i8* %vtpm.19, null
+  %vtpm.18 = tail call i8* @malloc(i32 16)
+  %malloc.null = icmp eq i8* %vtpm.18, null
   br i1 %malloc.null, label %abort, label %okay
 
 okay:                                             ; preds = %entry
-  %vtpm.20 = bitcast i8* %vtpm.19 to %Main*
-  %vtpm.21 = bitcast i8* %vtpm.19 to %_Main_vtable**
-  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.21, align 8
-  %vtpm.22 = getelementptr i8, i8* %vtpm.19, i64 8
-  %0 = bitcast i8* %vtpm.22 to i32*
+  %vtpm.19 = bitcast i8* %vtpm.18 to %Main*
+  %vtpm.20 = bitcast i8* %vtpm.18 to %_Main_vtable**
+  store %_Main_vtable* @_Main_vtable_prototype, %_Main_vtable** %vtpm.20, align 8
+  %vtpm.21 = getelementptr i8, i8* %vtpm.18, i64 8
+  %0 = bitcast i8* %vtpm.21 to i32*
   store i32 5, i32* %0, align 4
-  ret %Main* %vtpm.20
+  ret %Main* %vtpm.19
 
 abort:                                            ; preds = %entry
   tail call void @abort()

@@ -1,0 +1,69 @@
+#12
+_program
+  #6
+  _class
+    Alpha
+    Object
+    "dispatch2_o.cl"
+    (
+    #5
+    _method
+      niam
+      Int
+      #5
+      _int
+        90
+      : Int
+    )
+  #12
+  _class
+    Main
+    IO
+    "dispatch2_o.cl"
+    (
+    #10
+    _method
+      func
+      Int
+      #10
+      _dispatch
+        #10
+        _new
+          Alpha
+        : Alpha
+        niam
+        (
+        )
+      : Int
+    #11
+    _method
+      main
+      Object
+      #11
+      _block
+        #11
+        _dispatch
+          #11
+          _object
+            self
+          : SELF_TYPE
+          out_int
+          (
+          #11
+          _dispatch
+            #11
+            _object
+              self
+            : SELF_TYPE
+            func
+            (
+            )
+          : Int
+          )
+        : SELF_TYPE
+        #11
+        _object
+          self
+        : SELF_TYPE
+      : SELF_TYPE
+    )
