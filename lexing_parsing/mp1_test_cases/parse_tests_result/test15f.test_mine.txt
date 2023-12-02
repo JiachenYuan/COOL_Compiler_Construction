@@ -1,0 +1,125 @@
+#10
+_program
+  #10
+  _class
+    Main
+    IO
+    "./test15f.test"
+    (
+    #9
+    _method
+      main
+      Object
+      #9
+      _block
+        #3
+        _dispatch
+          #3
+          _object
+            self
+          : _no_type
+          out_string
+          (
+          #3
+          _string
+            "range(100) = ["
+          : _no_type
+          )
+        : _no_type
+        #7
+        _let
+          i
+          Int
+          #4
+          _int
+            0
+          : _no_type
+          #7
+          _let
+            j
+            Int
+            #4
+            _int
+              5
+            : _no_type
+            #7
+            _loop
+              #4
+              _lt
+                #4
+                _object
+                  i
+                : _no_type
+                #4
+                _int
+                  100
+                : _no_type
+              : _no_type
+              #7
+              _block
+                #7
+                _block
+                  #5
+                  _dispatch
+                    #5
+                    _object
+                      self
+                    : _no_type
+                    out_int
+                    (
+                    #5
+                    _object
+                      i
+                    : _no_type
+                    )
+                  : _no_type
+                  #6
+                  _dispatch
+                    #6
+                    _object
+                      self
+                    : _no_type
+                    out_string
+                    (
+                    #6
+                    _string
+                      ", "
+                    : _no_type
+                    )
+                  : _no_type
+                : _no_type
+                #4
+                _assign
+                  i
+                  #4
+                  _plus
+                    #4
+                    _object
+                      i
+                    : _no_type
+                    #4
+                    _int
+                      1
+                    : _no_type
+                  : _no_type
+                : _no_type
+              : _no_type
+            : _no_type
+          : _no_type
+        : _no_type
+        #8
+        _dispatch
+          #8
+          _object
+            self
+          : _no_type
+          out_string
+          (
+          #8
+          _string
+            "]\n"
+          : _no_type
+          )
+        : _no_type
+      : _no_type
+    )

@@ -1,0 +1,79 @@
+#4
+_program
+  #4
+  _class
+    Main
+    Object
+    "./test12a.test"
+    (
+    #3
+    _attr
+      a
+      A
+      #3
+      _block
+        #3
+        _sub
+          #3
+          _sub
+            #3
+            _plus
+              #3
+              _mul
+                #3
+                _int
+                  9
+                : _no_type
+                #3
+                _int
+                  3
+                : _no_type
+              : _no_type
+              #3
+              _mul
+                #3
+                _int
+                  2
+                : _no_type
+                #3
+                _neg
+                  #3
+                  _int
+                    10
+                  : _no_type
+                : _no_type
+              : _no_type
+            : _no_type
+            #3
+            _divide
+              #3
+              _divide
+                #3
+                _int
+                  9
+                : _no_type
+                #3
+                _int
+                  9
+                : _no_type
+              : _no_type
+              #3
+              _int
+                8
+              : _no_type
+            : _no_type
+          : _no_type
+          #3
+          _neg
+            #3
+            _int
+              4
+            : _no_type
+          : _no_type
+        : _no_type
+        #3
+        _new
+          A
+        : _no_type
+      : _no_type
+    )

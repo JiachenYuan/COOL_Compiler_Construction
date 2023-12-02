@@ -1,0 +1,61 @@
+#10
+_program
+  #10
+  _class
+    Main
+    Object
+    "loop3.cl"
+    (
+    #9
+    _method
+      main
+      Int
+      #9
+      _let
+        i
+        Int
+        #3
+        _int
+          0
+        : Int
+        #8
+        _block
+          #6
+          _loop
+            #4
+            _lt
+              #4
+              _object
+                i
+              : Int
+              #4
+              _int
+                10
+              : Int
+            : Bool
+            #6
+            _block
+              #5
+              _assign
+                i
+                #5
+                _plus
+                  #5
+                  _object
+                    i
+                  : Int
+                  #5
+                  _int
+                    1
+                  : Int
+                : Int
+              : Int
+            : Int
+          : Object
+          #7
+          _object
+            i
+          : Int
+        : Int
+      : Int
+    )

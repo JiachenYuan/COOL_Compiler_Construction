@@ -1,0 +1,2 @@
+"./err04.test", line 4: syntax error at or near OBJECTID = x
+Compilation halted due to lex and parse errors

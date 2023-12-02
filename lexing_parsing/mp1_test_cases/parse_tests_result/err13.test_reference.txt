@@ -1,0 +1,3 @@
+"./err13.test", line 4: syntax error at or near ASSIGN
+"./err13.test", line 6: syntax error at or near ASSIGN
+Compilation halted due to lex and parse errors

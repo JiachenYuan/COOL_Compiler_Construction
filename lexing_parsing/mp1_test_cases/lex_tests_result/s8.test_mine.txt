@@ -1,0 +1,4 @@
+#name "./s8.test"
+#2 STR_CONST "escaped newline\n"
+#5 ERROR "Un-closed string"
+#5 ERROR "Encountered EOF in string"

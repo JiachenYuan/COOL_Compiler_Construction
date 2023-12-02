@@ -1,0 +1,25 @@
+#5
+_program
+  #5
+  _class
+    A
+    Object
+    "./test08.test"
+    (
+    #4
+    _method
+      foo
+      Int
+      #4
+      _assign
+        z
+        #4
+        _assign
+          y
+          #3
+          _int
+            1
+          : _no_type
+        : _no_type
+      : _no_type
+    )

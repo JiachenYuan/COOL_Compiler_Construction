@@ -1,0 +1,104 @@
+#19
+_program
+  #19
+  _class
+    Main
+    Object
+    "local2ifelse.cl"
+    (
+    #18
+    _method
+      main
+      Int
+      #17
+      _let
+        n
+        Int
+        #7
+        _no_expr
+        : _no_type
+        #17
+        _block
+          #8
+          _assign
+            n
+            #8
+            _int
+              14
+            : Int
+          : Int
+          #16
+          _let
+            m
+            Int
+            #9
+            _no_expr
+            : _no_type
+            #16
+            _block
+              #14
+              _cond
+                #10
+                _lt
+                  #10
+                  _object
+                    n
+                  : Int
+                  #10
+                  _int
+                    8
+                  : Int
+                : Bool
+                #12
+                _block
+                  #11
+                  _assign
+                    m
+                    #11
+                    _mul
+                      #11
+                      _object
+                        n
+                      : Int
+                      #11
+                      _int
+                        2
+                      : Int
+                    : Int
+                  : Int
+                : Int
+                #14
+                _block
+                  #13
+                  _assign
+                    m
+                    #13
+                    _divide
+                      #13
+                      _object
+                        n
+                      : Int
+                      #13
+                      _int
+                        2
+                      : Int
+                    : Int
+                  : Int
+                : Int
+              : Int
+              #15
+              _divide
+                #15
+                _object
+                  m
+                : Int
+                #15
+                _int
+                  2
+                : Int
+              : Int
+            : Int
+          : Int
+        : Int
+      : Int
+    )

@@ -1,0 +1,95 @@
+#18
+_program
+  #2
+  _class
+    A
+    Object
+    "./test12c.test"
+    (
+    )
+  #10
+  _class
+    B
+    Object
+    "./test12c.test"
+    (
+    #9
+    _method
+      g
+      Int
+      #8
+      _typcase
+        #6
+        _object
+          self
+        : _no_type
+        #7
+        _branch
+          x
+          B
+          #7
+          _int
+            1
+          : _no_type
+      : _no_type
+    )
+  #18
+  _class
+    Main
+    Object
+    "./test12c.test"
+    (
+    #13
+    _method
+      f
+      #13
+      _formal
+        x
+        Int
+      B
+      #13
+      _block
+        #13
+        _new
+          A
+        : _no_type
+        #13
+        _new
+          B
+        : _no_type
+      : _no_type
+    #15
+    _method
+      h
+      Int
+      #15
+      _static_dispatch
+        #15
+        _static_dispatch
+          #15
+          _object
+            self
+          : _no_type
+          Main
+          f
+          (
+          #15
+          _int
+            3
+          : _no_type
+          )
+        : _no_type
+        B
+        g
+        (
+        )
+      : _no_type
+    #17
+    _method
+      main
+      Int
+      #17
+      _int
+        1
+      : _no_type
+    )

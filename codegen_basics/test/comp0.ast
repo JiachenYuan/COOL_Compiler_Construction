@@ -1,0 +1,20 @@
+#5
+_program
+  #5
+  _class
+    Main
+    Object
+    "comp0.cl"
+    (
+    #4
+    _method
+      main
+      Int
+      #4
+      _neg
+        #3
+        _int
+          0
+        : Int
+      : Int
+    )

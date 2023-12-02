@@ -1,0 +1,5 @@
+"./mlet.incorrect.test", line 3: syntax error at or near OBJECTID = z
+"./mlet.incorrect.test", line 8: syntax error at or near INT_CONST = 0
+"./mlet.incorrect.test", line 12: syntax error at or near IN
+"./mlet.incorrect.test", line 15: syntax error at or near OBJECTID = y
+Compilation halted due to lex and parse errors

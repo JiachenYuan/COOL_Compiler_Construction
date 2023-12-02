@@ -1,0 +1,144 @@
+#name "./script.sh"
+#1 ERROR "#"
+#1 ERROR "!"
+#1 '/'
+#1 OBJECTID bin
+#1 '/'
+#1 OBJECTID bash
+#3 ERROR "#"
+#3 TYPEID Set
+#3 OBJECTID the
+#3 OBJECTID directory
+#3 OBJECTID you
+#3 OBJECTID want
+#3 OBJECTID to
+#3 OBJECTID work
+#3 OBJECTID with
+#4 OBJECTID directory
+#4 '='
+#4 STR_CONST "."
+#5 OBJECTID odir
+#5 '='
+#5 STR_CONST "../lex_tests_result"
+#7 ERROR "#"
+#7 TYPEID Check
+#7 IF
+#7 OBJECTID the
+#7 OBJECTID directory
+#7 OBJECTID exists
+#8 IF
+#8 ERROR "["
+#8 ERROR "!"
+#8 '-'
+#8 OBJECTID d
+#8 STR_CONST "$directory"
+#8 ERROR "]"
+#8 ';'
+#8 THEN
+#9 OBJECTID echo
+#9 STR_CONST "Directory not found: $directory"
+#10 OBJECTID exit
+#10 INT_CONST 1
+#11 FI
+#13 ERROR "#"
+#13 LOOP
+#13 OBJECTID through
+#13 OBJECTID each
+#13 OBJECTID file
+#13 IN
+#13 OBJECTID the
+#13 OBJECTID directory
+#14 FOR
+#14 OBJECTID file
+#14 IN
+#14 STR_CONST "$directory"
+#14 '/'
+#14 '*'
+#14 ';'
+#14 OBJECTID do
+#15 ERROR "#"
+#15 TYPEID Check
+#15 IF
+#15 OBJECTID the
+#15 OBJECTID item
+#15 OBJECTID is
+#15 OBJECTID a
+#15 OBJECTID file
+#15 '('
+#15 NOT
+#15 OBJECTID a
+#15 OBJECTID directory
+#15 ')'
+#16 IF
+#16 ERROR "["
+#16 '-'
+#16 OBJECTID f
+#16 STR_CONST "$file"
+#16 ERROR "]"
+#16 ';'
+#16 THEN
+#17 OBJECTID echo
+#17 STR_CONST "File: $file"
+#18 ERROR "#"
+#18 TYPEID Perform
+#18 OBJECTID your
+#18 OBJECTID task
+#18 OBJECTID on
+#18 OBJECTID the
+#18 OBJECTID file
+#18 OBJECTID here
+#19 ERROR "#"
+#19 FOR
+#19 OBJECTID example
+#19 ','
+#19 OBJECTID you
+#19 OBJECTID can
+#19 OBJECTID add
+#19 OBJECTID more
+#19 OBJECTID commands
+#19 OBJECTID to
+#19 OBJECTID process
+#19 OBJECTID the
+#19 OBJECTID file
+#20 '.'
+#20 '.'
+#20 '/'
+#20 '.'
+#20 '.'
+#20 '/'
+#20 OBJECTID src
+#20 '/'
+#20 OBJECTID lexer
+#20 ERROR "$"
+#20 OBJECTID file
+#20 ERROR ">"
+#20 STR_CONST "$odir"
+#20 '/'
+#20 STR_CONST "$file"
+#20 ERROR "_"
+#20 OBJECTID mine
+#20 '.'
+#20 OBJECTID txt
+#21 '.'
+#21 '.'
+#21 '/'
+#21 '.'
+#21 '.'
+#21 '/'
+#21 OBJECTID reference
+#21 '-'
+#21 OBJECTID binaries
+#21 '/'
+#21 OBJECTID lexer
+#21 ERROR "$"
+#21 OBJECTID file
+#21 ERROR ">"
+#21 STR_CONST "$odir"
+#21 '/'
+#21 STR_CONST "$file"
+#21 ERROR "_"
+#21 OBJECTID reference
+#21 '.'
+#21 OBJECTID txt
+#22 FI
+#23 OBJECTID done

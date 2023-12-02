@@ -1,0 +1,111 @@
+#19
+_program
+  #19
+  _class
+    Main
+    Object
+    "local31whileeq.cl"
+    (
+    #18
+    _method
+      main
+      Int
+      #18
+      _let
+        prev
+        Int
+        #7
+        _int
+          1
+        : Int
+        #18
+        _let
+          last
+          Int
+          #8
+          _int
+            1
+          : Int
+          #17
+          _block
+            #15
+            _let
+              i
+              Int
+              #9
+              _int
+                2
+              : Int
+              #15
+              _loop
+                #10
+                _eq
+                  #10
+                  _object
+                    i
+                  : Int
+                  #10
+                  _int
+                    2
+                  : Int
+                : Bool
+                #15
+                _let
+                  fibi
+                  Int
+                  #11
+                  _plus
+                    #11
+                    _object
+                      prev
+                    : Int
+                    #11
+                    _object
+                      last
+                    : Int
+                  : Int
+                  #15
+                  _block
+                    #12
+                    _assign
+                      prev
+                      #12
+                      _object
+                        last
+                      : Int
+                    : Int
+                    #13
+                    _assign
+                      last
+                      #13
+                      _object
+                        fibi
+                      : Int
+                    : Int
+                    #14
+                    _assign
+                      i
+                      #14
+                      _plus
+                        #14
+                        _object
+                          i
+                        : Int
+                        #14
+                        _int
+                          1
+                        : Int
+                      : Int
+                    : Int
+                  : Int
+                : Int
+              : Object
+            : Object
+            #16
+            _object
+              last
+            : Int
+          : Int
+        : Int
+      : Int
+    )

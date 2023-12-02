@@ -1,0 +1,9 @@
+#name "./k4.test"
+#1 BOOL_CONST true
+#1 BOOL_CONST true
+#1 BOOL_CONST true
+#1 BOOL_CONST true
+#1 BOOL_CONST true
+#1 BOOL_CONST true
+#1 BOOL_CONST true
+#1 BOOL_CONST true

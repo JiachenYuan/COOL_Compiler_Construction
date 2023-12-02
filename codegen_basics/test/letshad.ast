@@ -1,0 +1,46 @@
+#6
+_program
+  #6
+  _class
+    Main
+    Object
+    "letshad.cl"
+    (
+    #5
+    _method
+      main
+      Int
+      #5
+      _let
+        i
+        Bool
+        #3
+        _bool
+          0
+        : Bool
+        #5
+        _let
+          i
+          Bool
+          #3
+          _bool
+            1
+          : Bool
+          #4
+          _cond
+            #4
+            _object
+              i
+            : Bool
+            #4
+            _int
+              1
+            : Int
+            #4
+            _int
+              2
+            : Int
+          : Int
+        : Int
+      : Int
+    )

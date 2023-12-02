@@ -1,0 +1,392 @@
+#name "flex_test_numbers.cl"
+#5 CLASS
+#5 TYPEID CellularAutomaton
+#5 INHERITS
+#5 TYPEID IO
+#5 '{'
+#6 OBJECTID population_map
+#6 ':'
+#6 TYPEID String
+#6 ';'
+#8 OBJECTID init
+#8 '('
+#8 OBJECTID map
+#8 ':'
+#8 TYPEID String
+#8 ')'
+#8 ':'
+#8 TYPEID SELF_TYPE
+#8 '{'
+#9 '{'
+#10 OBJECTID population_map
+#10 ASSIGN
+#10 OBJECTID map
+#10 ';'
+#11 OBJECTID self
+#11 ';'
+#12 '}'
+#13 '}'
+#13 ';'
+#15 OBJECTID print
+#15 '('
+#15 ')'
+#15 ':'
+#15 TYPEID SELF_TYPE
+#15 '{'
+#16 '{'
+#17 OBJECTID out_string
+#17 '('
+#17 OBJECTID population_map
+#17 '.'
+#17 OBJECTID concat
+#17 '('
+#17 STR_CONST "\n"
+#17 ')'
+#17 ')'
+#17 ';'
+#18 OBJECTID self
+#18 ';'
+#19 '}'
+#20 '}'
+#20 ';'
+#22 OBJECTID num_cells1
+#22 '('
+#22 ')'
+#22 ':'
+#22 TYPEID Int
+#22 '{'
+#23 ERROR "Invalid integer constant"
+#24 '}'
+#24 ';'
+#26 OBJECTID num_cells2
+#26 '('
+#26 ')'
+#26 ':'
+#26 TYPEID Int
+#26 '{'
+#27 ERROR "Invalid integer constant"
+#28 '}'
+#28 ';'
+#30 OBJECTID num_cells3
+#30 '('
+#30 ')'
+#30 ':'
+#30 TYPEID Int
+#30 '{'
+#31 ERROR "Invalid integer constant"
+#32 '}'
+#32 ';'
+#34 OBJECTID num_cells4
+#34 '('
+#34 ')'
+#34 ':'
+#34 TYPEID Int
+#34 '{'
+#35 ERROR "Invalid integer constant"
+#36 INT_CONST 123
+#36 '('
+#36 INT_CONST 123
+#36 ')'
+#37 INT_CONST 1397
+#37 ':'
+#37 INT_CONST 1654
+#38 ERROR "Invalid integer constant"
+#39 OBJECTID f0xaaaa
+#40 OBJECTID p123
+#41 OBJECTID f0xaaaa
+#42 FOR
+#42 FOR
+#43 BOOL_CONST true
+#44 BOOL_CONST false
+#46 ERROR "Invalid integer constant"
+#47 ERROR "Invalid integer constant"
+#48 ERROR "Invalid integer constant"
+#49 ERROR "Invalid integer constant"
+#50 ERROR "Invalid integer constant"
+#51 ERROR "Invalid integer constant"
+#52 ERROR "Invalid integer constant"
+#53 ERROR "Invalid integer constant"
+#53 '+'
+#54 ERROR "Invalid integer constant"
+#55 '}'
+#55 ';'
+#57 OBJECTID cell
+#57 '('
+#57 OBJECTID position
+#57 ':'
+#57 TYPEID Int
+#57 ')'
+#57 ':'
+#57 TYPEID String
+#57 '{'
+#58 OBJECTID population_map
+#58 '.'
+#58 OBJECTID substr
+#58 '('
+#58 OBJECTID position
+#58 ','
+#58 INT_CONST 1
+#58 ')'
+#59 '}'
+#59 ';'
+#61 OBJECTID cell_left_neighbor
+#61 '('
+#61 OBJECTID position
+#61 ':'
+#61 TYPEID Int
+#61 ')'
+#61 ':'
+#61 TYPEID String
+#61 '{'
+#62 IF
+#62 OBJECTID position
+#62 '='
+#62 INT_CONST 0
+#62 THEN
+#63 OBJECTID cell
+#63 '('
+#63 OBJECTID num_cells
+#63 '('
+#63 ')'
+#63 '-'
+#63 INT_CONST 1
+#63 ')'
+#64 ELSE
+#65 OBJECTID cell
+#65 '('
+#65 OBJECTID position
+#65 '-'
+#65 INT_CONST 1
+#65 ')'
+#66 FI
+#67 '}'
+#67 ';'
+#69 OBJECTID cell_right_neighbor
+#69 '('
+#69 OBJECTID position
+#69 ':'
+#69 TYPEID Int
+#69 ')'
+#69 ':'
+#69 TYPEID String
+#69 '{'
+#70 IF
+#70 OBJECTID position
+#70 '='
+#70 OBJECTID num_cells
+#70 '('
+#70 ')'
+#70 '-'
+#70 INT_CONST 1
+#70 THEN
+#71 OBJECTID cell
+#71 '('
+#71 INT_CONST 0
+#71 ')'
+#72 ELSE
+#73 OBJECTID cell
+#73 '('
+#73 OBJECTID position
+#73 '+'
+#73 INT_CONST 1
+#73 ')'
+#74 FI
+#75 '}'
+#75 ';'
+#79 OBJECTID cell_at_next_evolution
+#79 '('
+#79 OBJECTID position
+#79 ':'
+#79 TYPEID Int
+#79 ')'
+#79 ':'
+#79 TYPEID String
+#79 '{'
+#80 IF
+#80 '('
+#80 IF
+#80 OBJECTID cell
+#80 '('
+#80 OBJECTID position
+#80 ')'
+#80 '='
+#80 STR_CONST "X"
+#80 THEN
+#80 INT_CONST 1
+#80 ELSE
+#80 INT_CONST 0
+#80 FI
+#81 '+'
+#81 IF
+#81 OBJECTID cell_left_neighbor
+#81 '('
+#81 OBJECTID position
+#81 ')'
+#81 '='
+#81 STR_CONST "X"
+#81 THEN
+#81 INT_CONST 1
+#81 ELSE
+#81 INT_CONST 0
+#81 FI
+#82 '+'
+#82 IF
+#82 OBJECTID cell_right_neighbor
+#82 '('
+#82 OBJECTID position
+#82 ')'
+#82 '='
+#82 STR_CONST "X"
+#82 THEN
+#82 INT_CONST 1
+#82 ELSE
+#82 INT_CONST 0
+#82 FI
+#83 '='
+#83 INT_CONST 1
+#83 ')'
+#84 THEN
+#85 STR_CONST "X"
+#86 ELSE
+#87 ERROR "'"
+#87 '.'
+#87 ERROR "'"
+#88 FI
+#89 '}'
+#89 ';'
+#91 OBJECTID evolve
+#91 '('
+#91 ')'
+#91 ':'
+#91 TYPEID SELF_TYPE
+#91 '{'
+#92 '('
+#92 LET
+#92 OBJECTID position
+#92 ':'
+#92 TYPEID Int
+#92 IN
+#93 '('
+#93 LET
+#93 OBJECTID num
+#93 ':'
+#93 TYPEID Int
+#93 ASSIGN
+#93 OBJECTID num_cells
+#93 ERROR "["
+#93 ERROR "]"
+#93 IN
+#94 '('
+#94 LET
+#94 OBJECTID temp
+#94 ':'
+#94 TYPEID String
+#94 IN
+#95 '{'
+#96 WHILE
+#96 OBJECTID position
+#96 '<'
+#96 OBJECTID num
+#96 LOOP
+#97 '{'
+#98 OBJECTID temp
+#98 ASSIGN
+#98 OBJECTID temp
+#98 '.'
+#98 OBJECTID concat
+#98 '('
+#98 OBJECTID cell_at_next_evolution
+#98 '('
+#98 OBJECTID position
+#98 ')'
+#98 ')'
+#98 ';'
+#99 OBJECTID position
+#99 ASSIGN
+#99 OBJECTID position
+#99 '+'
+#99 INT_CONST 1
+#99 ';'
+#100 '}'
+#101 POOL
+#101 ';'
+#102 OBJECTID population_map
+#102 ASSIGN
+#102 OBJECTID temp
+#102 ';'
+#103 OBJECTID self
+#103 ';'
+#104 '}'
+#105 ')'
+#105 ')'
+#105 ')'
+#106 '}'
+#106 ';'
+#107 '}'
+#107 ';'
+#109 CLASS
+#109 TYPEID Main
+#109 '{'
+#110 OBJECTID cells
+#110 ':'
+#110 TYPEID CellularAutomaton
+#110 ';'
+#112 OBJECTID main
+#112 '('
+#112 ')'
+#112 ':'
+#112 TYPEID SELF_TYPE
+#112 '{'
+#113 '{'
+#114 OBJECTID cells
+#114 ASSIGN
+#114 '('
+#114 NEW
+#114 TYPEID CellularAutomaton
+#114 ')'
+#114 '.'
+#114 OBJECTID init
+#114 '('
+#114 STR_CONST "         X         "
+#114 ')'
+#114 ';'
+#115 OBJECTID cells
+#115 '.'
+#115 OBJECTID print
+#115 '('
+#115 ')'
+#115 ';'
+#116 '('
+#116 LET
+#116 OBJECTID countdown
+#116 ':'
+#116 TYPEID Int
+#116 ASSIGN
+#116 INT_CONST 20
+#116 IN
+#117 WHILE
+#117 OBJECTID countdown
+#117 ERROR ">"
+#117 INT_CONST 0
+#117 LOOP
+#118 '{'
+#119 OBJECTID cells
+#119 '.'
+#119 OBJECTID evolve
+#119 '('
+#119 ')'
+#119 ';'
+#120 OBJECTID cells
+#120 '.'
+#120 OBJECTID print
+#120 '('
+#120 ')'
+#120 ';'
+#121 OBJECTID countdown
+#121 ASSIGN
+#121 OBJECTID countdown
+#121 '-'
+#121 INT_CONST 1
+#121 ';'
+#123 POOL
+#130 ERROR "Encountered EOF in string"

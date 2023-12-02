@@ -1,0 +1,4 @@
+ERROR "#"
+#1 ERROR "!"
+#1 "./script.sh", line 1: syntax error at or near '/'
+Compilation halted due to lex and parse errors

@@ -1,0 +1,45 @@
+#5
+_program
+  #5
+  _class
+    Main
+    Object
+    "letmultiple2.cl"
+    (
+    #4
+    _method
+      main
+      Int
+      #4
+      _let
+        x
+        Int
+        #3
+        _int
+          23
+        : Int
+        #4
+        _let
+          y
+          Bool
+          #3
+          _no_expr
+          : _no_type
+          #3
+          _cond
+            #3
+            _object
+              y
+            : Bool
+            #3
+            _object
+              x
+            : Int
+            #3
+            _int
+              28
+            : Int
+          : Int
+        : Int
+      : Int
+    )

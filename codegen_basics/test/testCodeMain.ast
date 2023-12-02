@@ -1,0 +1,44 @@
+#13
+_program
+  #13
+  _class
+    Main
+    Object
+    "testCodeMain.cl"
+    (
+    #12
+    _method
+      main
+      Int
+      #11
+      _block
+        #8
+        _let
+          b
+          Bool
+          #5
+          _bool
+            1
+          : Bool
+          #8
+          _block
+            #6
+            _object
+              b
+            : Bool
+            #7
+            _assign
+              b
+              #7
+              _bool
+                0
+              : Bool
+            : Bool
+          : Bool
+        : Bool
+        #10
+        _int
+          123
+        : Int
+      : Int
+    )

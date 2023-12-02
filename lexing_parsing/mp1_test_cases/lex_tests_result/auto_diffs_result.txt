@@ -1,0 +1,139 @@
+Comparing files: ./auto_diff.sh and ./auto_diffs_result.txt
+1,28c1
+< #!/bin/bash
+< 
+< # Set the directory you want to work with
+< directory="."
+< 
+< # Check if the directory exists
+< if [ ! -d "$directory" ]; then
+<   echo "Directory not found: $directory"
+<   exit 1
+< fi
+< 
+< # List and sort files by names in the directory
+< sorted_files=($(find "$directory" -type f -print | sort))
+< 
+< # Create or truncate the temp.txt file
+< temp_file="./auto_diffs_result.txt"
+< > "$temp_file"
+< 
+< # Loop through the sorted files, comparing them in pairs
+< for ((i = 0; i < ${#sorted_files[@]} - 1; i += 2)); do
+<   file1="${sorted_files[i]}"
+<   file2="${sorted_files[i+1]}"
+<   echo "Comparing files: $file1 and $file2" >> "$temp_file"
+<   diff "$file1" "$file2" >> "$temp_file"
+<   echo "" >> "$temp_file"
+< done
+< 
+< echo "Comparison results saved in $temp_file"
+---
+> Comparing files: ./auto_diff.sh and ./auto_diffs_result.txt
+
+Comparing files: ./b1.test_mine.txt and ./b1.test_reference.txt
+
+Comparing files: ./b2.test_mine.txt and ./b2.test_reference.txt
+
+Comparing files: ./c1.test_mine.txt and ./c1.test_reference.txt
+
+Comparing files: ./c2.test_mine.txt and ./c2.test_reference.txt
+
+Comparing files: ./c3.test_mine.txt and ./c3.test_reference.txt
+3c3
+< #3 ERROR "Encountered EOF in comments"
+---
+> #3 ERROR "EOF in comment"
+
+Comparing files: ./c4.test_mine.txt and ./c4.test_reference.txt
+
+Comparing files: ./e1.test_mine.txt and ./e1.test_reference.txt
+
+Comparing files: ./f1.test_mine.txt and ./f1.test_reference.txt
+
+Comparing files: ./i1.test_mine.txt and ./i1.test_reference.txt
+
+Comparing files: ./i2.test_mine.txt and ./i2.test_reference.txt
+
+Comparing files: ./i3.test_mine.txt and ./i3.test_reference.txt
+
+Comparing files: ./isvoid.test_mine.txt and ./isvoid.test_reference.txt
+
+Comparing files: ./k1.test_mine.txt and ./k1.test_reference.txt
+
+Comparing files: ./k2.test_mine.txt and ./k2.test_reference.txt
+
+Comparing files: ./k3.test_mine.txt and ./k3.test_reference.txt
+
+Comparing files: ./k4.test_mine.txt and ./k4.test_reference.txt
+
+Comparing files: ./ms1.test_mine.txt and ./ms1.test_reference.txt
+4c4
+< #9 ERROR "Encountered EOF in string"
+---
+> #9 ERROR "EOF in string constant"
+
+Comparing files: ./o1.test_mine.txt and ./o1.test_reference.txt
+
+Comparing files: ./o2.test_mine.txt and ./o2.test_reference.txt
+
+Comparing files: ./p1.test_mine.txt and ./p1.test_reference.txt
+
+Comparing files: ./p2.test_mine.txt and ./p2.test_reference.txt
+
+Comparing files: ./p3.test_mine.txt and ./p3.test_reference.txt
+
+Comparing files: ./s1.test_mine.txt and ./s1.test_reference.txt
+
+Comparing files: ./s2.test_mine.txt and ./s2.test_reference.txt
+5,6c5,6
+< #4 ERROR "String is oversized"
+< #5 ERROR "String is oversized"
+---
+> #4 ERROR "String constant too long"
+> #5 ERROR "String constant too long"
+
+Comparing files: ./s3.test_mine.txt and ./s3.test_reference.txt
+
+Comparing files: ./s4.test_mine.txt and ./s4.test_reference.txt
+2,3c2,3
+< #1 ERROR "String is not allowed to contain null terminator"
+< #2 ERROR "Encountered EOF in string"
+---
+> #1 ERROR "String contains null character."
+> #2 ERROR "EOF in string constant"
+
+Comparing files: ./s5.test_mine.txt and ./s5.test_reference.txt
+5,6c5,6
+< #4 ERROR "String is oversized"
+< #5 ERROR "String is oversized"
+---
+> #4 ERROR "String constant too long"
+> #5 ERROR "String constant too long"
+
+Comparing files: ./s6.test_mine.txt and ./s6.test_reference.txt
+4c4
+< #2 ERROR "Encountered EOF in string"
+---
+> #2 ERROR "EOF in string constant"
+
+Comparing files: ./s7.test_mine.txt and ./s7.test_reference.txt
+
+Comparing files: ./s8.test_mine.txt and ./s8.test_reference.txt
+3,4c3,4
+< #5 ERROR "Un-closed string"
+< #5 ERROR "Encountered EOF in string"
+---
+> #5 ERROR "Unterminated string constant"
+> #5 ERROR "EOF in string constant"
+
+Comparing files: ./script.sh_mine.txt and ./script.sh_reference.txt
+
+Comparing files: ./w1.test_mine.txt and ./w1.test_reference.txt
+
+Comparing files: ./z1.test_mine.txt and ./z1.test_reference.txt
+
+Comparing files: ./z2.test_mine.txt and ./z2.test_reference.txt
+
+Comparing files: ./z3.test_mine.txt and ./z3.test_reference.txt
+

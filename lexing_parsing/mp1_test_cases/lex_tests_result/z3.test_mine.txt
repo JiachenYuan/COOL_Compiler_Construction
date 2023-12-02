@@ -1,0 +1,21 @@
+#name "./z3.test"
+#1 INT_CONST 559206
+#2 INT_CONST 3735928559
+#3 INT_CONST 0
+#4 '-'
+#4 INT_CONST 0
+#5 INT_CONST 891364655996943585359023558070348715
+#6 ERROR "Invalid integer constant"
+#7 ERROR "Invalid integer constant"
+#8 ERROR "Invalid integer constant"
+#9 ERROR "Invalid integer constant"
+#10 INT_CONST 123
+#10 '('
+#10 INT_CONST 123
+#10 ')'
+#11 INT_CONST 1397
+#11 ':'
+#11 INT_CONST 1654
+#12 ERROR "Invalid integer constant"
+#13 OBJECTID f0xaaaa
+#14 OBJECTID p123

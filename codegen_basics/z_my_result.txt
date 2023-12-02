@@ -1,0 +1,81 @@
+add.out:
+Main.main() returned 3
+anot3.out:
+Main.main() returned 9
+arith.out:
+Main.main() returned -1
+block2.out:
+Main.main() returned 4
+block.out:
+Main.main() returned 2
+comp0.out:
+Main.main() returned 0
+comp1.out:
+Main.main() returned -1
+condfalse.out:
+Main.main() returned 5
+condtrue.out:
+Main.main() returned 1
+div.out:
+Main.main() returned 2
+eqfalse.out:
+Main.main() returned 8
+eqtrue.out:
+Main.main() returned 1
+leqfalse.out:
+Main.main() returned 2
+leqtrue.out:
+Main.main() returned 1
+letbool.out:
+Main.main() returned 1
+letinittrap.out:
+Main.main() returned 1
+letint.out:
+Main.main() returned 10
+letmultiple2.out:
+Main.main() returned 28
+letmultiple.out:
+Main.main() returned 23
+letnestedx.out:
+Main.main() returned 1
+letnestedy.out:
+Main.main() returned 1
+letsame.out:
+Main.main() returned 8
+letshad.out:
+Main.main() returned 1
+local1let.out:
+Main.main() returned 11
+local2ifelse.out:
+Main.main() returned 3
+local31whileeq.out:
+Main.main() returned 2
+local3while.out:
+Main.main() returned 5
+local41booleq.out:
+Main.main() returned 1
+local4bool.out:
+Main.main() returned 1
+loop2.out:
+Main.main() returned 11
+loop3.out:
+Main.main() returned 10
+loop.out:
+Main.main() returned 10
+ltfalse.out:
+Main.main() returned 14
+lttrue.out:
+Main.main() returned 1
+mul.out:
+Main.main() returned 2
+notfalse.out:
+Main.main() returned 50
+nottrue.out:
+Main.main() returned 1
+ret20.out:
+Main.main() returned 20
+sub.out:
+Main.main() returned 1
+testCodeMain.out:
+Main.main() returned 123
+zerodivabort.out:

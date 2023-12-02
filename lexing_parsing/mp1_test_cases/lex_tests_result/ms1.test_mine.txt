@@ -1,0 +1,4 @@
+#name "./ms1.test"
+#3 STR_CONST "Legal\nmultiline\nstring"
+#6 STR_CONST "Multiline string should not be terminated by single quote \";\nit must be terminated by triple quotes \"\"\" "
+#9 ERROR "Encountered EOF in string"

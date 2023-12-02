@@ -1,0 +1,51 @@
+#10
+_program
+  #10
+  _class
+    Main
+    Object
+    "anot3.cl"
+    (
+    #9
+    _method
+      main
+      Int
+      #8
+      _cond
+        #3
+        _bool
+          1
+        : Bool
+        #6
+        _let
+          y
+          Bool
+          #4
+          _comp
+            #4
+            _bool
+              0
+            : Bool
+          : Bool
+          #5
+          _cond
+            #5
+            _object
+              y
+            : Bool
+            #5
+            _int
+              9
+            : Int
+            #5
+            _int
+              99
+            : Int
+          : Int
+        : Int
+        #7
+        _int
+          50
+        : Int
+      : Int
+    )
