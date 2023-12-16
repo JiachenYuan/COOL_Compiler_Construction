@@ -1,0 +1,570 @@
+Running complicated test: PR491.c
+UnitSCCP running on test
+Visiting BB: 
+VisitInstr:   br i1 true, label %4, label %2
+BranchInst:   br i1 true, label %4, label %2
+In BranchInst: 0, 0x5582113cc5c0
+In AddEdge: 0x558211386ef0, 0x558211388ce0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %5 = phi i32 [ %3, %2 ], [ 1, %1 ]
+PHI:   %5 = phi i32 [ %3, %2 ], [ 1, %1 ]
+PHI LatOp: 0, 0x5582113888f0
+Check LatCell: 0
+In Meet:   %5 = phi i32 [ %3, %2 ], [ 1, %1 ], Lat1: (1, 0x0), Lat2: (0, 0x5582113888f0)
+Lat2.second: i32 1
+Meet:   %5 = phi i32 [ %3, %2 ], [ 1, %1 ]
+VisitInstr:   br i1 true, label %8, label %6
+BranchInst:   br i1 true, label %8, label %6
+In BranchInst: 0, 0x5582113cc5c0
+In AddEdge: 0x558211388d30, 0x5582113895f0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %9 = phi i32 [ %7, %6 ], [ 1, %4 ]
+PHI:   %9 = phi i32 [ %7, %6 ], [ 1, %4 ]
+PHI LatOp: 0, 0x5582113888f0
+Check LatCell: 0
+In Meet:   %9 = phi i32 [ %7, %6 ], [ 1, %4 ], Lat1: (1, 0x0), Lat2: (0, 0x5582113888f0)
+Lat2.second: i32 1
+Meet:   %9 = phi i32 [ %7, %6 ], [ 1, %4 ]
+VisitInstr:   %10 = and i32 %5, %0
+BinaryOp:   %10 = and i32 %5, %0
+Check LatCell: 0
+In Meet:   %10 = and i32 %5, %0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %10 = and i32 %5, %0
+VisitInstr:   %11 = and i32 %10, %9
+BinaryOp:   %11 = and i32 %10, %9
+Check LatCell: 0
+In Meet:   %11 = and i32 %10, %9, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %11 = and i32 %10, %9
+VisitInstr:   ret i32 %11
+Check LatCell: 0
+In Meet:   ret i32 %11, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   ret i32 %11
+Removing:   %9 = phi i32 [ %7, %6 ], [ 1, %4 ], replacing with: i32 1
+Removing:   %5 = phi i32 [ %3, %2 ], [ 1, %1 ], replacing with: i32 1
+Unreachable: 
+Unreachable: 
+UnitSCCP: 2 instructions removed, 2 basic blocks unreachable, 2 instructions simplified
+UnitLICM running on test
+******************************************************
+UnitLoopAnalysis running on test
+[UnitLICM]: NumStoreHoisted: 0
+[UnitLICM]: NumLoadHoisted: 0
+[UnitLICM]: NumComputeHoisted: 0
+[UnitLICM]: Total: 0
+UnitSCCP running on assert_fail
+Visiting BB: 
+VisitInstr:   %3 = load ptr, ptr @stderr, align 8
+Check LatCell: 0
+In Meet:   %3 = load ptr, ptr @stderr, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %3 = load ptr, ptr @stderr, align 8
+VisitInstr:   %4 = call i32 (ptr, ptr, ...) @fprintf(ptr noundef %3, ptr noundef nonnull @.str.2, i32 noundef %1, ptr noundef %0) #2
+Check LatCell: 0
+In Meet:   %4 = call i32 (ptr, ptr, ...) @fprintf(ptr noundef %3, ptr noundef nonnull @.str.2, i32 noundef %1, ptr noundef %0) #2, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %4 = call i32 (ptr, ptr, ...) @fprintf(ptr noundef %3, ptr noundef nonnull @.str.2, i32 noundef %1, ptr noundef %0) #2
+VisitInstr:   ret i32 0
+Check LatCell: 0
+In Meet:   ret i32 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   ret i32 0
+UnitSCCP: 2 instructions removed, 2 basic blocks unreachable, 2 instructions simplified
+UnitLICM running on assert_fail
+******************************************************
+UnitLoopAnalysis running on assert_fail
+[UnitLICM]: NumStoreHoisted: 0
+[UnitLICM]: NumLoadHoisted: 0
+[UnitLICM]: NumComputeHoisted: 0
+[UnitLICM]: Total: 0
+UnitSCCP running on main
+Visiting BB: 
+VisitInstr:   %1 = call i32 @test(i32 noundef 1)
+Check LatCell: 0
+In Meet:   %1 = call i32 @test(i32 noundef 1), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %1 = call i32 @test(i32 noundef 1)
+VisitInstr:   %2 = icmp ne i32 %1, 1
+CmpInst:   %2 = icmp ne i32 %1, 1
+Check LatCell: 0
+In Meet:   %2 = icmp ne i32 %1, 1, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %2 = icmp ne i32 %1, 1
+VisitInstr:   %3 = zext i1 %2 to i32
+UnaryOp:   %3 = zext i1 %2 to i32
+Check LatCell: 0
+In Meet:   %3 = zext i1 %2 to i32, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %3 = zext i1 %2 to i32
+VisitInstr:   ret i32 %3
+Check LatCell: 0
+In Meet:   ret i32 %3, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   ret i32 %3
+UnitSCCP: 2 instructions removed, 2 basic blocks unreachable, 2 instructions simplified
+UnitLICM running on main
+******************************************************
+UnitLoopAnalysis running on main
+[UnitLICM]: NumStoreHoisted: 0
+[UnitLICM]: NumLoadHoisted: 0
+[UnitLICM]: NumComputeHoisted: 0
+[UnitLICM]: Total: 0
+----------------------------------------
+Running sccp only: PR491.c
+UnitSCCP running on test
+Visiting BB: 
+VisitInstr:   %2 = alloca %union.anon, align 8
+Check LatCell: 0
+In Meet:   %2 = alloca %union.anon, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %2 = alloca %union.anon, align 8
+VisitInstr:   store i64 0, ptr %2, align 8
+Check LatCell: 0
+In Meet:   store i64 0, ptr %2, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i64 0, ptr %2, align 8
+VisitInstr:   %3 = getelementptr inbounds [8 x i8], ptr %2, i64 0, i64 0
+GetElementPtr:   %3 = getelementptr inbounds [8 x i8], ptr %2, i64 0, i64 0
+Check LatCell: 0
+In Meet:   %3 = getelementptr inbounds [8 x i8], ptr %2, i64 0, i64 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %3 = getelementptr inbounds [8 x i8], ptr %2, i64 0, i64 0
+VisitInstr:   store i8 -128, ptr %3, align 8
+Check LatCell: 0
+In Meet:   store i8 -128, ptr %3, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i8 -128, ptr %3, align 8
+VisitInstr:   %4 = load i64, ptr %2, align 8
+Check LatCell: 0
+In Meet:   %4 = load i64, ptr %2, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %4 = load i64, ptr %2, align 8
+VisitInstr:   %5 = icmp eq i64 %4, 128
+CmpInst:   %5 = icmp eq i64 %4, 128
+Check LatCell: 0
+In Meet:   %5 = icmp eq i64 %4, 128, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %5 = icmp eq i64 %4, 128
+VisitInstr:   br i1 %5, label %6, label %7
+BranchInst:   br i1 %5, label %6, label %7
+In BranchInst: -1, 0x0
+In AddEdge: 0x5583abe96d10, 0x5583abe98b00, 0
+Adding edge:  -> 
+In AddEdge: 0x5583abe96d10, 0x5583abe98b00, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br label %9
+BranchInst:   br label %9
+In AddEdge: 0x5583abe989c0, 0x5583abe98bc0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %8 = call i32 @assert_fail(ptr noundef @.str, i32 noundef 22)
+Check LatCell: 0
+In Meet:   %8 = call i32 @assert_fail(ptr noundef @.str, i32 noundef 22), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %8 = call i32 @assert_fail(ptr noundef @.str, i32 noundef 22)
+VisitInstr:   br label %9
+BranchInst:   br label %9
+In AddEdge: 0x5583abe98a10, 0x5583abe98e00, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %10 = phi i32 [ 1, %6 ], [ %8, %7 ]
+PHI:   %10 = phi i32 [ 1, %6 ], [ %8, %7 ]
+PHI LatOp: 0, 0x5583abe98710
+PHI LatOp: -1, 0x0
+Check LatCell: 0
+In Meet:   %10 = phi i32 [ 1, %6 ], [ %8, %7 ], Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %10 = phi i32 [ 1, %6 ], [ %8, %7 ]
+VisitInstr:   %11 = and i32 %0, %10
+BinaryOp:   %11 = and i32 %0, %10
+Check LatCell: 0
+In Meet:   %11 = and i32 %0, %10, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %11 = and i32 %0, %10
+VisitInstr:   store i64 0, ptr %2, align 8
+Check LatCell: 0
+In Meet:   store i64 0, ptr %2, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i64 0, ptr %2, align 8
+VisitInstr:   %12 = getelementptr inbounds [8 x i8], ptr %2, i64 0, i64 7
+GetElementPtr:   %12 = getelementptr inbounds [8 x i8], ptr %2, i64 0, i64 7
+Check LatCell: 0
+In Meet:   %12 = getelementptr inbounds [8 x i8], ptr %2, i64 0, i64 7, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %12 = getelementptr inbounds [8 x i8], ptr %2, i64 0, i64 7
+VisitInstr:   store i8 -128, ptr %12, align 1
+Check LatCell: 0
+In Meet:   store i8 -128, ptr %12, align 1, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i8 -128, ptr %12, align 1
+VisitInstr:   %13 = load i64, ptr %2, align 8
+Check LatCell: 0
+In Meet:   %13 = load i64, ptr %2, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %13 = load i64, ptr %2, align 8
+VisitInstr:   %14 = icmp slt i64 %13, 0
+CmpInst:   %14 = icmp slt i64 %13, 0
+Check LatCell: 0
+In Meet:   %14 = icmp slt i64 %13, 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %14 = icmp slt i64 %13, 0
+VisitInstr:   br i1 %14, label %15, label %16
+BranchInst:   br i1 %14, label %15, label %16
+In BranchInst: -1, 0x0
+In AddEdge: 0x5583abe98b50, 0x5583abe99410, 0
+Adding edge:  -> 
+In AddEdge: 0x5583abe98b50, 0x5583abe99410, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %10 = phi i32 [ 1, %6 ], [ %8, %7 ]
+VisitInstr:   %11 = and i32 %0, %10
+VisitInstr:   store i64 0, ptr %2, align 8
+VisitInstr:   %12 = getelementptr inbounds [8 x i8], ptr %2, i64 0, i64 7
+VisitInstr:   store i8 -128, ptr %12, align 1
+VisitInstr:   %13 = load i64, ptr %2, align 8
+VisitInstr:   %14 = icmp slt i64 %13, 0
+VisitInstr:   br i1 %14, label %15, label %16
+BranchInst:   br i1 %14, label %15, label %16
+In BranchInst: -1, 0x0
+In AddEdge: 0x5583abe98b50, 0x5583abe99410, 0
+In AddEdge: 0x5583abe98b50, 0x5583abe99410, 1
+Visiting BB: 
+VisitInstr:   br label %18
+BranchInst:   br label %18
+In AddEdge: 0x5583abe99310, 0x5583abe994d0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %17 = call i32 @assert_fail(ptr noundef @.str.1, i32 noundef 24)
+Check LatCell: 0
+In Meet:   %17 = call i32 @assert_fail(ptr noundef @.str.1, i32 noundef 24), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %17 = call i32 @assert_fail(ptr noundef @.str.1, i32 noundef 24)
+VisitInstr:   br label %18
+BranchInst:   br label %18
+In AddEdge: 0x5583abe99360, 0x5583abe99680, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %19 = phi i32 [ 1, %15 ], [ %17, %16 ]
+PHI:   %19 = phi i32 [ 1, %15 ], [ %17, %16 ]
+PHI LatOp: 0, 0x5583abe98710
+PHI LatOp: -1, 0x0
+Check LatCell: 0
+In Meet:   %19 = phi i32 [ 1, %15 ], [ %17, %16 ], Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %19 = phi i32 [ 1, %15 ], [ %17, %16 ]
+VisitInstr:   %20 = and i32 %11, %19
+BinaryOp:   %20 = and i32 %11, %19
+Check LatCell: 0
+In Meet:   %20 = and i32 %11, %19, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %20 = and i32 %11, %19
+VisitInstr:   ret i32 %20
+Check LatCell: 0
+In Meet:   ret i32 %20, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   ret i32 %20
+Visiting BB: 
+VisitInstr:   %19 = phi i32 [ 1, %15 ], [ %17, %16 ]
+VisitInstr:   %20 = and i32 %11, %19
+VisitInstr:   ret i32 %20
+UnitSCCP: 0 instructions removed, 0 basic blocks unreachable, 0 instructions simplified
+UnitSCCP running on assert_fail
+Visiting BB: 
+VisitInstr:   %3 = load ptr, ptr @stderr, align 8
+Check LatCell: 0
+In Meet:   %3 = load ptr, ptr @stderr, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %3 = load ptr, ptr @stderr, align 8
+VisitInstr:   %4 = call i32 (ptr, ptr, ...) @fprintf(ptr noundef %3, ptr noundef @.str.2, i32 noundef %1, ptr noundef %0)
+Check LatCell: 0
+In Meet:   %4 = call i32 (ptr, ptr, ...) @fprintf(ptr noundef %3, ptr noundef @.str.2, i32 noundef %1, ptr noundef %0), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %4 = call i32 (ptr, ptr, ...) @fprintf(ptr noundef %3, ptr noundef @.str.2, i32 noundef %1, ptr noundef %0)
+VisitInstr:   ret i32 0
+Check LatCell: 0
+In Meet:   ret i32 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   ret i32 0
+UnitSCCP: 0 instructions removed, 0 basic blocks unreachable, 0 instructions simplified
+UnitSCCP running on main
+Visiting BB: 
+VisitInstr:   %1 = call i32 @test(i32 noundef 1)
+Check LatCell: 0
+In Meet:   %1 = call i32 @test(i32 noundef 1), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %1 = call i32 @test(i32 noundef 1)
+VisitInstr:   %2 = icmp ne i32 %1, 1
+CmpInst:   %2 = icmp ne i32 %1, 1
+Check LatCell: 0
+In Meet:   %2 = icmp ne i32 %1, 1, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %2 = icmp ne i32 %1, 1
+VisitInstr:   %3 = zext i1 %2 to i32
+UnaryOp:   %3 = zext i1 %2 to i32
+Check LatCell: 0
+In Meet:   %3 = zext i1 %2 to i32, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %3 = zext i1 %2 to i32
+VisitInstr:   ret i32 %3
+Check LatCell: 0
+In Meet:   ret i32 %3, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   ret i32 %3
+UnitSCCP: 0 instructions removed, 0 basic blocks unreachable, 0 instructions simplified
+----------------------------------------
+Running licm only: PR491.c
+UnitLICM running on test
+******************************************************
+UnitLoopAnalysis running on test
+[UnitLICM]: NumStoreHoisted: 0
+[UnitLICM]: NumLoadHoisted: 0
+[UnitLICM]: NumComputeHoisted: 0
+[UnitLICM]: Total: 0
+UnitLICM running on assert_fail
+******************************************************
+UnitLoopAnalysis running on assert_fail
+[UnitLICM]: NumStoreHoisted: 0
+[UnitLICM]: NumLoadHoisted: 0
+[UnitLICM]: NumComputeHoisted: 0
+[UnitLICM]: Total: 0
+UnitLICM running on main
+******************************************************
+UnitLoopAnalysis running on main
+[UnitLICM]: NumStoreHoisted: 0
+[UnitLICM]: NumLoadHoisted: 0
+[UnitLICM]: NumComputeHoisted: 0
+[UnitLICM]: Total: 0
+----------------------------------------
+Running sccp and licm: PR491.c
+UnitLICM running on test
+******************************************************
+UnitLoopAnalysis running on test
+[UnitLICM]: NumStoreHoisted: 0
+[UnitLICM]: NumLoadHoisted: 0
+[UnitLICM]: NumComputeHoisted: 0
+[UnitLICM]: Total: 0
+UnitSCCP running on test
+Visiting BB: 
+VisitInstr:   %2 = alloca i32, align 4
+Check LatCell: 0
+In Meet:   %2 = alloca i32, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %2 = alloca i32, align 4
+VisitInstr:   %3 = alloca %union.anon, align 8
+Check LatCell: 0
+In Meet:   %3 = alloca %union.anon, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %3 = alloca %union.anon, align 8
+VisitInstr:   store i32 %0, ptr %2, align 4
+Check LatCell: 0
+In Meet:   store i32 %0, ptr %2, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %0, ptr %2, align 4
+VisitInstr:   store i64 0, ptr %3, align 8
+Check LatCell: 0
+In Meet:   store i64 0, ptr %3, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i64 0, ptr %3, align 8
+VisitInstr:   %4 = getelementptr inbounds [8 x i8], ptr %3, i64 0, i64 0
+GetElementPtr:   %4 = getelementptr inbounds [8 x i8], ptr %3, i64 0, i64 0
+Check LatCell: 0
+In Meet:   %4 = getelementptr inbounds [8 x i8], ptr %3, i64 0, i64 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %4 = getelementptr inbounds [8 x i8], ptr %3, i64 0, i64 0
+VisitInstr:   store i8 -128, ptr %4, align 8
+Check LatCell: 0
+In Meet:   store i8 -128, ptr %4, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i8 -128, ptr %4, align 8
+VisitInstr:   %5 = load i64, ptr %3, align 8
+Check LatCell: 0
+In Meet:   %5 = load i64, ptr %3, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %5 = load i64, ptr %3, align 8
+VisitInstr:   %6 = icmp eq i64 %5, 128
+CmpInst:   %6 = icmp eq i64 %5, 128
+Check LatCell: 0
+In Meet:   %6 = icmp eq i64 %5, 128, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %6 = icmp eq i64 %5, 128
+VisitInstr:   br i1 %6, label %7, label %8
+BranchInst:   br i1 %6, label %7, label %8
+In BranchInst: -1, 0x0
+In AddEdge: 0x5581cb7f9d30, 0x5581cb7fbb20, 0
+Adding edge:  -> 
+In AddEdge: 0x5581cb7f9d30, 0x5581cb7fbb20, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br label %10
+BranchInst:   br label %10
+In AddEdge: 0x5581cb7fb9e0, 0x5581cb7fbbe0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %9 = call i32 @assert_fail(ptr noundef @.str, i32 noundef 22)
+Check LatCell: 0
+In Meet:   %9 = call i32 @assert_fail(ptr noundef @.str, i32 noundef 22), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %9 = call i32 @assert_fail(ptr noundef @.str, i32 noundef 22)
+VisitInstr:   br label %10
+BranchInst:   br label %10
+In AddEdge: 0x5581cb7fba30, 0x5581cb7fbe20, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %11 = phi i32 [ 1, %7 ], [ %9, %8 ]
+PHI:   %11 = phi i32 [ 1, %7 ], [ %9, %8 ]
+PHI LatOp: 0, 0x5581cb7fb730
+PHI LatOp: -1, 0x0
+Check LatCell: 0
+In Meet:   %11 = phi i32 [ 1, %7 ], [ %9, %8 ], Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %11 = phi i32 [ 1, %7 ], [ %9, %8 ]
+VisitInstr:   %12 = load i32, ptr %2, align 4
+Check LatCell: 0
+In Meet:   %12 = load i32, ptr %2, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %12 = load i32, ptr %2, align 4
+VisitInstr:   %13 = and i32 %12, %11
+BinaryOp:   %13 = and i32 %12, %11
+Check LatCell: 0
+In Meet:   %13 = and i32 %12, %11, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %13 = and i32 %12, %11
+VisitInstr:   store i32 %13, ptr %2, align 4
+Check LatCell: 0
+In Meet:   store i32 %13, ptr %2, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %13, ptr %2, align 4
+VisitInstr:   store i64 0, ptr %3, align 8
+Check LatCell: 0
+In Meet:   store i64 0, ptr %3, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i64 0, ptr %3, align 8
+VisitInstr:   %14 = getelementptr inbounds [8 x i8], ptr %3, i64 0, i64 7
+GetElementPtr:   %14 = getelementptr inbounds [8 x i8], ptr %3, i64 0, i64 7
+Check LatCell: 0
+In Meet:   %14 = getelementptr inbounds [8 x i8], ptr %3, i64 0, i64 7, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %14 = getelementptr inbounds [8 x i8], ptr %3, i64 0, i64 7
+VisitInstr:   store i8 -128, ptr %14, align 1
+Check LatCell: 0
+In Meet:   store i8 -128, ptr %14, align 1, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i8 -128, ptr %14, align 1
+VisitInstr:   %15 = load i64, ptr %3, align 8
+Check LatCell: 0
+In Meet:   %15 = load i64, ptr %3, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %15 = load i64, ptr %3, align 8
+VisitInstr:   %16 = icmp slt i64 %15, 0
+CmpInst:   %16 = icmp slt i64 %15, 0
+Check LatCell: 0
+In Meet:   %16 = icmp slt i64 %15, 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %16 = icmp slt i64 %15, 0
+VisitInstr:   br i1 %16, label %17, label %18
+BranchInst:   br i1 %16, label %17, label %18
+In BranchInst: -1, 0x0
+In AddEdge: 0x5581cb7fbb70, 0x5581cb7fc430, 0
+Adding edge:  -> 
+In AddEdge: 0x5581cb7fbb70, 0x5581cb7fc430, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %11 = phi i32 [ 1, %7 ], [ %9, %8 ]
+VisitInstr:   %12 = load i32, ptr %2, align 4
+VisitInstr:   %13 = and i32 %12, %11
+VisitInstr:   store i32 %13, ptr %2, align 4
+VisitInstr:   store i64 0, ptr %3, align 8
+VisitInstr:   %14 = getelementptr inbounds [8 x i8], ptr %3, i64 0, i64 7
+VisitInstr:   store i8 -128, ptr %14, align 1
+VisitInstr:   %15 = load i64, ptr %3, align 8
+VisitInstr:   %16 = icmp slt i64 %15, 0
+VisitInstr:   br i1 %16, label %17, label %18
+BranchInst:   br i1 %16, label %17, label %18
+In BranchInst: -1, 0x0
+In AddEdge: 0x5581cb7fbb70, 0x5581cb7fc430, 0
+In AddEdge: 0x5581cb7fbb70, 0x5581cb7fc430, 1
+Visiting BB: 
+VisitInstr:   br label %20
+BranchInst:   br label %20
+In AddEdge: 0x5581cb7fc330, 0x5581cb7fc4f0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %19 = call i32 @assert_fail(ptr noundef @.str.1, i32 noundef 24)
+Check LatCell: 0
+In Meet:   %19 = call i32 @assert_fail(ptr noundef @.str.1, i32 noundef 24), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %19 = call i32 @assert_fail(ptr noundef @.str.1, i32 noundef 24)
+VisitInstr:   br label %20
+BranchInst:   br label %20
+In AddEdge: 0x5581cb7fc380, 0x5581cb7fc6a0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %21 = phi i32 [ 1, %17 ], [ %19, %18 ]
+PHI:   %21 = phi i32 [ 1, %17 ], [ %19, %18 ]
+PHI LatOp: 0, 0x5581cb7fb730
+PHI LatOp: -1, 0x0
+Check LatCell: 0
+In Meet:   %21 = phi i32 [ 1, %17 ], [ %19, %18 ], Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %21 = phi i32 [ 1, %17 ], [ %19, %18 ]
+VisitInstr:   %22 = load i32, ptr %2, align 4
+Check LatCell: 0
+In Meet:   %22 = load i32, ptr %2, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %22 = load i32, ptr %2, align 4
+VisitInstr:   %23 = and i32 %22, %21
+BinaryOp:   %23 = and i32 %22, %21
+Check LatCell: 0
+In Meet:   %23 = and i32 %22, %21, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %23 = and i32 %22, %21
+VisitInstr:   store i32 %23, ptr %2, align 4
+Check LatCell: 0
+In Meet:   store i32 %23, ptr %2, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %23, ptr %2, align 4
+VisitInstr:   %24 = load i32, ptr %2, align 4
+Check LatCell: 0
+In Meet:   %24 = load i32, ptr %2, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %24 = load i32, ptr %2, align 4
+VisitInstr:   ret i32 %24
+Check LatCell: 0
+In Meet:   ret i32 %24, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   ret i32 %24
+Visiting BB: 
+VisitInstr:   %21 = phi i32 [ 1, %17 ], [ %19, %18 ]
+VisitInstr:   %22 = load i32, ptr %2, align 4
+VisitInstr:   %23 = and i32 %22, %21
+VisitInstr:   store i32 %23, ptr %2, align 4
+VisitInstr:   %24 = load i32, ptr %2, align 4
+VisitInstr:   ret i32 %24
+UnitSCCP: 0 instructions removed, 0 basic blocks unreachable, 0 instructions simplified
+UnitLICM running on assert_fail
+******************************************************
+UnitLoopAnalysis running on assert_fail
+[UnitLICM]: NumStoreHoisted: 0
+[UnitLICM]: NumLoadHoisted: 0
+[UnitLICM]: NumComputeHoisted: 0
+[UnitLICM]: Total: 0
+UnitSCCP running on assert_fail
+Visiting BB: 
+VisitInstr:   %3 = alloca ptr, align 8
+Check LatCell: 0
+In Meet:   %3 = alloca ptr, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %3 = alloca ptr, align 8
+VisitInstr:   %4 = alloca i32, align 4
+Check LatCell: 0
+In Meet:   %4 = alloca i32, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %4 = alloca i32, align 4
+VisitInstr:   store ptr %0, ptr %3, align 8
+Check LatCell: 0
+In Meet:   store ptr %0, ptr %3, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store ptr %0, ptr %3, align 8
+VisitInstr:   store i32 %1, ptr %4, align 4
+Check LatCell: 0
+In Meet:   store i32 %1, ptr %4, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %1, ptr %4, align 4
+VisitInstr:   %5 = load ptr, ptr @stderr, align 8
+Check LatCell: 0
+In Meet:   %5 = load ptr, ptr @stderr, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %5 = load ptr, ptr @stderr, align 8
+VisitInstr:   %6 = load i32, ptr %4, align 4
+Check LatCell: 0
+In Meet:   %6 = load i32, ptr %4, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %6 = load i32, ptr %4, align 4
+VisitInstr:   %7 = load ptr, ptr %3, align 8
+Check LatCell: 0
+In Meet:   %7 = load ptr, ptr %3, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %7 = load ptr, ptr %3, align 8
+VisitInstr:   %8 = call i32 (ptr, ptr, ...) @fprintf(ptr noundef %5, ptr noundef @.str.2, i32 noundef %6, ptr noundef %7)
+Check LatCell: 0
+In Meet:   %8 = call i32 (ptr, ptr, ...) @fprintf(ptr noundef %5, ptr noundef @.str.2, i32 noundef %6, ptr noundef %7), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %8 = call i32 (ptr, ptr, ...) @fprintf(ptr noundef %5, ptr noundef @.str.2, i32 noundef %6, ptr noundef %7)
+VisitInstr:   ret i32 0
+Check LatCell: 0
+In Meet:   ret i32 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   ret i32 0
+UnitSCCP: 0 instructions removed, 0 basic blocks unreachable, 0 instructions simplified
+UnitLICM running on main
+******************************************************
+UnitLoopAnalysis running on main
+[UnitLICM]: NumStoreHoisted: 0
+[UnitLICM]: NumLoadHoisted: 0
+[UnitLICM]: NumComputeHoisted: 0
+[UnitLICM]: Total: 0
+UnitSCCP running on main
+Visiting BB: 
+VisitInstr:   %1 = alloca i32, align 4
+Check LatCell: 0
+In Meet:   %1 = alloca i32, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %1 = alloca i32, align 4
+VisitInstr:   store i32 0, ptr %1, align 4
+Check LatCell: 0
+In Meet:   store i32 0, ptr %1, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 0, ptr %1, align 4
+VisitInstr:   %2 = call i32 @test(i32 noundef 1)
+Check LatCell: 0
+In Meet:   %2 = call i32 @test(i32 noundef 1), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %2 = call i32 @test(i32 noundef 1)
+VisitInstr:   %3 = icmp ne i32 %2, 1
+CmpInst:   %3 = icmp ne i32 %2, 1
+Check LatCell: 0
+In Meet:   %3 = icmp ne i32 %2, 1, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %3 = icmp ne i32 %2, 1
+VisitInstr:   %4 = zext i1 %3 to i32
+UnaryOp:   %4 = zext i1 %3 to i32
+Check LatCell: 0
+In Meet:   %4 = zext i1 %3 to i32, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %4 = zext i1 %3 to i32
+VisitInstr:   ret i32 %4
+Check LatCell: 0
+In Meet:   ret i32 %4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   ret i32 %4
+UnitSCCP: 0 instructions removed, 0 basic blocks unreachable, 0 instructions simplified

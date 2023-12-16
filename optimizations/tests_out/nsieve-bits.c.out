@@ -1,0 +1,2157 @@
+Running complicated test: nsieve-bits.c
+UnitSCCP running on main
+Visiting BB: 
+VisitInstr:   %3 = call noalias dereferenceable_or_null(5120004) ptr @malloc(i64 noundef 5120004) #5
+Check LatCell: 0
+In Meet:   %3 = call noalias dereferenceable_or_null(5120004) ptr @malloc(i64 noundef 5120004) #5, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %3 = call noalias dereferenceable_or_null(5120004) ptr @malloc(i64 noundef 5120004) #5
+VisitInstr:   %.not = icmp eq ptr %3, null
+CmpInst:   %.not = icmp eq ptr %3, null
+Check LatCell: 0
+In Meet:   %.not = icmp eq ptr %3, null, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %.not = icmp eq ptr %3, null
+VisitInstr:   br i1 %.not, label %41, label %4
+BranchInst:   br i1 %.not, label %41, label %4
+In BranchInst: -1, 0x0
+In AddEdge: 0x5583a8e8ef00, 0x5583a8e91310, 0
+Adding edge:  -> 
+In AddEdge: 0x5583a8e8ef00, 0x5583a8e91310, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %.0 = phi i32 [ 0, %40 ], [ 1, %2 ]
+PHI:   %.0 = phi i32 [ 0, %40 ], [ 1, %2 ]
+PHI LatOp: 0, 0x5583a8e90490
+Check LatCell: 0
+In Meet:   %.0 = phi i32 [ 0, %40 ], [ 1, %2 ], Lat1: (1, 0x0), Lat2: (0, 0x5583a8e90490)
+Lat2.second: i32 1
+Meet:   %.0 = phi i32 [ 0, %40 ], [ 1, %2 ]
+VisitInstr:   ret i32 %.0
+Check LatCell: 0
+In Meet:   ret i32 %.0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   ret i32 %.0
+Visiting BB: 
+VisitInstr:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ]
+PHI:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ]
+PHI LatOp: 0, 0x5583a8e8fde0
+Check LatCell: 0
+In Meet:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ], Lat1: (1, 0x0), Lat2: (0, 0x5583a8e8fde0)
+Lat2.second: i32 0
+Meet:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ]
+VisitInstr:   %5 = icmp ult i32 %.03, 3
+CmpInst:   %5 = icmp ult i32 %.03, 3
+Check LatCell: 0
+In Meet:   %5 = icmp ult i32 %.03, 3, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e932f0)
+Lat2.second: i1 true
+Meet:   %5 = icmp ult i32 %.03, 3
+VisitInstr:   br i1 %5, label %6, label %40
+BranchInst:   br i1 %5, label %6, label %40
+In BranchInst: 0, 0x5583a8e932f0
+In AddEdge: 0x5583a8e91540, 0x5583a8e91870, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %7 = lshr i32 40960000, %.03
+BinaryOp:   %7 = lshr i32 40960000, %.03
+Check LatCell: 0
+In Meet:   %7 = lshr i32 40960000, %.03, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e90900)
+Lat2.second: i32 40960000
+Meet:   %7 = lshr i32 40960000, %.03
+VisitInstr:   %8 = lshr i32 5120000, %.03
+BinaryOp:   %8 = lshr i32 5120000, %.03
+Check LatCell: 0
+In Meet:   %8 = lshr i32 5120000, %.03, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e95ee0)
+Lat2.second: i32 5120000
+Meet:   %8 = lshr i32 5120000, %.03
+VisitInstr:   %narrow = add nuw nsw i32 %8, 4
+BinaryOp:   %narrow = add nuw nsw i32 %8, 4
+Check LatCell: 0
+In Meet:   %narrow = add nuw nsw i32 %8, 4, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e98050)
+Lat2.second: i32 5120004
+Meet:   %narrow = add nuw nsw i32 %8, 4
+VisitInstr:   %9 = zext i32 %narrow to i64
+UnaryOp:   %9 = zext i32 %narrow to i64
+Check LatCell: 0
+In Meet:   %9 = zext i32 %narrow to i64, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e926e0)
+Lat2.second: i32 zext (i32 5120004 to i32)
+Meet:   %9 = zext i32 %narrow to i64
+VisitInstr:   call void @llvm.memset.p0.i64(ptr noundef nonnull align 4 %3, i8 -1, i64 %9, i1 false)
+Check LatCell: 0
+In Meet:   call void @llvm.memset.p0.i64(ptr noundef nonnull align 4 %3, i8 -1, i64 %9, i1 false), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   call void @llvm.memset.p0.i64(ptr noundef nonnull align 4 %3, i8 -1, i64 %9, i1 false)
+VisitInstr:   br label %10
+BranchInst:   br label %10
+In AddEdge: 0x5583a8e91730, 0x5583a8e92340, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ]
+PHI:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ]
+PHI LatOp: 0, 0x5583a8e91670
+Check LatCell: 0
+In Meet:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ], Lat1: (1, 0x0), Lat2: (0, 0x5583a8e91670)
+Lat2.second: i32 2
+Meet:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ]
+VisitInstr:   %.01 = phi i32 [ 0, %6 ], [ %.1, %35 ]
+PHI:   %.01 = phi i32 [ 0, %6 ], [ %.1, %35 ]
+PHI LatOp: 0, 0x5583a8e8fde0
+Check LatCell: 0
+In Meet:   %.01 = phi i32 [ 0, %6 ], [ %.1, %35 ], Lat1: (1, 0x0), Lat2: (0, 0x5583a8e8fde0)
+Lat2.second: i32 0
+Meet:   %.01 = phi i32 [ 0, %6 ], [ %.1, %35 ]
+VisitInstr:   %.not5 = icmp ugt i32 %.04, %7
+CmpInst:   %.not5 = icmp ugt i32 %.04, %7
+Check LatCell: 0
+In Meet:   %.not5 = icmp ugt i32 %.04, %7, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e92030)
+Lat2.second: i1 false
+Meet:   %.not5 = icmp ugt i32 %.04, %7
+VisitInstr:   br i1 %.not5, label %37, label %11
+BranchInst:   br i1 %.not5, label %37, label %11
+In BranchInst: 0, 0x5583a8e92030
+In AddEdge: 0x5583a8e92290, 0x5583a8e92640, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %12 = lshr i32 %.04, 5
+BinaryOp:   %12 = lshr i32 %.04, 5
+Check LatCell: 0
+In Meet:   %12 = lshr i32 %.04, 5, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e8fde0)
+Lat2.second: i32 0
+Meet:   %12 = lshr i32 %.04, 5
+VisitInstr:   %13 = zext i32 %12 to i64
+UnaryOp:   %13 = zext i32 %12 to i64
+Check LatCell: 0
+In Meet:   %13 = zext i32 %12 to i64, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e93640)
+Lat2.second: i32 zext (i32 0 to i32)
+Meet:   %13 = zext i32 %12 to i64
+VisitInstr:   %14 = getelementptr inbounds i32, ptr %3, i64 %13
+GetElementPtr:   %14 = getelementptr inbounds i32, ptr %3, i64 %13
+Check LatCell: 0
+In Meet:   %14 = getelementptr inbounds i32, ptr %3, i64 %13, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %14 = getelementptr inbounds i32, ptr %3, i64 %13
+VisitInstr:   %15 = load i32, ptr %14, align 4
+Check LatCell: 0
+In Meet:   %15 = load i32, ptr %14, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %15 = load i32, ptr %14, align 4
+VisitInstr:   %16 = and i32 %.04, 31
+BinaryOp:   %16 = and i32 %.04, 31
+Check LatCell: 0
+In Meet:   %16 = and i32 %.04, 31, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e91670)
+Lat2.second: i32 2
+Meet:   %16 = and i32 %.04, 31
+VisitInstr:   %17 = shl i32 1, %16
+BinaryOp:   %17 = shl i32 1, %16
+Check LatCell: 0
+In Meet:   %17 = shl i32 1, %16, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e9a6e0)
+Lat2.second: i32 4
+Meet:   %17 = shl i32 1, %16
+VisitInstr:   %18 = and i32 %15, %17
+BinaryOp:   %18 = and i32 %15, %17
+Check LatCell: 0
+In Meet:   %18 = and i32 %15, %17, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %18 = and i32 %15, %17
+VisitInstr:   %.not6 = icmp eq i32 %18, 0
+CmpInst:   %.not6 = icmp eq i32 %18, 0
+Check LatCell: 0
+In Meet:   %.not6 = icmp eq i32 %18, 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %.not6 = icmp eq i32 %18, 0
+VisitInstr:   br i1 %.not6, label %35, label %19
+BranchInst:   br i1 %.not6, label %35, label %19
+In BranchInst: -1, 0x0
+In AddEdge: 0x5583a8e92500, 0x5583a8e92e50, 0
+Adding edge:  -> 
+In AddEdge: 0x5583a8e92500, 0x5583a8e92e50, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %.1 = phi i32 [ %.01, %11 ], [ %20, %22 ]
+PHI:   %.1 = phi i32 [ %.01, %11 ], [ %20, %22 ]
+PHI LatOp: 0, 0x5583a8e8fde0
+Check LatCell: 0
+In Meet:   %.1 = phi i32 [ %.01, %11 ], [ %20, %22 ], Lat1: (1, 0x0), Lat2: (0, 0x5583a8e8fde0)
+Lat2.second: i32 0
+Meet:   %.1 = phi i32 [ %.01, %11 ], [ %20, %22 ]
+Adding SSA:   %.01 = phi i32 [ 0, %6 ], [ %.1, %35 ]
+VisitInstr:   %36 = add i32 %.04, 1
+BinaryOp:   %36 = add i32 %.04, 1
+Check LatCell: 0
+In Meet:   %36 = add i32 %.04, 1, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e93320)
+Lat2.second: i32 3
+Meet:   %36 = add i32 %.04, 1
+Adding SSA:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ]
+VisitInstr:   br label %10, !llvm.loop !8
+BranchInst:   br label %10, !llvm.loop !8
+In AddEdge: 0x5583a8e97440, 0x5583a8e976b0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %20 = add i32 %.01, 1
+BinaryOp:   %20 = add i32 %.01, 1
+Check LatCell: 0
+In Meet:   %20 = add i32 %.01, 1, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e90490)
+Lat2.second: i32 1
+Meet:   %20 = add i32 %.01, 1
+Adding SSA:   %.1 = phi i32 [ %.01, %11 ], [ %20, %22 ]
+VisitInstr:   %21 = shl i32 %.04, 1
+BinaryOp:   %21 = shl i32 %.04, 1
+Check LatCell: 0
+In Meet:   %21 = shl i32 %.04, 1, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e9a6e0)
+Lat2.second: i32 4
+Meet:   %21 = shl i32 %.04, 1
+VisitInstr:   br label %22
+BranchInst:   br label %22
+In AddEdge: 0x5583a8e92d10, 0x5583a8e932a0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ]
+PHI:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ]
+PHI LatOp: 0, 0x5583a8e9a6e0
+Check LatCell: 0
+In Meet:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ], Lat1: (1, 0x0), Lat2: (0, 0x5583a8e9a6e0)
+Lat2.second: i32 4
+Meet:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ]
+VisitInstr:   %.not7 = icmp ugt i32 %.02, %7
+CmpInst:   %.not7 = icmp ugt i32 %.02, %7
+Check LatCell: 0
+In Meet:   %.not7 = icmp ugt i32 %.02, %7, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e92030)
+Lat2.second: i1 false
+Meet:   %.not7 = icmp ugt i32 %.02, %7
+VisitInstr:   br i1 %.not7, label %35, label %23
+BranchInst:   br i1 %.not7, label %35, label %23
+In BranchInst: 0, 0x5583a8e92030
+In AddEdge: 0x5583a8e93230, 0x5583a8e935a0, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %24 = lshr i32 %.02, 5
+BinaryOp:   %24 = lshr i32 %.02, 5
+Check LatCell: 0
+In Meet:   %24 = lshr i32 %.02, 5, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e8fde0)
+Lat2.second: i32 0
+Meet:   %24 = lshr i32 %.02, 5
+VisitInstr:   %25 = zext i32 %24 to i64
+UnaryOp:   %25 = zext i32 %24 to i64
+Check LatCell: 0
+In Meet:   %25 = zext i32 %24 to i64, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e93640)
+Lat2.second: i32 zext (i32 0 to i32)
+Meet:   %25 = zext i32 %24 to i64
+VisitInstr:   %26 = getelementptr inbounds i32, ptr %3, i64 %25
+GetElementPtr:   %26 = getelementptr inbounds i32, ptr %3, i64 %25
+Check LatCell: 0
+In Meet:   %26 = getelementptr inbounds i32, ptr %3, i64 %25, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %26 = getelementptr inbounds i32, ptr %3, i64 %25
+VisitInstr:   %27 = load i32, ptr %26, align 4
+Check LatCell: 0
+In Meet:   %27 = load i32, ptr %26, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %27 = load i32, ptr %26, align 4
+VisitInstr:   %28 = and i32 %.02, 31
+BinaryOp:   %28 = and i32 %.02, 31
+Check LatCell: 0
+In Meet:   %28 = and i32 %.02, 31, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e9a6e0)
+Lat2.second: i32 4
+Meet:   %28 = and i32 %.02, 31
+VisitInstr:   %29 = shl i32 1, %28
+BinaryOp:   %29 = shl i32 1, %28
+Check LatCell: 0
+In Meet:   %29 = shl i32 1, %28, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e97bf0)
+Lat2.second: i32 16
+Meet:   %29 = shl i32 1, %28
+VisitInstr:   %30 = and i32 %27, %29
+BinaryOp:   %30 = and i32 %27, %29
+Check LatCell: 0
+In Meet:   %30 = and i32 %27, %29, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %30 = and i32 %27, %29
+VisitInstr:   %.not8 = icmp eq i32 %30, 0
+CmpInst:   %.not8 = icmp eq i32 %30, 0
+Check LatCell: 0
+In Meet:   %.not8 = icmp eq i32 %30, 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %.not8 = icmp eq i32 %30, 0
+VisitInstr:   br i1 %.not8, label %33, label %31
+BranchInst:   br i1 %.not8, label %33, label %31
+In BranchInst: -1, 0x0
+In AddEdge: 0x5583a8e93460, 0x5583a8e95e90, 0
+Adding edge:  -> 
+In AddEdge: 0x5583a8e93460, 0x5583a8e95e90, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %34 = add i32 %.02, %.04
+BinaryOp:   %34 = add i32 %.02, %.04
+Check LatCell: 0
+In Meet:   %34 = add i32 %.02, %.04, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e97660)
+Lat2.second: i32 6
+Meet:   %34 = add i32 %.02, %.04
+Adding SSA:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ]
+VisitInstr:   br label %22, !llvm.loop !6
+BranchInst:   br label %22, !llvm.loop !6
+In AddEdge: 0x5583a8e965d0, 0x5583a8e968b0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %32 = xor i32 %27, %29
+BinaryOp:   %32 = xor i32 %27, %29
+Check LatCell: 0
+In Meet:   %32 = xor i32 %27, %29, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %32 = xor i32 %27, %29
+VisitInstr:   store i32 %32, ptr %26, align 4
+Check LatCell: 0
+In Meet:   store i32 %32, ptr %26, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %32, ptr %26, align 4
+VisitInstr:   br label %33
+BranchInst:   br label %33
+In AddEdge: 0x5583a8e93a50, 0x5583a8e96580, 0
+Adding edge:  -> 
+Visiting SSA:   %.01 = phi i32 [ 0, %6 ], [ %.1, %35 ]
+VisitInstr:   %.01 = phi i32 [ 0, %6 ], [ %.1, %35 ]
+PHI:   %.01 = phi i32 [ 0, %6 ], [ %.1, %35 ]
+PHI LatOp: 0, 0x5583a8e8fde0
+PHI LatOp: 0, 0x5583a8e8fde0
+Check LatCell: 1
+In Meet:   %.01 = phi i32 [ 0, %6 ], [ %.1, %35 ], Lat1: (0, 0x5583a8e8fde0), Lat2: (0, 0x5583a8e8fde0)
+Lat1.second: i32 0
+Lat2.second: i32 0
+Visiting SSA:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ]
+VisitInstr:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ]
+PHI:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ]
+PHI LatOp: 0, 0x5583a8e91670
+PHI LatOp: 0, 0x5583a8e93320
+Check LatCell: 1
+In Meet:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ], Lat1: (0, 0x5583a8e91670), Lat2: (-1, 0x0)
+Lat1.second: i32 2
+Meet:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ]
+Adding SSA:   %21 = shl i32 %.04, 1
+Adding SSA:   %16 = and i32 %.04, 31
+Adding SSA:   %12 = lshr i32 %.04, 5
+Adding SSA:   %36 = add i32 %.04, 1
+Adding SSA:   %34 = add i32 %.02, %.04
+Adding SSA:   %.not5 = icmp ugt i32 %.04, %7
+Visiting SSA:   %.1 = phi i32 [ %.01, %11 ], [ %20, %22 ]
+VisitInstr:   %.1 = phi i32 [ %.01, %11 ], [ %20, %22 ]
+PHI:   %.1 = phi i32 [ %.01, %11 ], [ %20, %22 ]
+PHI LatOp: 0, 0x5583a8e8fde0
+Check LatCell: 1
+In Meet:   %.1 = phi i32 [ %.01, %11 ], [ %20, %22 ], Lat1: (0, 0x5583a8e8fde0), Lat2: (0, 0x5583a8e8fde0)
+Lat1.second: i32 0
+Lat2.second: i32 0
+Visiting SSA:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ]
+VisitInstr:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ]
+PHI:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ]
+PHI LatOp: 0, 0x5583a8e9a6e0
+PHI LatOp: 0, 0x5583a8e97660
+Check LatCell: 1
+In Meet:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ], Lat1: (0, 0x5583a8e9a6e0), Lat2: (-1, 0x0)
+Lat1.second: i32 4
+Meet:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ]
+Adding SSA:   %28 = and i32 %.02, 31
+Adding SSA:   %24 = lshr i32 %.02, 5
+Adding SSA:   %.not7 = icmp ugt i32 %.02, %7
+Visiting SSA:   %21 = shl i32 %.04, 1
+VisitInstr:   %21 = shl i32 %.04, 1
+BinaryOp:   %21 = shl i32 %.04, 1
+Check LatCell: 1
+In Meet:   %21 = shl i32 %.04, 1, Lat1: (0, 0x5583a8e9a6e0), Lat2: (-1, 0x0)
+Lat1.second: i32 4
+Meet:   %21 = shl i32 %.04, 1
+Adding SSA:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ]
+Visiting SSA:   %16 = and i32 %.04, 31
+VisitInstr:   %16 = and i32 %.04, 31
+BinaryOp:   %16 = and i32 %.04, 31
+Check LatCell: 1
+In Meet:   %16 = and i32 %.04, 31, Lat1: (0, 0x5583a8e91670), Lat2: (-1, 0x0)
+Lat1.second: i32 2
+Meet:   %16 = and i32 %.04, 31
+Adding SSA:   %17 = shl i32 1, %16
+Visiting SSA:   %12 = lshr i32 %.04, 5
+VisitInstr:   %12 = lshr i32 %.04, 5
+BinaryOp:   %12 = lshr i32 %.04, 5
+Check LatCell: 1
+In Meet:   %12 = lshr i32 %.04, 5, Lat1: (0, 0x5583a8e8fde0), Lat2: (-1, 0x0)
+Lat1.second: i32 0
+Meet:   %12 = lshr i32 %.04, 5
+Adding SSA:   %13 = zext i32 %12 to i64
+Visiting SSA:   %36 = add i32 %.04, 1
+VisitInstr:   %36 = add i32 %.04, 1
+BinaryOp:   %36 = add i32 %.04, 1
+Check LatCell: 1
+In Meet:   %36 = add i32 %.04, 1, Lat1: (0, 0x5583a8e93320), Lat2: (-1, 0x0)
+Lat1.second: i32 3
+Meet:   %36 = add i32 %.04, 1
+Adding SSA:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ]
+Visiting SSA:   %34 = add i32 %.02, %.04
+VisitInstr:   %34 = add i32 %.02, %.04
+BinaryOp:   %34 = add i32 %.02, %.04
+Check LatCell: 1
+In Meet:   %34 = add i32 %.02, %.04, Lat1: (0, 0x5583a8e97660), Lat2: (-1, 0x0)
+Lat1.second: i32 6
+Meet:   %34 = add i32 %.02, %.04
+Visiting SSA:   %.not5 = icmp ugt i32 %.04, %7
+VisitInstr:   %.not5 = icmp ugt i32 %.04, %7
+CmpInst:   %.not5 = icmp ugt i32 %.04, %7
+Check LatCell: 1
+In Meet:   %.not5 = icmp ugt i32 %.04, %7, Lat1: (0, 0x5583a8e92030), Lat2: (-1, 0x0)
+Lat1.second: i1 false
+Meet:   %.not5 = icmp ugt i32 %.04, %7
+Adding SSA:   br i1 %.not5, label %37, label %11
+Visiting SSA:   %28 = and i32 %.02, 31
+VisitInstr:   %28 = and i32 %.02, 31
+BinaryOp:   %28 = and i32 %.02, 31
+Check LatCell: 1
+In Meet:   %28 = and i32 %.02, 31, Lat1: (0, 0x5583a8e9a6e0), Lat2: (-1, 0x0)
+Lat1.second: i32 4
+Meet:   %28 = and i32 %.02, 31
+Adding SSA:   %29 = shl i32 1, %28
+Visiting SSA:   %24 = lshr i32 %.02, 5
+VisitInstr:   %24 = lshr i32 %.02, 5
+BinaryOp:   %24 = lshr i32 %.02, 5
+Check LatCell: 1
+In Meet:   %24 = lshr i32 %.02, 5, Lat1: (0, 0x5583a8e8fde0), Lat2: (-1, 0x0)
+Lat1.second: i32 0
+Meet:   %24 = lshr i32 %.02, 5
+Adding SSA:   %25 = zext i32 %24 to i64
+Visiting SSA:   %.not7 = icmp ugt i32 %.02, %7
+VisitInstr:   %.not7 = icmp ugt i32 %.02, %7
+CmpInst:   %.not7 = icmp ugt i32 %.02, %7
+Check LatCell: 1
+In Meet:   %.not7 = icmp ugt i32 %.02, %7, Lat1: (0, 0x5583a8e92030), Lat2: (-1, 0x0)
+Lat1.second: i1 false
+Meet:   %.not7 = icmp ugt i32 %.02, %7
+Adding SSA:   br i1 %.not7, label %35, label %23
+Visiting SSA:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ]
+VisitInstr:   %.02 = phi i32 [ %21, %19 ], [ %34, %33 ]
+Visiting SSA:   %17 = shl i32 1, %16
+VisitInstr:   %17 = shl i32 1, %16
+BinaryOp:   %17 = shl i32 1, %16
+Check LatCell: 1
+In Meet:   %17 = shl i32 1, %16, Lat1: (0, 0x5583a8e9a6e0), Lat2: (-1, 0x0)
+Lat1.second: i32 4
+Meet:   %17 = shl i32 1, %16
+Adding SSA:   %18 = and i32 %15, %17
+Visiting SSA:   %13 = zext i32 %12 to i64
+VisitInstr:   %13 = zext i32 %12 to i64
+UnaryOp:   %13 = zext i32 %12 to i64
+Check LatCell: 1
+In Meet:   %13 = zext i32 %12 to i64, Lat1: (0, 0x5583a8e93640), Lat2: (-1, 0x0)
+Lat1.second: i32 zext (i32 0 to i32)
+Meet:   %13 = zext i32 %12 to i64
+Adding SSA:   %14 = getelementptr inbounds i32, ptr %3, i64 %13
+Visiting SSA:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ]
+VisitInstr:   %.04 = phi i32 [ 2, %6 ], [ %36, %35 ]
+Visiting SSA:   br i1 %.not5, label %37, label %11
+VisitInstr:   br i1 %.not5, label %37, label %11
+BranchInst:   br i1 %.not5, label %37, label %11
+In BranchInst: -1, 0x0
+In AddEdge: 0x5583a8e92290, 0x5583a8e92640, 0
+Adding edge:  -> 
+In AddEdge: 0x5583a8e92290, 0x5583a8e92640, 1
+Visiting BB: 
+VisitInstr:   %38 = call i32 (ptr, ...) @printf(ptr noundef nonnull @.str, i32 noundef %7, i32 noundef %.01) #6
+Check LatCell: 0
+In Meet:   %38 = call i32 (ptr, ...) @printf(ptr noundef nonnull @.str, i32 noundef %7, i32 noundef %.01) #6, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %38 = call i32 (ptr, ...) @printf(ptr noundef nonnull @.str, i32 noundef %7, i32 noundef %.01) #6
+VisitInstr:   %39 = add i32 %.03, 1
+BinaryOp:   %39 = add i32 %.03, 1
+Check LatCell: 0
+In Meet:   %39 = add i32 %.03, 1, Lat1: (1, 0x0), Lat2: (0, 0x5583a8e90490)
+Lat2.second: i32 1
+Meet:   %39 = add i32 %.03, 1
+Adding SSA:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ]
+VisitInstr:   br label %4, !llvm.loop !9
+BranchInst:   br label %4, !llvm.loop !9
+In AddEdge: 0x5583a8e92550, 0x5583a8e97c40, 0
+Adding edge:  -> 
+Visiting SSA:   %29 = shl i32 1, %28
+VisitInstr:   %29 = shl i32 1, %28
+BinaryOp:   %29 = shl i32 1, %28
+Check LatCell: 1
+In Meet:   %29 = shl i32 1, %28, Lat1: (0, 0x5583a8e97bf0), Lat2: (-1, 0x0)
+Lat1.second: i32 16
+Meet:   %29 = shl i32 1, %28
+Adding SSA:   %32 = xor i32 %27, %29
+Adding SSA:   %30 = and i32 %27, %29
+Visiting SSA:   %25 = zext i32 %24 to i64
+VisitInstr:   %25 = zext i32 %24 to i64
+UnaryOp:   %25 = zext i32 %24 to i64
+Check LatCell: 1
+In Meet:   %25 = zext i32 %24 to i64, Lat1: (0, 0x5583a8e93640), Lat2: (-1, 0x0)
+Lat1.second: i32 zext (i32 0 to i32)
+Meet:   %25 = zext i32 %24 to i64
+Adding SSA:   %26 = getelementptr inbounds i32, ptr %3, i64 %25
+Visiting SSA:   br i1 %.not7, label %35, label %23
+VisitInstr:   br i1 %.not7, label %35, label %23
+BranchInst:   br i1 %.not7, label %35, label %23
+In BranchInst: -1, 0x0
+In AddEdge: 0x5583a8e93230, 0x5583a8e935a0, 0
+Adding edge:  -> 
+In AddEdge: 0x5583a8e93230, 0x5583a8e935a0, 1
+Visiting SSA:   %18 = and i32 %15, %17
+VisitInstr:   %18 = and i32 %15, %17
+Visiting SSA:   %14 = getelementptr inbounds i32, ptr %3, i64 %13
+VisitInstr:   %14 = getelementptr inbounds i32, ptr %3, i64 %13
+Visiting SSA:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ]
+VisitInstr:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ]
+PHI:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ]
+PHI LatOp: 0, 0x5583a8e90490
+PHI LatOp: 0, 0x5583a8e8fde0
+Check LatCell: 1
+In Meet:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ], Lat1: (0, 0x5583a8e8fde0), Lat2: (-1, 0x0)
+Lat1.second: i32 0
+Meet:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ]
+Adding SSA:   %8 = lshr i32 5120000, %.03
+Adding SSA:   %5 = icmp ult i32 %.03, 3
+Adding SSA:   %39 = add i32 %.03, 1
+Adding SSA:   %7 = lshr i32 40960000, %.03
+Visiting SSA:   %32 = xor i32 %27, %29
+VisitInstr:   %32 = xor i32 %27, %29
+Visiting SSA:   %30 = and i32 %27, %29
+VisitInstr:   %30 = and i32 %27, %29
+Visiting SSA:   %26 = getelementptr inbounds i32, ptr %3, i64 %25
+VisitInstr:   %26 = getelementptr inbounds i32, ptr %3, i64 %25
+Visiting SSA:   %8 = lshr i32 5120000, %.03
+VisitInstr:   %8 = lshr i32 5120000, %.03
+BinaryOp:   %8 = lshr i32 5120000, %.03
+Check LatCell: 1
+In Meet:   %8 = lshr i32 5120000, %.03, Lat1: (0, 0x5583a8e95ee0), Lat2: (-1, 0x0)
+Lat1.second: i32 5120000
+Meet:   %8 = lshr i32 5120000, %.03
+Adding SSA:   %narrow = add nuw nsw i32 %8, 4
+Visiting SSA:   %5 = icmp ult i32 %.03, 3
+VisitInstr:   %5 = icmp ult i32 %.03, 3
+CmpInst:   %5 = icmp ult i32 %.03, 3
+Check LatCell: 1
+In Meet:   %5 = icmp ult i32 %.03, 3, Lat1: (0, 0x5583a8e932f0), Lat2: (-1, 0x0)
+Lat1.second: i1 true
+Meet:   %5 = icmp ult i32 %.03, 3
+Adding SSA:   br i1 %5, label %6, label %40
+Visiting SSA:   %39 = add i32 %.03, 1
+VisitInstr:   %39 = add i32 %.03, 1
+BinaryOp:   %39 = add i32 %.03, 1
+Check LatCell: 1
+In Meet:   %39 = add i32 %.03, 1, Lat1: (0, 0x5583a8e90490), Lat2: (-1, 0x0)
+Lat1.second: i32 1
+Meet:   %39 = add i32 %.03, 1
+Adding SSA:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ]
+Visiting SSA:   %7 = lshr i32 40960000, %.03
+VisitInstr:   %7 = lshr i32 40960000, %.03
+BinaryOp:   %7 = lshr i32 40960000, %.03
+Check LatCell: 1
+In Meet:   %7 = lshr i32 40960000, %.03, Lat1: (0, 0x5583a8e90900), Lat2: (-1, 0x0)
+Lat1.second: i32 40960000
+Meet:   %7 = lshr i32 40960000, %.03
+Adding SSA:   %.not5 = icmp ugt i32 %.04, %7
+Adding SSA:   %.not7 = icmp ugt i32 %.02, %7
+Adding SSA:   %38 = call i32 (ptr, ...) @printf(ptr noundef nonnull @.str, i32 noundef %7, i32 noundef %.01) #6
+Visiting SSA:   %narrow = add nuw nsw i32 %8, 4
+VisitInstr:   %narrow = add nuw nsw i32 %8, 4
+BinaryOp:   %narrow = add nuw nsw i32 %8, 4
+Check LatCell: 1
+In Meet:   %narrow = add nuw nsw i32 %8, 4, Lat1: (0, 0x5583a8e98050), Lat2: (-1, 0x0)
+Lat1.second: i32 5120004
+Meet:   %narrow = add nuw nsw i32 %8, 4
+Adding SSA:   %9 = zext i32 %narrow to i64
+Visiting SSA:   br i1 %5, label %6, label %40
+VisitInstr:   br i1 %5, label %6, label %40
+BranchInst:   br i1 %5, label %6, label %40
+In BranchInst: -1, 0x0
+In AddEdge: 0x5583a8e91540, 0x5583a8e91870, 0
+In AddEdge: 0x5583a8e91540, 0x5583a8e91870, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   call void @free(ptr noundef nonnull %3) #6
+Check LatCell: 0
+In Meet:   call void @free(ptr noundef nonnull %3) #6, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   call void @free(ptr noundef nonnull %3) #6
+VisitInstr:   br label %41
+BranchInst:   br label %41
+In AddEdge: 0x5583a8e91780, 0x5583a8e980a0, 0
+Adding edge:  -> 
+Visiting SSA:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ]
+VisitInstr:   %.03 = phi i32 [ %39, %37 ], [ 0, %2 ]
+Visiting SSA:   %.not5 = icmp ugt i32 %.04, %7
+VisitInstr:   %.not5 = icmp ugt i32 %.04, %7
+Visiting SSA:   %.not7 = icmp ugt i32 %.02, %7
+VisitInstr:   %.not7 = icmp ugt i32 %.02, %7
+Visiting SSA:   %38 = call i32 (ptr, ...) @printf(ptr noundef nonnull @.str, i32 noundef %7, i32 noundef %.01) #6
+VisitInstr:   %38 = call i32 (ptr, ...) @printf(ptr noundef nonnull @.str, i32 noundef %7, i32 noundef %.01) #6
+Visiting SSA:   %9 = zext i32 %narrow to i64
+VisitInstr:   %9 = zext i32 %narrow to i64
+UnaryOp:   %9 = zext i32 %narrow to i64
+Check LatCell: 1
+In Meet:   %9 = zext i32 %narrow to i64, Lat1: (0, 0x5583a8e926e0), Lat2: (-1, 0x0)
+Lat1.second: i32 zext (i32 5120004 to i32)
+Meet:   %9 = zext i32 %narrow to i64
+Adding SSA:   call void @llvm.memset.p0.i64(ptr noundef nonnull align 4 %3, i8 -1, i64 %9, i1 false)
+Visiting SSA:   call void @llvm.memset.p0.i64(ptr noundef nonnull align 4 %3, i8 -1, i64 %9, i1 false)
+VisitInstr:   call void @llvm.memset.p0.i64(ptr noundef nonnull align 4 %3, i8 -1, i64 %9, i1 false)
+Removing:   %.0 = phi i32 [ 0, %40 ], [ 1, %2 ], replacing with: i32 1
+Removing:   %20 = add i32 %.01, 1, replacing with: i32 1
+Removing:   %.01 = phi i32 [ 0, %6 ], [ %.1, %34 ], replacing with: i32 0
+Removing:   %.1 = phi i32 [ 0, %11 ], [ 1, %21 ], replacing with: i32 0
+UnitSCCP: 4 instructions removed, 0 basic blocks unreachable, 4 instructions simplified
+UnitLICM running on main
+******************************************************
+UnitLoopAnalysis running on main
+[LoopLoopAnalysis] parent loop header is:   %.03 = phi i32 [ %38, %36 ], [ 0, %2 ]
+[LoopLoopAnalysis] It has child loop header : ^-  %.04 = phi i32 [ 2, %6 ], [ %35, %34 ]
+[LoopLoopAnalysis] parent loop header is:   %.04 = phi i32 [ 2, %6 ], [ %35, %34 ]
+[LoopLoopAnalysis] It has child loop header : ^-  %.02 = phi i32 [ %20, %19 ], [ %33, %32 ]
+[LoopLoopAnalysis] parent loop header is:   %.02 = phi i32 [ %20, %19 ], [ %33, %32 ]
+[UnitLICM]: NumStoreHoisted: 0
+[UnitLICM]: NumLoadHoisted: 0
+[UnitLICM]: NumComputeHoisted: 0
+[UnitLICM]: Total: 0
+----------------------------------------
+Running sccp only: nsieve-bits.c
+UnitSCCP running on main
+Visiting BB: 
+VisitInstr:   %3 = udiv i32 40960000, 8
+BinaryOp:   %3 = udiv i32 40960000, 8
+Check LatCell: 0
+In Meet:   %3 = udiv i32 40960000, 8, Lat1: (1, 0x0), Lat2: (0, 0x5649238b4520)
+Lat2.second: i32 5120000
+Meet:   %3 = udiv i32 40960000, 8
+VisitInstr:   %4 = zext i32 %3 to i64
+UnaryOp:   %4 = zext i32 %3 to i64
+Check LatCell: 0
+In Meet:   %4 = zext i32 %3 to i64, Lat1: (1, 0x0), Lat2: (0, 0x5649238b1b00)
+Lat2.second: i32 zext (i32 5120000 to i32)
+Meet:   %4 = zext i32 %3 to i64
+VisitInstr:   %5 = add i64 %4, 4
+BinaryOp:   %5 = add i64 %4, 4
+Check LatCell: 0
+In Meet:   %5 = add i64 %4, 4, Lat1: (1, 0x0), Lat2: (0, 0x5649238c1860)
+Lat2.second: i32 add (i32 zext (i32 5120000 to i32), i64 4)
+Meet:   %5 = add i64 %4, 4
+VisitInstr:   %6 = call noalias ptr @malloc(i64 noundef %5) #5
+Check LatCell: 0
+In Meet:   %6 = call noalias ptr @malloc(i64 noundef %5) #5, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %6 = call noalias ptr @malloc(i64 noundef %5) #5
+VisitInstr:   %7 = icmp ne ptr %6, null
+CmpInst:   %7 = icmp ne ptr %6, null
+Check LatCell: 0
+In Meet:   %7 = icmp ne ptr %6, null, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %7 = icmp ne ptr %6, null
+VisitInstr:   br i1 %7, label %9, label %8
+BranchInst:   br i1 %7, label %9, label %8
+In BranchInst: -1, 0x0
+In AddEdge: 0x5649238afd30, 0x5649238b2140, 0
+Adding edge:  -> 
+In AddEdge: 0x5649238afd30, 0x5649238b2140, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br label %10
+BranchInst:   br label %10
+In AddEdge: 0x5649238b1fc0, 0x5649238b23e0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br label %68
+BranchInst:   br label %68
+In AddEdge: 0x5649238b2050, 0x5649238b2290, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ]
+PHI:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ]
+PHI LatOp: 0, 0x5649238b0c10
+Check LatCell: 0
+In Meet:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ], Lat1: (1, 0x0), Lat2: (0, 0x5649238b0c10)
+Lat2.second: i32 0
+Meet:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ]
+VisitInstr:   %11 = icmp ule i32 %.03, 2
+CmpInst:   %11 = icmp ule i32 %.03, 2
+Check LatCell: 0
+In Meet:   %11 = icmp ule i32 %.03, 2, Lat1: (1, 0x0), Lat2: (0, 0x5649238b7080)
+Lat2.second: i1 true
+Meet:   %11 = icmp ule i32 %.03, 2
+VisitInstr:   br i1 %11, label %12, label %67
+BranchInst:   br i1 %11, label %12, label %67
+In BranchInst: 0, 0x5649238b7080
+In AddEdge: 0x5649238b2370, 0x5649238b26a0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %.0 = phi i32 [ 0, %67 ], [ 1, %8 ]
+PHI:   %.0 = phi i32 [ 0, %67 ], [ 1, %8 ]
+PHI LatOp: 0, 0x5649238b12c0
+Check LatCell: 0
+In Meet:   %.0 = phi i32 [ 0, %67 ], [ 1, %8 ], Lat1: (1, 0x0), Lat2: (0, 0x5649238b12c0)
+Lat2.second: i32 1
+Meet:   %.0 = phi i32 [ 0, %67 ], [ 1, %8 ]
+VisitInstr:   ret i32 %.0
+Check LatCell: 0
+In Meet:   ret i32 %.0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   ret i32 %.0
+Visiting BB: 
+VisitInstr:   %13 = lshr i32 40960000, %.03
+BinaryOp:   %13 = lshr i32 40960000, %.03
+Check LatCell: 0
+In Meet:   %13 = lshr i32 40960000, %.03, Lat1: (1, 0x0), Lat2: (0, 0x5649238b1730)
+Lat2.second: i32 40960000
+Meet:   %13 = lshr i32 40960000, %.03
+VisitInstr:   %14 = udiv i32 %13, 8
+BinaryOp:   %14 = udiv i32 %13, 8
+Check LatCell: 0
+In Meet:   %14 = udiv i32 %13, 8, Lat1: (1, 0x0), Lat2: (0, 0x5649238b4520)
+Lat2.second: i32 5120000
+Meet:   %14 = udiv i32 %13, 8
+VisitInstr:   %15 = zext i32 %14 to i64
+UnaryOp:   %15 = zext i32 %14 to i64
+Check LatCell: 0
+In Meet:   %15 = zext i32 %14 to i64, Lat1: (1, 0x0), Lat2: (0, 0x5649238b1b00)
+Lat2.second: i32 zext (i32 5120000 to i32)
+Meet:   %15 = zext i32 %14 to i64
+VisitInstr:   %16 = add i64 %15, 4
+BinaryOp:   %16 = add i64 %15, 4
+Check LatCell: 0
+In Meet:   %16 = add i64 %15, 4, Lat1: (1, 0x0), Lat2: (0, 0x5649238c1860)
+Lat2.second: i32 add (i32 zext (i32 5120000 to i32), i64 4)
+Meet:   %16 = add i64 %15, 4
+VisitInstr:   call void @llvm.memset.p0.i64(ptr align 4 %6, i8 -1, i64 %16, i1 false)
+Check LatCell: 0
+In Meet:   call void @llvm.memset.p0.i64(ptr align 4 %6, i8 -1, i64 %16, i1 false), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   call void @llvm.memset.p0.i64(ptr align 4 %6, i8 -1, i64 %16, i1 false)
+VisitInstr:   br label %17
+BranchInst:   br label %17
+In AddEdge: 0x5649238b2560, 0x5649238b3270, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+PHI:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+PHI LatOp: 0, 0x5649238b24a0
+Check LatCell: 0
+In Meet:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ], Lat1: (1, 0x0), Lat2: (0, 0x5649238b24a0)
+Lat2.second: i32 2
+Meet:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+VisitInstr:   %.01 = phi i32 [ 0, %12 ], [ %.1, %61 ]
+PHI:   %.01 = phi i32 [ 0, %12 ], [ %.1, %61 ]
+PHI LatOp: 0, 0x5649238b0c10
+Check LatCell: 0
+In Meet:   %.01 = phi i32 [ 0, %12 ], [ %.1, %61 ], Lat1: (1, 0x0), Lat2: (0, 0x5649238b0c10)
+Lat2.second: i32 0
+Meet:   %.01 = phi i32 [ 0, %12 ], [ %.1, %61 ]
+VisitInstr:   %18 = icmp ule i32 %.04, %13
+CmpInst:   %18 = icmp ule i32 %.04, %13
+Check LatCell: 0
+In Meet:   %18 = icmp ule i32 %.04, %13, Lat1: (1, 0x0), Lat2: (0, 0x5649238b7080)
+Lat2.second: i1 true
+Meet:   %18 = icmp ule i32 %.04, %13
+VisitInstr:   br i1 %18, label %19, label %63
+BranchInst:   br i1 %18, label %19, label %63
+In BranchInst: 0, 0x5649238b7080
+In AddEdge: 0x5649238b31c0, 0x5649238b3570, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %20 = zext i32 %.04 to i64
+UnaryOp:   %20 = zext i32 %.04 to i64
+Check LatCell: 0
+In Meet:   %20 = zext i32 %.04 to i64, Lat1: (1, 0x0), Lat2: (0, 0x5649238b3610)
+Lat2.second: i32 zext (i32 2 to i32)
+Meet:   %20 = zext i32 %.04 to i64
+VisitInstr:   %21 = udiv i64 %20, 32
+BinaryOp:   %21 = udiv i64 %20, 32
+Check LatCell: 0
+In Meet:   %21 = udiv i64 %20, 32, Lat1: (1, 0x0), Lat2: (0, 0x5649238b87a0)
+Lat2.second: i32 udiv (i32 zext (i32 2 to i32), i64 32)
+Meet:   %21 = udiv i64 %20, 32
+VisitInstr:   %22 = getelementptr inbounds i32, ptr %6, i64 %21
+GetElementPtr:   %22 = getelementptr inbounds i32, ptr %6, i64 %21
+Check LatCell: 0
+In Meet:   %22 = getelementptr inbounds i32, ptr %6, i64 %21, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %22 = getelementptr inbounds i32, ptr %6, i64 %21
+VisitInstr:   %23 = load i32, ptr %22, align 4
+Check LatCell: 0
+In Meet:   %23 = load i32, ptr %22, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %23 = load i32, ptr %22, align 4
+VisitInstr:   %24 = zext i32 %.04 to i64
+UnaryOp:   %24 = zext i32 %.04 to i64
+Check LatCell: 0
+In Meet:   %24 = zext i32 %.04 to i64, Lat1: (1, 0x0), Lat2: (0, 0x5649238b3610)
+Lat2.second: i32 zext (i32 2 to i32)
+Meet:   %24 = zext i32 %.04 to i64
+VisitInstr:   %25 = urem i64 %24, 32
+BinaryOp:   %25 = urem i64 %24, 32
+Check LatCell: 0
+In Meet:   %25 = urem i64 %24, 32, Lat1: (1, 0x0), Lat2: (0, 0x5649238b8470)
+Lat2.second: i32 urem (i32 zext (i32 2 to i32), i64 32)
+Meet:   %25 = urem i64 %24, 32
+VisitInstr:   %26 = trunc i64 %25 to i32
+UnaryOp:   %26 = trunc i64 %25 to i32
+Check LatCell: 0
+In Meet:   %26 = trunc i64 %25 to i32, Lat1: (1, 0x0), Lat2: (0, 0x5649238b4570)
+Lat2.second: i32 trunc (i32 urem (i32 zext (i32 2 to i32), i64 32) to i32)
+Meet:   %26 = trunc i64 %25 to i32
+VisitInstr:   %27 = shl i32 1, %26
+BinaryOp:   %27 = shl i32 1, %26
+Check LatCell: 0
+In Meet:   %27 = shl i32 1, %26, Lat1: (1, 0x0), Lat2: (0, 0x5649238b7130)
+Lat2.second: i32 shl (i32 1, i32 trunc (i32 urem (i32 zext (i32 2 to i32), i64 32) to i32))
+Meet:   %27 = shl i32 1, %26
+VisitInstr:   %28 = and i32 %23, %27
+BinaryOp:   %28 = and i32 %23, %27
+Check LatCell: 0
+In Meet:   %28 = and i32 %23, %27, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %28 = and i32 %23, %27
+VisitInstr:   %29 = icmp ne i32 %28, 0
+CmpInst:   %29 = icmp ne i32 %28, 0
+Check LatCell: 0
+In Meet:   %29 = icmp ne i32 %28, 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %29 = icmp ne i32 %28, 0
+VisitInstr:   br i1 %29, label %30, label %60
+BranchInst:   br i1 %29, label %30, label %60
+In BranchInst: -1, 0x0
+In AddEdge: 0x5649238b3430, 0x5649238b3d80, 0
+Adding edge:  -> 
+In AddEdge: 0x5649238b3430, 0x5649238b3d80, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %31 = add i32 %.01, 1
+BinaryOp:   %31 = add i32 %.01, 1
+Check LatCell: 0
+In Meet:   %31 = add i32 %.01, 1, Lat1: (1, 0x0), Lat2: (0, 0x5649238b12c0)
+Lat2.second: i32 1
+Meet:   %31 = add i32 %.01, 1
+VisitInstr:   %32 = add i32 %.04, %.04
+BinaryOp:   %32 = add i32 %.04, %.04
+Check LatCell: 0
+In Meet:   %32 = add i32 %.04, %.04, Lat1: (1, 0x0), Lat2: (0, 0x5649238bb610)
+Lat2.second: i32 4
+Meet:   %32 = add i32 %.04, %.04
+VisitInstr:   br label %33
+BranchInst:   br label %33
+In AddEdge: 0x5649238b3c40, 0x5649238b41d0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %.1 = phi i32 [ %31, %59 ], [ %.01, %19 ]
+PHI:   %.1 = phi i32 [ %31, %59 ], [ %.01, %19 ]
+PHI LatOp: 0, 0x5649238b0c10
+Check LatCell: 0
+In Meet:   %.1 = phi i32 [ %31, %59 ], [ %.01, %19 ], Lat1: (1, 0x0), Lat2: (0, 0x5649238b0c10)
+Lat2.second: i32 0
+Meet:   %.1 = phi i32 [ %31, %59 ], [ %.01, %19 ]
+Adding SSA:   %.01 = phi i32 [ 0, %12 ], [ %.1, %61 ]
+VisitInstr:   br label %61
+BranchInst:   br label %61
+In AddEdge: 0x5649238b3c90, 0x5649238b83e0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+PHI:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+PHI LatOp: 0, 0x5649238bb610
+Check LatCell: 0
+In Meet:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ], Lat1: (1, 0x0), Lat2: (0, 0x5649238bb610)
+Lat2.second: i32 4
+Meet:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+VisitInstr:   %34 = icmp ule i32 %.02, %13
+CmpInst:   %34 = icmp ule i32 %.02, %13
+Check LatCell: 0
+In Meet:   %34 = icmp ule i32 %.02, %13, Lat1: (1, 0x0), Lat2: (0, 0x5649238b7080)
+Lat2.second: i1 true
+Meet:   %34 = icmp ule i32 %.02, %13
+VisitInstr:   br i1 %34, label %35, label %59
+BranchInst:   br i1 %34, label %35, label %59
+In BranchInst: 0, 0x5649238b7080
+In AddEdge: 0x5649238b4160, 0x5649238b44d0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %62 = add i32 %.04, 1
+BinaryOp:   %62 = add i32 %.04, 1
+Check LatCell: 0
+In Meet:   %62 = add i32 %.04, 1, Lat1: (1, 0x0), Lat2: (0, 0x5649238b8cc0)
+Lat2.second: i32 3
+Meet:   %62 = add i32 %.04, 1
+Adding SSA:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+VisitInstr:   br label %17, !llvm.loop !8
+BranchInst:   br label %17, !llvm.loop !8
+In AddEdge: 0x5649238b8370, 0x5649238b85e0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %36 = zext i32 %.02 to i64
+UnaryOp:   %36 = zext i32 %.02 to i64
+Check LatCell: 0
+In Meet:   %36 = zext i32 %.02 to i64, Lat1: (1, 0x0), Lat2: (0, 0x5649238b70d0)
+Lat2.second: i32 zext (i32 4 to i32)
+Meet:   %36 = zext i32 %.02 to i64
+VisitInstr:   %37 = udiv i64 %36, 32
+BinaryOp:   %37 = udiv i64 %36, 32
+Check LatCell: 0
+In Meet:   %37 = udiv i64 %36, 32, Lat1: (1, 0x0), Lat2: (0, 0x5649238b6e50)
+Lat2.second: i32 udiv (i32 zext (i32 4 to i32), i64 32)
+Meet:   %37 = udiv i64 %36, 32
+VisitInstr:   %38 = getelementptr inbounds i32, ptr %6, i64 %37
+GetElementPtr:   %38 = getelementptr inbounds i32, ptr %6, i64 %37
+Check LatCell: 0
+In Meet:   %38 = getelementptr inbounds i32, ptr %6, i64 %37, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %38 = getelementptr inbounds i32, ptr %6, i64 %37
+VisitInstr:   %39 = load i32, ptr %38, align 4
+Check LatCell: 0
+In Meet:   %39 = load i32, ptr %38, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %39 = load i32, ptr %38, align 4
+VisitInstr:   %40 = zext i32 %.02 to i64
+UnaryOp:   %40 = zext i32 %.02 to i64
+Check LatCell: 0
+In Meet:   %40 = zext i32 %.02 to i64, Lat1: (1, 0x0), Lat2: (0, 0x5649238b70d0)
+Lat2.second: i32 zext (i32 4 to i32)
+Meet:   %40 = zext i32 %.02 to i64
+VisitInstr:   %41 = urem i64 %40, 32
+BinaryOp:   %41 = urem i64 %40, 32
+Check LatCell: 0
+In Meet:   %41 = urem i64 %40, 32, Lat1: (1, 0x0), Lat2: (0, 0x5649238b4850)
+Lat2.second: i32 urem (i32 zext (i32 4 to i32), i64 32)
+Meet:   %41 = urem i64 %40, 32
+VisitInstr:   %42 = trunc i64 %41 to i32
+UnaryOp:   %42 = trunc i64 %41 to i32
+Check LatCell: 0
+In Meet:   %42 = trunc i64 %41 to i32, Lat1: (1, 0x0), Lat2: (0, 0x5649238b8d10)
+Lat2.second: i32 trunc (i32 urem (i32 zext (i32 4 to i32), i64 32) to i32)
+Meet:   %42 = trunc i64 %41 to i32
+VisitInstr:   %43 = shl i32 1, %42
+BinaryOp:   %43 = shl i32 1, %42
+Check LatCell: 0
+In Meet:   %43 = shl i32 1, %42, Lat1: (1, 0x0), Lat2: (0, 0x5649238b45d0)
+Lat2.second: i32 shl (i32 1, i32 trunc (i32 urem (i32 zext (i32 4 to i32), i64 32) to i32))
+Meet:   %43 = shl i32 1, %42
+VisitInstr:   %44 = and i32 %39, %43
+BinaryOp:   %44 = and i32 %39, %43
+Check LatCell: 0
+In Meet:   %44 = and i32 %39, %43, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %44 = and i32 %39, %43
+VisitInstr:   %45 = icmp ne i32 %44, 0
+CmpInst:   %45 = icmp ne i32 %44, 0
+Check LatCell: 0
+In Meet:   %45 = icmp ne i32 %44, 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %45 = icmp ne i32 %44, 0
+VisitInstr:   br i1 %45, label %46, label %56
+BranchInst:   br i1 %45, label %46, label %56
+In BranchInst: -1, 0x0
+In AddEdge: 0x5649238b4390, 0x5649238b6dc0, 0
+Adding edge:  -> 
+In AddEdge: 0x5649238b4390, 0x5649238b6dc0, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %47 = zext i32 %.02 to i64
+UnaryOp:   %47 = zext i32 %.02 to i64
+Check LatCell: 0
+In Meet:   %47 = zext i32 %.02 to i64, Lat1: (1, 0x0), Lat2: (0, 0x5649238b70d0)
+Lat2.second: i32 zext (i32 4 to i32)
+Meet:   %47 = zext i32 %.02 to i64
+VisitInstr:   %48 = urem i64 %47, 32
+BinaryOp:   %48 = urem i64 %47, 32
+Check LatCell: 0
+In Meet:   %48 = urem i64 %47, 32, Lat1: (1, 0x0), Lat2: (0, 0x5649238b4850)
+Lat2.second: i32 urem (i32 zext (i32 4 to i32), i64 32)
+Meet:   %48 = urem i64 %47, 32
+VisitInstr:   %49 = trunc i64 %48 to i32
+UnaryOp:   %49 = trunc i64 %48 to i32
+Check LatCell: 0
+In Meet:   %49 = trunc i64 %48 to i32, Lat1: (1, 0x0), Lat2: (0, 0x5649238b8d10)
+Lat2.second: i32 trunc (i32 urem (i32 zext (i32 4 to i32), i64 32) to i32)
+Meet:   %49 = trunc i64 %48 to i32
+VisitInstr:   %50 = shl i32 1, %49
+BinaryOp:   %50 = shl i32 1, %49
+Check LatCell: 0
+In Meet:   %50 = shl i32 1, %49, Lat1: (1, 0x0), Lat2: (0, 0x5649238b45d0)
+Lat2.second: i32 shl (i32 1, i32 trunc (i32 urem (i32 zext (i32 4 to i32), i64 32) to i32))
+Meet:   %50 = shl i32 1, %49
+VisitInstr:   %51 = zext i32 %.02 to i64
+UnaryOp:   %51 = zext i32 %.02 to i64
+Check LatCell: 0
+In Meet:   %51 = zext i32 %.02 to i64, Lat1: (1, 0x0), Lat2: (0, 0x5649238b70d0)
+Lat2.second: i32 zext (i32 4 to i32)
+Meet:   %51 = zext i32 %.02 to i64
+VisitInstr:   %52 = udiv i64 %51, 32
+BinaryOp:   %52 = udiv i64 %51, 32
+Check LatCell: 0
+In Meet:   %52 = udiv i64 %51, 32, Lat1: (1, 0x0), Lat2: (0, 0x5649238b6e50)
+Lat2.second: i32 udiv (i32 zext (i32 4 to i32), i64 32)
+Meet:   %52 = udiv i64 %51, 32
+VisitInstr:   %53 = getelementptr inbounds i32, ptr %6, i64 %52
+GetElementPtr:   %53 = getelementptr inbounds i32, ptr %6, i64 %52
+Check LatCell: 0
+In Meet:   %53 = getelementptr inbounds i32, ptr %6, i64 %52, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %53 = getelementptr inbounds i32, ptr %6, i64 %52
+VisitInstr:   %54 = load i32, ptr %53, align 4
+Check LatCell: 0
+In Meet:   %54 = load i32, ptr %53, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %54 = load i32, ptr %53, align 4
+VisitInstr:   %55 = xor i32 %54, %50
+BinaryOp:   %55 = xor i32 %54, %50
+Check LatCell: 0
+In Meet:   %55 = xor i32 %54, %50, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %55 = xor i32 %54, %50
+VisitInstr:   store i32 %55, ptr %53, align 4
+Check LatCell: 0
+In Meet:   store i32 %55, ptr %53, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %55, ptr %53, align 4
+VisitInstr:   br label %56
+BranchInst:   br label %56
+In AddEdge: 0x5649238b4880, 0x5649238b74b0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br label %57
+BranchInst:   br label %57
+In AddEdge: 0x5649238b6cd0, 0x5649238b7570, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br label %57
+BranchInst:   br label %57
+In AddEdge: 0x5649238b6cd0, 0x5649238b7570, 0
+Visiting BB: 
+VisitInstr:   %58 = add i32 %.02, %.04
+BinaryOp:   %58 = add i32 %.02, %.04
+Check LatCell: 0
+In Meet:   %58 = add i32 %.02, %.04, Lat1: (1, 0x0), Lat2: (0, 0x5649238b1760)
+Lat2.second: i32 6
+Meet:   %58 = add i32 %.02, %.04
+Adding SSA:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+VisitInstr:   br label %33, !llvm.loop !6
+BranchInst:   br label %33, !llvm.loop !6
+In AddEdge: 0x5649238b7500, 0x5649238b77e0, 0
+Adding edge:  -> 
+Visiting SSA:   %.01 = phi i32 [ 0, %12 ], [ %.1, %61 ]
+VisitInstr:   %.01 = phi i32 [ 0, %12 ], [ %.1, %61 ]
+PHI:   %.01 = phi i32 [ 0, %12 ], [ %.1, %61 ]
+PHI LatOp: 0, 0x5649238b0c10
+PHI LatOp: 0, 0x5649238b0c10
+Check LatCell: 1
+In Meet:   %.01 = phi i32 [ 0, %12 ], [ %.1, %61 ], Lat1: (0, 0x5649238b0c10), Lat2: (0, 0x5649238b0c10)
+Lat1.second: i32 0
+Lat2.second: i32 0
+Visiting SSA:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+VisitInstr:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+PHI:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+PHI LatOp: 0, 0x5649238b24a0
+PHI LatOp: 0, 0x5649238b8cc0
+Check LatCell: 1
+In Meet:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ], Lat1: (0, 0x5649238b24a0), Lat2: (-1, 0x0)
+Lat1.second: i32 2
+Meet:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+Adding SSA:   %62 = add i32 %.04, 1
+Adding SSA:   %58 = add i32 %.02, %.04
+Adding SSA:   %32 = add i32 %.04, %.04
+Adding SSA:   %24 = zext i32 %.04 to i64
+Adding SSA:   %20 = zext i32 %.04 to i64
+Adding SSA:   %18 = icmp ule i32 %.04, %13
+Visiting SSA:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+VisitInstr:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+PHI:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+PHI LatOp: 0, 0x5649238bb610
+PHI LatOp: 0, 0x5649238b1760
+Check LatCell: 1
+In Meet:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ], Lat1: (0, 0x5649238bb610), Lat2: (-1, 0x0)
+Lat1.second: i32 4
+Meet:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+Adding SSA:   %51 = zext i32 %.02 to i64
+Adding SSA:   %47 = zext i32 %.02 to i64
+Adding SSA:   %40 = zext i32 %.02 to i64
+Adding SSA:   %36 = zext i32 %.02 to i64
+Adding SSA:   %34 = icmp ule i32 %.02, %13
+Visiting SSA:   %62 = add i32 %.04, 1
+VisitInstr:   %62 = add i32 %.04, 1
+BinaryOp:   %62 = add i32 %.04, 1
+Check LatCell: 1
+In Meet:   %62 = add i32 %.04, 1, Lat1: (0, 0x5649238b8cc0), Lat2: (-1, 0x0)
+Lat1.second: i32 3
+Meet:   %62 = add i32 %.04, 1
+Adding SSA:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+Visiting SSA:   %58 = add i32 %.02, %.04
+VisitInstr:   %58 = add i32 %.02, %.04
+BinaryOp:   %58 = add i32 %.02, %.04
+Check LatCell: 1
+In Meet:   %58 = add i32 %.02, %.04, Lat1: (0, 0x5649238b1760), Lat2: (-1, 0x0)
+Lat1.second: i32 6
+Meet:   %58 = add i32 %.02, %.04
+Adding SSA:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+Visiting SSA:   %32 = add i32 %.04, %.04
+VisitInstr:   %32 = add i32 %.04, %.04
+BinaryOp:   %32 = add i32 %.04, %.04
+Check LatCell: 1
+In Meet:   %32 = add i32 %.04, %.04, Lat1: (0, 0x5649238bb610), Lat2: (-1, 0x0)
+Lat1.second: i32 4
+Meet:   %32 = add i32 %.04, %.04
+Visiting SSA:   %24 = zext i32 %.04 to i64
+VisitInstr:   %24 = zext i32 %.04 to i64
+UnaryOp:   %24 = zext i32 %.04 to i64
+Check LatCell: 1
+In Meet:   %24 = zext i32 %.04 to i64, Lat1: (0, 0x5649238b3610), Lat2: (-1, 0x0)
+Lat1.second: i32 zext (i32 2 to i32)
+Meet:   %24 = zext i32 %.04 to i64
+Adding SSA:   %25 = urem i64 %24, 32
+Visiting SSA:   %20 = zext i32 %.04 to i64
+VisitInstr:   %20 = zext i32 %.04 to i64
+UnaryOp:   %20 = zext i32 %.04 to i64
+Check LatCell: 1
+In Meet:   %20 = zext i32 %.04 to i64, Lat1: (0, 0x5649238b3610), Lat2: (-1, 0x0)
+Lat1.second: i32 zext (i32 2 to i32)
+Meet:   %20 = zext i32 %.04 to i64
+Adding SSA:   %21 = udiv i64 %20, 32
+Visiting SSA:   %18 = icmp ule i32 %.04, %13
+VisitInstr:   %18 = icmp ule i32 %.04, %13
+CmpInst:   %18 = icmp ule i32 %.04, %13
+Check LatCell: 1
+In Meet:   %18 = icmp ule i32 %.04, %13, Lat1: (0, 0x5649238b7080), Lat2: (-1, 0x0)
+Lat1.second: i1 true
+Meet:   %18 = icmp ule i32 %.04, %13
+Adding SSA:   br i1 %18, label %19, label %63
+Visiting SSA:   %51 = zext i32 %.02 to i64
+VisitInstr:   %51 = zext i32 %.02 to i64
+UnaryOp:   %51 = zext i32 %.02 to i64
+Check LatCell: 1
+In Meet:   %51 = zext i32 %.02 to i64, Lat1: (0, 0x5649238b70d0), Lat2: (-1, 0x0)
+Lat1.second: i32 zext (i32 4 to i32)
+Meet:   %51 = zext i32 %.02 to i64
+Adding SSA:   %52 = udiv i64 %51, 32
+Visiting SSA:   %47 = zext i32 %.02 to i64
+VisitInstr:   %47 = zext i32 %.02 to i64
+UnaryOp:   %47 = zext i32 %.02 to i64
+Check LatCell: 1
+In Meet:   %47 = zext i32 %.02 to i64, Lat1: (0, 0x5649238b70d0), Lat2: (-1, 0x0)
+Lat1.second: i32 zext (i32 4 to i32)
+Meet:   %47 = zext i32 %.02 to i64
+Adding SSA:   %48 = urem i64 %47, 32
+Visiting SSA:   %40 = zext i32 %.02 to i64
+VisitInstr:   %40 = zext i32 %.02 to i64
+UnaryOp:   %40 = zext i32 %.02 to i64
+Check LatCell: 1
+In Meet:   %40 = zext i32 %.02 to i64, Lat1: (0, 0x5649238b70d0), Lat2: (-1, 0x0)
+Lat1.second: i32 zext (i32 4 to i32)
+Meet:   %40 = zext i32 %.02 to i64
+Adding SSA:   %41 = urem i64 %40, 32
+Visiting SSA:   %36 = zext i32 %.02 to i64
+VisitInstr:   %36 = zext i32 %.02 to i64
+UnaryOp:   %36 = zext i32 %.02 to i64
+Check LatCell: 1
+In Meet:   %36 = zext i32 %.02 to i64, Lat1: (0, 0x5649238b70d0), Lat2: (-1, 0x0)
+Lat1.second: i32 zext (i32 4 to i32)
+Meet:   %36 = zext i32 %.02 to i64
+Adding SSA:   %37 = udiv i64 %36, 32
+Visiting SSA:   %34 = icmp ule i32 %.02, %13
+VisitInstr:   %34 = icmp ule i32 %.02, %13
+CmpInst:   %34 = icmp ule i32 %.02, %13
+Check LatCell: 1
+In Meet:   %34 = icmp ule i32 %.02, %13, Lat1: (0, 0x5649238b7080), Lat2: (-1, 0x0)
+Lat1.second: i1 true
+Meet:   %34 = icmp ule i32 %.02, %13
+Adding SSA:   br i1 %34, label %35, label %59
+Visiting SSA:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+VisitInstr:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+Visiting SSA:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+VisitInstr:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+Visiting SSA:   %25 = urem i64 %24, 32
+VisitInstr:   %25 = urem i64 %24, 32
+BinaryOp:   %25 = urem i64 %24, 32
+Check LatCell: 1
+In Meet:   %25 = urem i64 %24, 32, Lat1: (0, 0x5649238b8470), Lat2: (-1, 0x0)
+Lat1.second: i32 urem (i32 zext (i32 2 to i32), i64 32)
+Meet:   %25 = urem i64 %24, 32
+Adding SSA:   %26 = trunc i64 %25 to i32
+Visiting SSA:   %21 = udiv i64 %20, 32
+VisitInstr:   %21 = udiv i64 %20, 32
+BinaryOp:   %21 = udiv i64 %20, 32
+Check LatCell: 1
+In Meet:   %21 = udiv i64 %20, 32, Lat1: (0, 0x5649238b87a0), Lat2: (-1, 0x0)
+Lat1.second: i32 udiv (i32 zext (i32 2 to i32), i64 32)
+Meet:   %21 = udiv i64 %20, 32
+Adding SSA:   %22 = getelementptr inbounds i32, ptr %6, i64 %21
+Visiting SSA:   br i1 %18, label %19, label %63
+VisitInstr:   br i1 %18, label %19, label %63
+BranchInst:   br i1 %18, label %19, label %63
+In BranchInst: -1, 0x0
+In AddEdge: 0x5649238b31c0, 0x5649238b3570, 0
+In AddEdge: 0x5649238b31c0, 0x5649238b3570, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %64 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %13, i32 noundef %.01)
+Check LatCell: 0
+In Meet:   %64 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %13, i32 noundef %.01), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %64 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %13, i32 noundef %.01)
+VisitInstr:   br label %65
+BranchInst:   br label %65
+In AddEdge: 0x5649238b3480, 0x5649238b8970, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %66 = add i32 %.03, 1
+BinaryOp:   %66 = add i32 %.03, 1
+Check LatCell: 0
+In Meet:   %66 = add i32 %.03, 1, Lat1: (1, 0x0), Lat2: (0, 0x5649238b12c0)
+Lat2.second: i32 1
+Meet:   %66 = add i32 %.03, 1
+Adding SSA:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ]
+VisitInstr:   br label %10, !llvm.loop !9
+BranchInst:   br label %10, !llvm.loop !9
+In AddEdge: 0x5649238b8900, 0x5649238b8b70, 0
+Adding edge:  -> 
+Visiting SSA:   %52 = udiv i64 %51, 32
+VisitInstr:   %52 = udiv i64 %51, 32
+BinaryOp:   %52 = udiv i64 %51, 32
+Check LatCell: 1
+In Meet:   %52 = udiv i64 %51, 32, Lat1: (0, 0x5649238b6e50), Lat2: (-1, 0x0)
+Lat1.second: i32 udiv (i32 zext (i32 4 to i32), i64 32)
+Meet:   %52 = udiv i64 %51, 32
+Adding SSA:   %53 = getelementptr inbounds i32, ptr %6, i64 %52
+Visiting SSA:   %48 = urem i64 %47, 32
+VisitInstr:   %48 = urem i64 %47, 32
+BinaryOp:   %48 = urem i64 %47, 32
+Check LatCell: 1
+In Meet:   %48 = urem i64 %47, 32, Lat1: (0, 0x5649238b4850), Lat2: (-1, 0x0)
+Lat1.second: i32 urem (i32 zext (i32 4 to i32), i64 32)
+Meet:   %48 = urem i64 %47, 32
+Adding SSA:   %49 = trunc i64 %48 to i32
+Visiting SSA:   %41 = urem i64 %40, 32
+VisitInstr:   %41 = urem i64 %40, 32
+BinaryOp:   %41 = urem i64 %40, 32
+Check LatCell: 1
+In Meet:   %41 = urem i64 %40, 32, Lat1: (0, 0x5649238b4850), Lat2: (-1, 0x0)
+Lat1.second: i32 urem (i32 zext (i32 4 to i32), i64 32)
+Meet:   %41 = urem i64 %40, 32
+Adding SSA:   %42 = trunc i64 %41 to i32
+Visiting SSA:   %37 = udiv i64 %36, 32
+VisitInstr:   %37 = udiv i64 %36, 32
+BinaryOp:   %37 = udiv i64 %36, 32
+Check LatCell: 1
+In Meet:   %37 = udiv i64 %36, 32, Lat1: (0, 0x5649238b6e50), Lat2: (-1, 0x0)
+Lat1.second: i32 udiv (i32 zext (i32 4 to i32), i64 32)
+Meet:   %37 = udiv i64 %36, 32
+Adding SSA:   %38 = getelementptr inbounds i32, ptr %6, i64 %37
+Visiting SSA:   br i1 %34, label %35, label %59
+VisitInstr:   br i1 %34, label %35, label %59
+BranchInst:   br i1 %34, label %35, label %59
+In BranchInst: -1, 0x0
+In AddEdge: 0x5649238b4160, 0x5649238b44d0, 0
+In AddEdge: 0x5649238b4160, 0x5649238b44d0, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br label %60
+BranchInst:   br label %60
+In AddEdge: 0x5649238b43e0, 0x5649238b8320, 0
+Adding edge:  -> 
+Visiting SSA:   %26 = trunc i64 %25 to i32
+VisitInstr:   %26 = trunc i64 %25 to i32
+UnaryOp:   %26 = trunc i64 %25 to i32
+Check LatCell: 1
+In Meet:   %26 = trunc i64 %25 to i32, Lat1: (0, 0x5649238b4570), Lat2: (-1, 0x0)
+Lat1.second: i32 trunc (i32 urem (i32 zext (i32 2 to i32), i64 32) to i32)
+Meet:   %26 = trunc i64 %25 to i32
+Adding SSA:   %27 = shl i32 1, %26
+Visiting SSA:   %22 = getelementptr inbounds i32, ptr %6, i64 %21
+VisitInstr:   %22 = getelementptr inbounds i32, ptr %6, i64 %21
+Visiting SSA:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ]
+VisitInstr:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ]
+PHI:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ]
+PHI LatOp: 0, 0x5649238b0c10
+PHI LatOp: 0, 0x5649238b12c0
+Check LatCell: 1
+In Meet:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ], Lat1: (0, 0x5649238b0c10), Lat2: (-1, 0x0)
+Lat1.second: i32 0
+Meet:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ]
+Adding SSA:   %66 = add i32 %.03, 1
+Adding SSA:   %13 = lshr i32 40960000, %.03
+Adding SSA:   %11 = icmp ule i32 %.03, 2
+Visiting SSA:   %53 = getelementptr inbounds i32, ptr %6, i64 %52
+VisitInstr:   %53 = getelementptr inbounds i32, ptr %6, i64 %52
+Visiting SSA:   %49 = trunc i64 %48 to i32
+VisitInstr:   %49 = trunc i64 %48 to i32
+UnaryOp:   %49 = trunc i64 %48 to i32
+Check LatCell: 1
+In Meet:   %49 = trunc i64 %48 to i32, Lat1: (0, 0x5649238b8d10), Lat2: (-1, 0x0)
+Lat1.second: i32 trunc (i32 urem (i32 zext (i32 4 to i32), i64 32) to i32)
+Meet:   %49 = trunc i64 %48 to i32
+Adding SSA:   %50 = shl i32 1, %49
+Visiting SSA:   %42 = trunc i64 %41 to i32
+VisitInstr:   %42 = trunc i64 %41 to i32
+UnaryOp:   %42 = trunc i64 %41 to i32
+Check LatCell: 1
+In Meet:   %42 = trunc i64 %41 to i32, Lat1: (0, 0x5649238b8d10), Lat2: (-1, 0x0)
+Lat1.second: i32 trunc (i32 urem (i32 zext (i32 4 to i32), i64 32) to i32)
+Meet:   %42 = trunc i64 %41 to i32
+Adding SSA:   %43 = shl i32 1, %42
+Visiting SSA:   %38 = getelementptr inbounds i32, ptr %6, i64 %37
+VisitInstr:   %38 = getelementptr inbounds i32, ptr %6, i64 %37
+Visiting SSA:   %27 = shl i32 1, %26
+VisitInstr:   %27 = shl i32 1, %26
+BinaryOp:   %27 = shl i32 1, %26
+Check LatCell: 1
+In Meet:   %27 = shl i32 1, %26, Lat1: (0, 0x5649238b7130), Lat2: (-1, 0x0)
+Lat1.second: i32 shl (i32 1, i32 trunc (i32 urem (i32 zext (i32 2 to i32), i64 32) to i32))
+Meet:   %27 = shl i32 1, %26
+Adding SSA:   %28 = and i32 %23, %27
+Visiting SSA:   %66 = add i32 %.03, 1
+VisitInstr:   %66 = add i32 %.03, 1
+BinaryOp:   %66 = add i32 %.03, 1
+Check LatCell: 1
+In Meet:   %66 = add i32 %.03, 1, Lat1: (0, 0x5649238b12c0), Lat2: (-1, 0x0)
+Lat1.second: i32 1
+Meet:   %66 = add i32 %.03, 1
+Adding SSA:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ]
+Visiting SSA:   %13 = lshr i32 40960000, %.03
+VisitInstr:   %13 = lshr i32 40960000, %.03
+BinaryOp:   %13 = lshr i32 40960000, %.03
+Check LatCell: 1
+In Meet:   %13 = lshr i32 40960000, %.03, Lat1: (0, 0x5649238b1730), Lat2: (-1, 0x0)
+Lat1.second: i32 40960000
+Meet:   %13 = lshr i32 40960000, %.03
+Adding SSA:   %14 = udiv i32 %13, 8
+Adding SSA:   %18 = icmp ule i32 %.04, %13
+Adding SSA:   %34 = icmp ule i32 %.02, %13
+Adding SSA:   %64 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %13, i32 noundef %.01)
+Visiting SSA:   %11 = icmp ule i32 %.03, 2
+VisitInstr:   %11 = icmp ule i32 %.03, 2
+CmpInst:   %11 = icmp ule i32 %.03, 2
+Check LatCell: 1
+In Meet:   %11 = icmp ule i32 %.03, 2, Lat1: (0, 0x5649238b7080), Lat2: (-1, 0x0)
+Lat1.second: i1 true
+Meet:   %11 = icmp ule i32 %.03, 2
+Adding SSA:   br i1 %11, label %12, label %67
+Visiting SSA:   %50 = shl i32 1, %49
+VisitInstr:   %50 = shl i32 1, %49
+BinaryOp:   %50 = shl i32 1, %49
+Check LatCell: 1
+In Meet:   %50 = shl i32 1, %49, Lat1: (0, 0x5649238b45d0), Lat2: (-1, 0x0)
+Lat1.second: i32 shl (i32 1, i32 trunc (i32 urem (i32 zext (i32 4 to i32), i64 32) to i32))
+Meet:   %50 = shl i32 1, %49
+Adding SSA:   %55 = xor i32 %54, %50
+Visiting SSA:   %43 = shl i32 1, %42
+VisitInstr:   %43 = shl i32 1, %42
+BinaryOp:   %43 = shl i32 1, %42
+Check LatCell: 1
+In Meet:   %43 = shl i32 1, %42, Lat1: (0, 0x5649238b45d0), Lat2: (-1, 0x0)
+Lat1.second: i32 shl (i32 1, i32 trunc (i32 urem (i32 zext (i32 4 to i32), i64 32) to i32))
+Meet:   %43 = shl i32 1, %42
+Adding SSA:   %44 = and i32 %39, %43
+Visiting SSA:   %28 = and i32 %23, %27
+VisitInstr:   %28 = and i32 %23, %27
+Visiting SSA:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ]
+VisitInstr:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ]
+Visiting SSA:   %14 = udiv i32 %13, 8
+VisitInstr:   %14 = udiv i32 %13, 8
+BinaryOp:   %14 = udiv i32 %13, 8
+Check LatCell: 1
+In Meet:   %14 = udiv i32 %13, 8, Lat1: (0, 0x5649238b4520), Lat2: (-1, 0x0)
+Lat1.second: i32 5120000
+Meet:   %14 = udiv i32 %13, 8
+Adding SSA:   %15 = zext i32 %14 to i64
+Visiting SSA:   %18 = icmp ule i32 %.04, %13
+VisitInstr:   %18 = icmp ule i32 %.04, %13
+Visiting SSA:   %34 = icmp ule i32 %.02, %13
+VisitInstr:   %34 = icmp ule i32 %.02, %13
+Visiting SSA:   %64 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %13, i32 noundef %.01)
+VisitInstr:   %64 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %13, i32 noundef %.01)
+Visiting SSA:   br i1 %11, label %12, label %67
+VisitInstr:   br i1 %11, label %12, label %67
+BranchInst:   br i1 %11, label %12, label %67
+In BranchInst: -1, 0x0
+In AddEdge: 0x5649238b2370, 0x5649238b26a0, 0
+In AddEdge: 0x5649238b2370, 0x5649238b26a0, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   call void @free(ptr noundef %6) #6
+Check LatCell: 0
+In Meet:   call void @free(ptr noundef %6) #6, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   call void @free(ptr noundef %6) #6
+VisitInstr:   br label %68
+BranchInst:   br label %68
+In AddEdge: 0x5649238b25b0, 0x5649238b8fd0, 0
+Adding edge:  -> 
+Visiting SSA:   %55 = xor i32 %54, %50
+VisitInstr:   %55 = xor i32 %54, %50
+Visiting SSA:   %44 = and i32 %39, %43
+VisitInstr:   %44 = and i32 %39, %43
+Visiting SSA:   %15 = zext i32 %14 to i64
+VisitInstr:   %15 = zext i32 %14 to i64
+UnaryOp:   %15 = zext i32 %14 to i64
+Check LatCell: 1
+In Meet:   %15 = zext i32 %14 to i64, Lat1: (0, 0x5649238b1b00), Lat2: (-1, 0x0)
+Lat1.second: i32 zext (i32 5120000 to i32)
+Meet:   %15 = zext i32 %14 to i64
+Adding SSA:   %16 = add i64 %15, 4
+Visiting SSA:   %16 = add i64 %15, 4
+VisitInstr:   %16 = add i64 %15, 4
+BinaryOp:   %16 = add i64 %15, 4
+Check LatCell: 1
+In Meet:   %16 = add i64 %15, 4, Lat1: (0, 0x5649238c1860), Lat2: (-1, 0x0)
+Lat1.second: i32 add (i32 zext (i32 5120000 to i32), i64 4)
+Meet:   %16 = add i64 %15, 4
+Adding SSA:   call void @llvm.memset.p0.i64(ptr align 4 %6, i8 -1, i64 %16, i1 false)
+Visiting SSA:   call void @llvm.memset.p0.i64(ptr align 4 %6, i8 -1, i64 %16, i1 false)
+VisitInstr:   call void @llvm.memset.p0.i64(ptr align 4 %6, i8 -1, i64 %16, i1 false)
+Removing:   %5 = add i64 %4, 4, replacing with: i32 add (i32 zext (i32 5120000 to i32), i64 4)
+Removing:   %.0 = phi i32 [ 0, %66 ], [ 1, %7 ], replacing with: i32 1
+Removing:   %4 = zext i32 %3 to i64, replacing with: i32 zext (i32 5120000 to i32)
+Removing:   %.1 = phi i32 [ %29, %57 ], [ %.01, %17 ], replacing with: i32 0
+Removing:   %.01 = phi i32 [ 0, %10 ], [ 0, %59 ], replacing with: i32 0
+Removing:   %3 = udiv i32 40960000, 8, replacing with: i32 5120000
+Removing:   %28 = add i32 0, 1, replacing with: i32 1
+UnitSCCP: 7 instructions removed, 0 basic blocks unreachable, 5 instructions simplified
+Call parameter type does not match function signature!
+i32 add (i32 zext (i32 5120000 to i32), i64 4)
+ i64  %3 = call noalias ptr @malloc(i32 noundef add (i32 zext (i32 5120000 to i32), i64 4)) #5
+LLVM ERROR: Broken module found, compilation aborted!
+PLEASE submit a bug report to https://github.com/llvm/llvm-project/issues/ and include the crash backtrace.
+Stack dump:
+0.	Program arguments: opt-15 -load-pass-plugin=../build/libUnitProject.so -passes=mem2reg,unit-sccp -S -o nsieve-bits.ll
+ #0 0x00007f69346b83b1 llvm::sys::PrintStackTrace(llvm::raw_ostream&, int) (/usr/lib/llvm-15/bin/../lib/libLLVM-15.so.1+0xf043b1)
+ #1 0x00007f69346b60fe llvm::sys::RunSignalHandlers() (/usr/lib/llvm-15/bin/../lib/libLLVM-15.so.1+0xf020fe)
+ #2 0x00007f69346b88d6 (/usr/lib/llvm-15/bin/../lib/libLLVM-15.so.1+0xf048d6)
+ #3 0x00007f6933293520 (/lib/x86_64-linux-gnu/libc.so.6+0x42520)
+ #4 0x00007f69332e79fc __pthread_kill_implementation ./nptl/pthread_kill.c:44:76
+ #5 0x00007f69332e79fc __pthread_kill_internal ./nptl/pthread_kill.c:78:10
+ #6 0x00007f69332e79fc pthread_kill ./nptl/pthread_kill.c:89:10
+ #7 0x00007f6933293476 gsignal ./signal/../sysdeps/posix/raise.c:27:6
+ #8 0x00007f69332797f3 abort ./stdlib/abort.c:81:7
+ #9 0x00007f69345ed3db llvm::report_fatal_error(llvm::Twine const&, bool) (/usr/lib/llvm-15/bin/../lib/libLLVM-15.so.1+0xe393db)
+#10 0x00007f69345ed226 (/usr/lib/llvm-15/bin/../lib/libLLVM-15.so.1+0xe39226)
+#11 0x00007f693485857c (/usr/lib/llvm-15/bin/../lib/libLLVM-15.so.1+0x10a457c)
+#12 0x0000564921af44ed (/usr/lib/llvm-15/bin/opt+0x2b4ed)
+#13 0x00007f6934829129 llvm::PassManager<llvm::Module, llvm::AnalysisManager<llvm::Module>>::run(llvm::Module&, llvm::AnalysisManager<llvm::Module>&) (/usr/lib/llvm-15/bin/../lib/libLLVM-15.so.1+0x1075129)
+#14 0x0000564921aebf37 llvm::runPassPipeline(llvm::StringRef, llvm::Module&, llvm::TargetMachine*, llvm::TargetLibraryInfoImpl*, llvm::ToolOutputFile*, llvm::ToolOutputFile*, llvm::ToolOutputFile*, llvm::StringRef, llvm::ArrayRef<llvm::StringRef>, llvm::ArrayRef<llvm::PassPlugin>, llvm::opt_tool::OutputKind, llvm::opt_tool::VerifierKind, bool, bool, bool, bool, bool, bool) (/usr/lib/llvm-15/bin/opt+0x22f37)
+#15 0x0000564921afdc04 main (/usr/lib/llvm-15/bin/opt+0x34c04)
+#16 0x00007f693327ad90 __libc_start_call_main ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+#17 0x00007f693327ae40 call_init ./csu/../csu/libc-start.c:128:20
+#18 0x00007f693327ae40 __libc_start_main ./csu/../csu/libc-start.c:379:5
+#19 0x0000564921ae4905 _start (/usr/lib/llvm-15/bin/opt+0x1b905)
+./scripts/run_test.sh: line 12: 43104 Done                    clang-15 $1 -c -O0 -Xclang -disable-O0-optnone -emit-llvm -S -o -
+     43105 Aborted                 (core dumped) | opt-15 -load-pass-plugin=../build/libUnitProject.so -passes="mem2reg,unit-sccp" -S -o ${1%.*}.ll
+----------------------------------------
+Running licm only: nsieve-bits.c
+UnitLICM running on main
+******************************************************
+UnitLoopAnalysis running on main
+[LoopLoopAnalysis] parent loop header is:   %.03 = phi i32 [ 0, %9 ], [ %66, %65 ]
+[LoopLoopAnalysis] It has child loop header : ^-  %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+[LoopLoopAnalysis] parent loop header is:   %.04 = phi i32 [ 2, %12 ], [ %62, %61 ]
+[LoopLoopAnalysis] It has child loop header : ^-  %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+[LoopLoopAnalysis] parent loop header is:   %.02 = phi i32 [ %32, %30 ], [ %58, %57 ]
+[UnitLICM]: NumStoreHoisted: 0
+[UnitLICM]: NumLoadHoisted: 0
+[UnitLICM]: NumComputeHoisted: 0
+[UnitLICM]: Total: 0
+----------------------------------------
+Running sccp and licm: nsieve-bits.c
+UnitLICM running on main
+******************************************************
+UnitLoopAnalysis running on main
+[LoopLoopAnalysis] parent loop header is:   %23 = load i32, ptr %6, align 4
+[LoopLoopAnalysis] It has child loop header : ^-  %35 = load i32, ptr %9, align 4
+[LoopLoopAnalysis] parent loop header is:   %35 = load i32, ptr %9, align 4
+[LoopLoopAnalysis] It has child loop header : ^-  %59 = load i32, ptr %10, align 4
+[LoopLoopAnalysis] parent loop header is:   %59 = load i32, ptr %10, align 4
+Instruction to be moved:   %59 = load i32, ptr %10, align 4
+Instruction to be moved:   %60 = load i32, ptr %12, align 4
+Instruction to be moved:   %61 = icmp ule i32 %58, %59
+Instruction to be moved:   %63 = load ptr, ptr %8, align 8
+Instruction to be moved:   %64 = load i32, ptr %10, align 4
+Instruction to be moved:   %65 = zext i32 %62 to i64
+Instruction to be moved:   %66 = udiv i64 %63, 32
+Instruction to be moved:   %67 = getelementptr inbounds i32, ptr %61, i64 %64
+Instruction to be moved:   %69 = load i32, ptr %10, align 4
+Instruction to be moved:   %70 = zext i32 %66 to i64
+Instruction to be moved:   %71 = urem i64 %67, 32
+Instruction to be moved:   %72 = trunc i64 %68 to i32
+Instruction to be moved:   %73 = shl i32 1, %69
+Instruction to be moved:   %77 = load i32, ptr %10, align 4
+Instruction to be moved:   %78 = zext i32 %71 to i64
+Instruction to be moved:   %79 = urem i64 %72, 32
+Instruction to be moved:   %80 = trunc i64 %73 to i32
+Instruction to be moved:   %81 = shl i32 1, %74
+Instruction to be moved:   %82 = load ptr, ptr %8, align 8
+Instruction to be moved:   %83 = load i32, ptr %10, align 4
+Instruction to be moved:   %84 = zext i32 %77 to i64
+Instruction to be moved:   %85 = udiv i64 %78, 32
+Instruction to be moved:   %86 = getelementptr inbounds i32, ptr %76, i64 %79
+Instruction to be moved:   %91 = load i32, ptr %9, align 4
+Instruction to be moved:   %92 = load i32, ptr %10, align 4
+Instruction to be moved:   %93 = add i32 %82, %81
+Instruction to be moved:   %81 = load i32, ptr %9, align 4
+Instruction to be moved:   %81 = load i32, ptr %10, align 4
+Instruction to be moved:   %81 = add i32 %83, %82
+Instruction to be moved:   %35 = load i32, ptr %9, align 4
+Instruction to be moved:   %36 = load i32, ptr %12, align 4
+Instruction to be moved:   %37 = icmp ule i32 %34, %35
+Instruction to be moved:   %39 = load ptr, ptr %8, align 8
+Instruction to be moved:   %40 = load i32, ptr %9, align 4
+Instruction to be moved:   %41 = zext i32 %38 to i64
+Instruction to be moved:   %42 = udiv i64 %39, 32
+Instruction to be moved:   %43 = getelementptr inbounds i32, ptr %37, i64 %40
+Instruction to be moved:   %45 = load i32, ptr %9, align 4
+Instruction to be moved:   %46 = zext i32 %42 to i64
+Instruction to be moved:   %47 = urem i64 %43, 32
+Instruction to be moved:   %48 = trunc i64 %44 to i32
+Instruction to be moved:   %49 = shl i32 1, %45
+Instruction to be moved:   %53 = load i32, ptr %11, align 4
+Instruction to be moved:   %54 = add i32 %47, 1
+Instruction to be moved:   %55 = load i32, ptr %9, align 4
+Instruction to be moved:   %56 = load i32, ptr %9, align 4
+Instruction to be moved:   %57 = add i32 %49, %50
+Instruction to be moved:   %58 = load i32, ptr %10, align 4
+Instruction to be moved:   %59 = load i32, ptr %12, align 4
+Instruction to be moved:   %60 = icmp ule i32 %52, %53
+Instruction to be moved:   %61 = load ptr, ptr %8, align 8
+Instruction to be moved:   %62 = load i32, ptr %10, align 4
+Instruction to be moved:   %63 = zext i32 %56 to i64
+Instruction to be moved:   %64 = udiv i64 %57, 32
+Instruction to be moved:   %65 = getelementptr inbounds i32, ptr %55, i64 %58
+Instruction to be moved:   %66 = load i32, ptr %10, align 4
+Instruction to be moved:   %67 = zext i32 %60 to i64
+Instruction to be moved:   %68 = urem i64 %61, 32
+Instruction to be moved:   %69 = trunc i64 %62 to i32
+Instruction to be moved:   %70 = shl i32 1, %63
+Instruction to be moved:   %71 = load i32, ptr %10, align 4
+Instruction to be moved:   %72 = zext i32 %65 to i64
+Instruction to be moved:   %73 = urem i64 %66, 32
+Instruction to be moved:   %74 = trunc i64 %67 to i32
+Instruction to be moved:   %75 = shl i32 1, %68
+Instruction to be moved:   %76 = load ptr, ptr %8, align 8
+Instruction to be moved:   %77 = load i32, ptr %10, align 4
+Instruction to be moved:   %78 = zext i32 %71 to i64
+Instruction to be moved:   %79 = udiv i64 %72, 32
+Instruction to be moved:   %80 = getelementptr inbounds i32, ptr %70, i64 %73
+Instruction to be moved:   %81 = load i32, ptr %9, align 4
+Instruction to be moved:   %82 = load i32, ptr %10, align 4
+Instruction to be moved:   %83 = add i32 %76, %75
+Instruction to be moved:   %97 = load i32, ptr %9, align 4
+Instruction to be moved:   %98 = add i32 %78, 1
+Instruction to be moved:   %23 = load i32, ptr %6, align 4
+Instruction to be moved:   %24 = icmp ule i32 %22, 2
+Instruction to be moved:   %26 = load i32, ptr %7, align 4
+Instruction to be moved:   %27 = load i32, ptr %6, align 4
+Instruction to be moved:   %28 = lshr i32 %24, %25
+Instruction to be moved:   %29 = load ptr, ptr %8, align 8
+Instruction to be moved:   %30 = load i32, ptr %12, align 4
+Instruction to be moved:   %31 = udiv i32 %28, 8
+Instruction to be moved:   %32 = zext i32 %29 to i64
+Instruction to be moved:   %33 = add i64 %30, 4
+Instruction to be moved:   %34 = load i32, ptr %9, align 4
+Instruction to be moved:   %35 = load i32, ptr %12, align 4
+Instruction to be moved:   %36 = icmp ule i32 %32, %33
+Instruction to be moved:   %37 = load ptr, ptr %8, align 8
+Instruction to be moved:   %38 = load i32, ptr %9, align 4
+Instruction to be moved:   %39 = zext i32 %36 to i64
+Instruction to be moved:   %40 = udiv i64 %37, 32
+Instruction to be moved:   %41 = getelementptr inbounds i32, ptr %35, i64 %38
+Instruction to be moved:   %42 = load i32, ptr %9, align 4
+Instruction to be moved:   %43 = zext i32 %40 to i64
+Instruction to be moved:   %44 = urem i64 %41, 32
+Instruction to be moved:   %45 = trunc i64 %42 to i32
+Instruction to be moved:   %46 = shl i32 1, %43
+Instruction to be moved:   %47 = load i32, ptr %11, align 4
+Instruction to be moved:   %48 = add i32 %45, 1
+Instruction to be moved:   %49 = load i32, ptr %9, align 4
+Instruction to be moved:   %50 = load i32, ptr %9, align 4
+Instruction to be moved:   %51 = add i32 %47, %48
+Instruction to be moved:   %52 = load i32, ptr %10, align 4
+Instruction to be moved:   %53 = load i32, ptr %12, align 4
+Instruction to be moved:   %54 = icmp ule i32 %50, %51
+Instruction to be moved:   %55 = load ptr, ptr %8, align 8
+Instruction to be moved:   %56 = load i32, ptr %10, align 4
+Instruction to be moved:   %57 = zext i32 %54 to i64
+Instruction to be moved:   %58 = udiv i64 %55, 32
+Instruction to be moved:   %59 = getelementptr inbounds i32, ptr %53, i64 %56
+Instruction to be moved:   %60 = load i32, ptr %10, align 4
+Instruction to be moved:   %61 = zext i32 %58 to i64
+Instruction to be moved:   %62 = urem i64 %59, 32
+Instruction to be moved:   %63 = trunc i64 %60 to i32
+Instruction to be moved:   %64 = shl i32 1, %61
+Instruction to be moved:   %65 = load i32, ptr %10, align 4
+Instruction to be moved:   %66 = zext i32 %63 to i64
+Instruction to be moved:   %67 = urem i64 %64, 32
+Instruction to be moved:   %68 = trunc i64 %65 to i32
+Instruction to be moved:   %69 = shl i32 1, %66
+Instruction to be moved:   %70 = load ptr, ptr %8, align 8
+Instruction to be moved:   %71 = load i32, ptr %10, align 4
+Instruction to be moved:   %72 = zext i32 %69 to i64
+Instruction to be moved:   %73 = udiv i64 %70, 32
+Instruction to be moved:   %74 = getelementptr inbounds i32, ptr %68, i64 %71
+Instruction to be moved:   %75 = load i32, ptr %9, align 4
+Instruction to be moved:   %76 = load i32, ptr %10, align 4
+Instruction to be moved:   %77 = add i32 %74, %73
+Instruction to be moved:   %78 = load i32, ptr %9, align 4
+Instruction to be moved:   %79 = add i32 %76, 1
+Instruction to be moved:   %100 = load i32, ptr %12, align 4
+Instruction to be moved:   %101 = load i32, ptr %11, align 4
+Instruction to be moved:   %104 = load i32, ptr %6, align 4
+Instruction to be moved:   %105 = add i32 %80, 1
+[UnitLICM]: NumStoreHoisted: 0
+[UnitLICM]: NumLoadHoisted: 58
+[UnitLICM]: NumComputeHoisted: 44
+[UnitLICM]: Total: 135
+UnitSCCP running on main
+Visiting BB: 
+VisitInstr:   %3 = alloca i32, align 4
+Check LatCell: 0
+In Meet:   %3 = alloca i32, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %3 = alloca i32, align 4
+VisitInstr:   %4 = alloca i32, align 4
+Check LatCell: 0
+In Meet:   %4 = alloca i32, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %4 = alloca i32, align 4
+VisitInstr:   %5 = alloca ptr, align 8
+Check LatCell: 0
+In Meet:   %5 = alloca ptr, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %5 = alloca ptr, align 8
+VisitInstr:   %6 = alloca i32, align 4
+Check LatCell: 0
+In Meet:   %6 = alloca i32, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %6 = alloca i32, align 4
+VisitInstr:   %7 = alloca i32, align 4
+Check LatCell: 0
+In Meet:   %7 = alloca i32, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %7 = alloca i32, align 4
+VisitInstr:   %8 = alloca ptr, align 8
+Check LatCell: 0
+In Meet:   %8 = alloca ptr, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %8 = alloca ptr, align 8
+VisitInstr:   %9 = alloca i32, align 4
+Check LatCell: 0
+In Meet:   %9 = alloca i32, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %9 = alloca i32, align 4
+VisitInstr:   %10 = alloca i32, align 4
+Check LatCell: 0
+In Meet:   %10 = alloca i32, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %10 = alloca i32, align 4
+VisitInstr:   %11 = alloca i32, align 4
+Check LatCell: 0
+In Meet:   %11 = alloca i32, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %11 = alloca i32, align 4
+VisitInstr:   %12 = alloca i32, align 4
+Check LatCell: 0
+In Meet:   %12 = alloca i32, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %12 = alloca i32, align 4
+VisitInstr:   store i32 0, ptr %3, align 4
+Check LatCell: 0
+In Meet:   store i32 0, ptr %3, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 0, ptr %3, align 4
+VisitInstr:   store i32 %0, ptr %4, align 4
+Check LatCell: 0
+In Meet:   store i32 %0, ptr %4, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %0, ptr %4, align 4
+VisitInstr:   store ptr %1, ptr %5, align 8
+Check LatCell: 0
+In Meet:   store ptr %1, ptr %5, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store ptr %1, ptr %5, align 8
+VisitInstr:   store i32 40960000, ptr %7, align 4
+Check LatCell: 0
+In Meet:   store i32 40960000, ptr %7, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 40960000, ptr %7, align 4
+VisitInstr:   %13 = load i32, ptr %7, align 4
+Check LatCell: 0
+In Meet:   %13 = load i32, ptr %7, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %13 = load i32, ptr %7, align 4
+VisitInstr:   %14 = udiv i32 %13, 8
+BinaryOp:   %14 = udiv i32 %13, 8
+Check LatCell: 0
+In Meet:   %14 = udiv i32 %13, 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %14 = udiv i32 %13, 8
+VisitInstr:   %15 = zext i32 %14 to i64
+UnaryOp:   %15 = zext i32 %14 to i64
+Check LatCell: 0
+In Meet:   %15 = zext i32 %14 to i64, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %15 = zext i32 %14 to i64
+VisitInstr:   %16 = add i64 %15, 4
+BinaryOp:   %16 = add i64 %15, 4
+Check LatCell: 0
+In Meet:   %16 = add i64 %15, 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %16 = add i64 %15, 4
+VisitInstr:   %17 = call noalias ptr @malloc(i64 noundef %16) #5
+Check LatCell: 0
+In Meet:   %17 = call noalias ptr @malloc(i64 noundef %16) #5, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %17 = call noalias ptr @malloc(i64 noundef %16) #5
+VisitInstr:   store ptr %17, ptr %8, align 8
+Check LatCell: 0
+In Meet:   store ptr %17, ptr %8, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store ptr %17, ptr %8, align 8
+VisitInstr:   %18 = load ptr, ptr %8, align 8
+Check LatCell: 0
+In Meet:   %18 = load ptr, ptr %8, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %18 = load ptr, ptr %8, align 8
+VisitInstr:   %19 = icmp ne ptr %18, null
+CmpInst:   %19 = icmp ne ptr %18, null
+Check LatCell: 0
+In Meet:   %19 = icmp ne ptr %18, null, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %19 = icmp ne ptr %18, null
+VisitInstr:   br i1 %19, label %21, label %20
+BranchInst:   br i1 %19, label %21, label %20
+In BranchInst: -1, 0x0
+In AddEdge: 0x55746cba9d30, 0x55746cbac140, 0
+Adding edge:  -> 
+In AddEdge: 0x55746cba9d30, 0x55746cbac140, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   store i32 0, ptr %6, align 4
+Check LatCell: 0
+In Meet:   store i32 0, ptr %6, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 0, ptr %6, align 4
+VisitInstr:   %22 = load i32, ptr %6, align 4
+Check LatCell: 0
+In Meet:   %22 = load i32, ptr %6, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %22 = load i32, ptr %6, align 4
+VisitInstr:   %23 = icmp ule i32 %22, 2
+CmpInst:   %23 = icmp ule i32 %22, 2
+Check LatCell: 0
+In Meet:   %23 = icmp ule i32 %22, 2, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %23 = icmp ule i32 %22, 2
+VisitInstr:   %24 = load i32, ptr %7, align 4
+Check LatCell: 0
+In Meet:   %24 = load i32, ptr %7, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %24 = load i32, ptr %7, align 4
+VisitInstr:   %25 = load i32, ptr %6, align 4
+Check LatCell: 0
+In Meet:   %25 = load i32, ptr %6, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %25 = load i32, ptr %6, align 4
+VisitInstr:   %26 = lshr i32 %24, %25
+BinaryOp:   %26 = lshr i32 %24, %25
+Check LatCell: 0
+In Meet:   %26 = lshr i32 %24, %25, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %26 = lshr i32 %24, %25
+VisitInstr:   %27 = load ptr, ptr %8, align 8
+Check LatCell: 0
+In Meet:   %27 = load ptr, ptr %8, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %27 = load ptr, ptr %8, align 8
+VisitInstr:   %28 = load i32, ptr %12, align 4
+Check LatCell: 0
+In Meet:   %28 = load i32, ptr %12, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %28 = load i32, ptr %12, align 4
+VisitInstr:   %29 = udiv i32 %28, 8
+BinaryOp:   %29 = udiv i32 %28, 8
+Check LatCell: 0
+In Meet:   %29 = udiv i32 %28, 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %29 = udiv i32 %28, 8
+VisitInstr:   %30 = zext i32 %29 to i64
+UnaryOp:   %30 = zext i32 %29 to i64
+Check LatCell: 0
+In Meet:   %30 = zext i32 %29 to i64, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %30 = zext i32 %29 to i64
+VisitInstr:   %31 = add i64 %30, 4
+BinaryOp:   %31 = add i64 %30, 4
+Check LatCell: 0
+In Meet:   %31 = add i64 %30, 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %31 = add i64 %30, 4
+VisitInstr:   %32 = load i32, ptr %9, align 4
+Check LatCell: 0
+In Meet:   %32 = load i32, ptr %9, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %32 = load i32, ptr %9, align 4
+VisitInstr:   %33 = load i32, ptr %12, align 4
+Check LatCell: 0
+In Meet:   %33 = load i32, ptr %12, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %33 = load i32, ptr %12, align 4
+VisitInstr:   %34 = icmp ule i32 %32, %33
+CmpInst:   %34 = icmp ule i32 %32, %33
+Check LatCell: 0
+In Meet:   %34 = icmp ule i32 %32, %33, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %34 = icmp ule i32 %32, %33
+VisitInstr:   %35 = load ptr, ptr %8, align 8
+Check LatCell: 0
+In Meet:   %35 = load ptr, ptr %8, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %35 = load ptr, ptr %8, align 8
+VisitInstr:   %36 = load i32, ptr %9, align 4
+Check LatCell: 0
+In Meet:   %36 = load i32, ptr %9, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %36 = load i32, ptr %9, align 4
+VisitInstr:   %37 = zext i32 %36 to i64
+UnaryOp:   %37 = zext i32 %36 to i64
+Check LatCell: 0
+In Meet:   %37 = zext i32 %36 to i64, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %37 = zext i32 %36 to i64
+VisitInstr:   %38 = udiv i64 %37, 32
+BinaryOp:   %38 = udiv i64 %37, 32
+Check LatCell: 0
+In Meet:   %38 = udiv i64 %37, 32, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %38 = udiv i64 %37, 32
+VisitInstr:   %39 = getelementptr inbounds i32, ptr %35, i64 %38
+GetElementPtr:   %39 = getelementptr inbounds i32, ptr %35, i64 %38
+Check LatCell: 0
+In Meet:   %39 = getelementptr inbounds i32, ptr %35, i64 %38, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %39 = getelementptr inbounds i32, ptr %35, i64 %38
+VisitInstr:   %40 = load i32, ptr %9, align 4
+Check LatCell: 0
+In Meet:   %40 = load i32, ptr %9, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %40 = load i32, ptr %9, align 4
+VisitInstr:   %41 = zext i32 %40 to i64
+UnaryOp:   %41 = zext i32 %40 to i64
+Check LatCell: 0
+In Meet:   %41 = zext i32 %40 to i64, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %41 = zext i32 %40 to i64
+VisitInstr:   %42 = urem i64 %41, 32
+BinaryOp:   %42 = urem i64 %41, 32
+Check LatCell: 0
+In Meet:   %42 = urem i64 %41, 32, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %42 = urem i64 %41, 32
+VisitInstr:   %43 = trunc i64 %42 to i32
+UnaryOp:   %43 = trunc i64 %42 to i32
+Check LatCell: 0
+In Meet:   %43 = trunc i64 %42 to i32, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %43 = trunc i64 %42 to i32
+VisitInstr:   %44 = shl i32 1, %43
+BinaryOp:   %44 = shl i32 1, %43
+Check LatCell: 0
+In Meet:   %44 = shl i32 1, %43, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %44 = shl i32 1, %43
+VisitInstr:   %45 = load i32, ptr %11, align 4
+Check LatCell: 0
+In Meet:   %45 = load i32, ptr %11, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %45 = load i32, ptr %11, align 4
+VisitInstr:   %46 = add i32 %45, 1
+BinaryOp:   %46 = add i32 %45, 1
+Check LatCell: 0
+In Meet:   %46 = add i32 %45, 1, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %46 = add i32 %45, 1
+VisitInstr:   %47 = load i32, ptr %9, align 4
+Check LatCell: 0
+In Meet:   %47 = load i32, ptr %9, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %47 = load i32, ptr %9, align 4
+VisitInstr:   %48 = load i32, ptr %9, align 4
+Check LatCell: 0
+In Meet:   %48 = load i32, ptr %9, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %48 = load i32, ptr %9, align 4
+VisitInstr:   %49 = add i32 %47, %48
+BinaryOp:   %49 = add i32 %47, %48
+Check LatCell: 0
+In Meet:   %49 = add i32 %47, %48, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %49 = add i32 %47, %48
+VisitInstr:   %50 = load i32, ptr %10, align 4
+Check LatCell: 0
+In Meet:   %50 = load i32, ptr %10, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %50 = load i32, ptr %10, align 4
+VisitInstr:   %51 = load i32, ptr %12, align 4
+Check LatCell: 0
+In Meet:   %51 = load i32, ptr %12, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %51 = load i32, ptr %12, align 4
+VisitInstr:   %52 = icmp ule i32 %50, %51
+CmpInst:   %52 = icmp ule i32 %50, %51
+Check LatCell: 0
+In Meet:   %52 = icmp ule i32 %50, %51, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %52 = icmp ule i32 %50, %51
+VisitInstr:   %53 = load ptr, ptr %8, align 8
+Check LatCell: 0
+In Meet:   %53 = load ptr, ptr %8, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %53 = load ptr, ptr %8, align 8
+VisitInstr:   %54 = load i32, ptr %10, align 4
+Check LatCell: 0
+In Meet:   %54 = load i32, ptr %10, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %54 = load i32, ptr %10, align 4
+VisitInstr:   %55 = zext i32 %54 to i64
+UnaryOp:   %55 = zext i32 %54 to i64
+Check LatCell: 0
+In Meet:   %55 = zext i32 %54 to i64, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %55 = zext i32 %54 to i64
+VisitInstr:   %56 = udiv i64 %55, 32
+BinaryOp:   %56 = udiv i64 %55, 32
+Check LatCell: 0
+In Meet:   %56 = udiv i64 %55, 32, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %56 = udiv i64 %55, 32
+VisitInstr:   %57 = getelementptr inbounds i32, ptr %53, i64 %56
+GetElementPtr:   %57 = getelementptr inbounds i32, ptr %53, i64 %56
+Check LatCell: 0
+In Meet:   %57 = getelementptr inbounds i32, ptr %53, i64 %56, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %57 = getelementptr inbounds i32, ptr %53, i64 %56
+VisitInstr:   %58 = load i32, ptr %10, align 4
+Check LatCell: 0
+In Meet:   %58 = load i32, ptr %10, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %58 = load i32, ptr %10, align 4
+VisitInstr:   %59 = zext i32 %58 to i64
+UnaryOp:   %59 = zext i32 %58 to i64
+Check LatCell: 0
+In Meet:   %59 = zext i32 %58 to i64, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %59 = zext i32 %58 to i64
+VisitInstr:   %60 = urem i64 %59, 32
+BinaryOp:   %60 = urem i64 %59, 32
+Check LatCell: 0
+In Meet:   %60 = urem i64 %59, 32, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %60 = urem i64 %59, 32
+VisitInstr:   %61 = trunc i64 %60 to i32
+UnaryOp:   %61 = trunc i64 %60 to i32
+Check LatCell: 0
+In Meet:   %61 = trunc i64 %60 to i32, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %61 = trunc i64 %60 to i32
+VisitInstr:   %62 = shl i32 1, %61
+BinaryOp:   %62 = shl i32 1, %61
+Check LatCell: 0
+In Meet:   %62 = shl i32 1, %61, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %62 = shl i32 1, %61
+VisitInstr:   %63 = load i32, ptr %10, align 4
+Check LatCell: 0
+In Meet:   %63 = load i32, ptr %10, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %63 = load i32, ptr %10, align 4
+VisitInstr:   %64 = zext i32 %63 to i64
+UnaryOp:   %64 = zext i32 %63 to i64
+Check LatCell: 0
+In Meet:   %64 = zext i32 %63 to i64, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %64 = zext i32 %63 to i64
+VisitInstr:   %65 = urem i64 %64, 32
+BinaryOp:   %65 = urem i64 %64, 32
+Check LatCell: 0
+In Meet:   %65 = urem i64 %64, 32, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %65 = urem i64 %64, 32
+VisitInstr:   %66 = trunc i64 %65 to i32
+UnaryOp:   %66 = trunc i64 %65 to i32
+Check LatCell: 0
+In Meet:   %66 = trunc i64 %65 to i32, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %66 = trunc i64 %65 to i32
+VisitInstr:   %67 = shl i32 1, %66
+BinaryOp:   %67 = shl i32 1, %66
+Check LatCell: 0
+In Meet:   %67 = shl i32 1, %66, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %67 = shl i32 1, %66
+VisitInstr:   %68 = load ptr, ptr %8, align 8
+Check LatCell: 0
+In Meet:   %68 = load ptr, ptr %8, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %68 = load ptr, ptr %8, align 8
+VisitInstr:   %69 = load i32, ptr %10, align 4
+Check LatCell: 0
+In Meet:   %69 = load i32, ptr %10, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %69 = load i32, ptr %10, align 4
+VisitInstr:   %70 = zext i32 %69 to i64
+UnaryOp:   %70 = zext i32 %69 to i64
+Check LatCell: 0
+In Meet:   %70 = zext i32 %69 to i64, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %70 = zext i32 %69 to i64
+VisitInstr:   %71 = udiv i64 %70, 32
+BinaryOp:   %71 = udiv i64 %70, 32
+Check LatCell: 0
+In Meet:   %71 = udiv i64 %70, 32, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %71 = udiv i64 %70, 32
+VisitInstr:   %72 = getelementptr inbounds i32, ptr %68, i64 %71
+GetElementPtr:   %72 = getelementptr inbounds i32, ptr %68, i64 %71
+Check LatCell: 0
+In Meet:   %72 = getelementptr inbounds i32, ptr %68, i64 %71, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %72 = getelementptr inbounds i32, ptr %68, i64 %71
+VisitInstr:   %73 = load i32, ptr %9, align 4
+Check LatCell: 0
+In Meet:   %73 = load i32, ptr %9, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %73 = load i32, ptr %9, align 4
+VisitInstr:   %74 = load i32, ptr %10, align 4
+Check LatCell: 0
+In Meet:   %74 = load i32, ptr %10, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %74 = load i32, ptr %10, align 4
+VisitInstr:   %75 = add i32 %74, %73
+BinaryOp:   %75 = add i32 %74, %73
+Check LatCell: 0
+In Meet:   %75 = add i32 %74, %73, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %75 = add i32 %74, %73
+VisitInstr:   %76 = load i32, ptr %9, align 4
+Check LatCell: 0
+In Meet:   %76 = load i32, ptr %9, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %76 = load i32, ptr %9, align 4
+VisitInstr:   %77 = add i32 %76, 1
+BinaryOp:   %77 = add i32 %76, 1
+Check LatCell: 0
+In Meet:   %77 = add i32 %76, 1, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %77 = add i32 %76, 1
+VisitInstr:   %78 = load i32, ptr %12, align 4
+Check LatCell: 0
+In Meet:   %78 = load i32, ptr %12, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %78 = load i32, ptr %12, align 4
+VisitInstr:   %79 = load i32, ptr %11, align 4
+Check LatCell: 0
+In Meet:   %79 = load i32, ptr %11, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %79 = load i32, ptr %11, align 4
+VisitInstr:   %80 = load i32, ptr %6, align 4
+Check LatCell: 0
+In Meet:   %80 = load i32, ptr %6, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %80 = load i32, ptr %6, align 4
+VisitInstr:   %81 = add i32 %80, 1
+BinaryOp:   %81 = add i32 %80, 1
+Check LatCell: 0
+In Meet:   %81 = add i32 %80, 1, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %81 = add i32 %80, 1
+VisitInstr:   br label %82
+BranchInst:   br label %82
+In AddEdge: 0x55746cbabfc0, 0x55746cbac3e0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   store i32 1, ptr %3, align 4
+Check LatCell: 0
+In Meet:   store i32 1, ptr %3, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 1, ptr %3, align 4
+VisitInstr:   br label %108
+BranchInst:   br label %108
+In AddEdge: 0x55746cbac050, 0x55746cbac290, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br i1 %23, label %83, label %106
+BranchInst:   br i1 %23, label %83, label %106
+In BranchInst: -1, 0x0
+In AddEdge: 0x55746cbac370, 0x55746cbac6a0, 0
+Adding edge:  -> 
+In AddEdge: 0x55746cbac370, 0x55746cbac6a0, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %109 = load i32, ptr %3, align 4
+Check LatCell: 0
+In Meet:   %109 = load i32, ptr %3, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %109 = load i32, ptr %3, align 4
+VisitInstr:   ret i32 %109
+Check LatCell: 0
+In Meet:   ret i32 %109, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   ret i32 %109
+Visiting BB: 
+VisitInstr:   store i32 0, ptr %11, align 4
+Check LatCell: 0
+In Meet:   store i32 0, ptr %11, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 0, ptr %11, align 4
+VisitInstr:   store i32 %26, ptr %12, align 4
+Check LatCell: 0
+In Meet:   store i32 %26, ptr %12, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %26, ptr %12, align 4
+VisitInstr:   call void @llvm.memset.p0.i64(ptr align 4 %27, i8 -1, i64 %31, i1 false)
+Check LatCell: 0
+In Meet:   call void @llvm.memset.p0.i64(ptr align 4 %27, i8 -1, i64 %31, i1 false), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   call void @llvm.memset.p0.i64(ptr align 4 %27, i8 -1, i64 %31, i1 false)
+VisitInstr:   store i32 2, ptr %9, align 4
+Check LatCell: 0
+In Meet:   store i32 2, ptr %9, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 2, ptr %9, align 4
+VisitInstr:   br label %84
+BranchInst:   br label %84
+In AddEdge: 0x55746cbac560, 0x55746cbad270, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %107 = load ptr, ptr %8, align 8
+Check LatCell: 0
+In Meet:   %107 = load ptr, ptr %8, align 8, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %107 = load ptr, ptr %8, align 8
+VisitInstr:   call void @free(ptr noundef %107) #6
+Check LatCell: 0
+In Meet:   call void @free(ptr noundef %107) #6, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   call void @free(ptr noundef %107) #6
+VisitInstr:   store i32 0, ptr %3, align 4
+Check LatCell: 0
+In Meet:   store i32 0, ptr %3, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 0, ptr %3, align 4
+VisitInstr:   br label %108
+BranchInst:   br label %108
+In AddEdge: 0x55746cbac5b0, 0x55746cbb2fd0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br i1 %34, label %85, label %103
+BranchInst:   br i1 %34, label %85, label %103
+In BranchInst: -1, 0x0
+In AddEdge: 0x55746cbad1c0, 0x55746cbad570, 0
+Adding edge:  -> 
+In AddEdge: 0x55746cbad1c0, 0x55746cbad570, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %86 = load i32, ptr %39, align 4
+Check LatCell: 0
+In Meet:   %86 = load i32, ptr %39, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %86 = load i32, ptr %39, align 4
+VisitInstr:   %87 = and i32 %86, %44
+BinaryOp:   %87 = and i32 %86, %44
+Check LatCell: 0
+In Meet:   %87 = and i32 %86, %44, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %87 = and i32 %86, %44
+VisitInstr:   %88 = icmp ne i32 %87, 0
+CmpInst:   %88 = icmp ne i32 %87, 0
+Check LatCell: 0
+In Meet:   %88 = icmp ne i32 %87, 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %88 = icmp ne i32 %87, 0
+VisitInstr:   br i1 %88, label %89, label %101
+BranchInst:   br i1 %88, label %89, label %101
+In BranchInst: -1, 0x0
+In AddEdge: 0x55746cbad430, 0x55746cbadd80, 0
+Adding edge:  -> 
+In AddEdge: 0x55746cbad430, 0x55746cbadd80, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %104 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %78, i32 noundef %79)
+Check LatCell: 0
+In Meet:   %104 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %78, i32 noundef %79), Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %104 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %78, i32 noundef %79)
+VisitInstr:   br label %105
+BranchInst:   br label %105
+In AddEdge: 0x55746cbad480, 0x55746cbb2970, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   store i32 %46, ptr %11, align 4
+Check LatCell: 0
+In Meet:   store i32 %46, ptr %11, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %46, ptr %11, align 4
+VisitInstr:   store i32 %49, ptr %10, align 4
+Check LatCell: 0
+In Meet:   store i32 %49, ptr %10, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %49, ptr %10, align 4
+VisitInstr:   br label %90
+BranchInst:   br label %90
+In AddEdge: 0x55746cbadc40, 0x55746cbae1d0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br label %102
+BranchInst:   br label %102
+In AddEdge: 0x55746cbadc90, 0x55746cbb23e0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   store i32 %81, ptr %6, align 4
+Check LatCell: 0
+In Meet:   store i32 %81, ptr %6, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %81, ptr %6, align 4
+VisitInstr:   br label %82, !llvm.loop !9
+BranchInst:   br label %82, !llvm.loop !9
+In AddEdge: 0x55746cbb2900, 0x55746cbb2b70, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br i1 %52, label %91, label %100
+BranchInst:   br i1 %52, label %91, label %100
+In BranchInst: -1, 0x0
+In AddEdge: 0x55746cbae160, 0x55746cbae4d0, 0
+Adding edge:  -> 
+In AddEdge: 0x55746cbae160, 0x55746cbae4d0, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   store i32 %77, ptr %9, align 4
+Check LatCell: 0
+In Meet:   store i32 %77, ptr %9, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %77, ptr %9, align 4
+VisitInstr:   br label %84, !llvm.loop !8
+BranchInst:   br label %84, !llvm.loop !8
+In AddEdge: 0x55746cbb2370, 0x55746cbb25e0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %92 = load i32, ptr %57, align 4
+Check LatCell: 0
+In Meet:   %92 = load i32, ptr %57, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %92 = load i32, ptr %57, align 4
+VisitInstr:   %93 = and i32 %92, %62
+BinaryOp:   %93 = and i32 %92, %62
+Check LatCell: 0
+In Meet:   %93 = and i32 %92, %62, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %93 = and i32 %92, %62
+VisitInstr:   %94 = icmp ne i32 %93, 0
+CmpInst:   %94 = icmp ne i32 %93, 0
+Check LatCell: 0
+In Meet:   %94 = icmp ne i32 %93, 0, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %94 = icmp ne i32 %93, 0
+VisitInstr:   br i1 %94, label %95, label %98
+BranchInst:   br i1 %94, label %95, label %98
+In BranchInst: -1, 0x0
+In AddEdge: 0x55746cbae390, 0x55746cbb0dc0, 0
+Adding edge:  -> 
+In AddEdge: 0x55746cbae390, 0x55746cbb0dc0, 1
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br label %101
+BranchInst:   br label %101
+In AddEdge: 0x55746cbae3e0, 0x55746cbb2320, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   %96 = load i32, ptr %72, align 4
+Check LatCell: 0
+In Meet:   %96 = load i32, ptr %72, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %96 = load i32, ptr %72, align 4
+VisitInstr:   %97 = xor i32 %96, %67
+BinaryOp:   %97 = xor i32 %96, %67
+Check LatCell: 0
+In Meet:   %97 = xor i32 %96, %67, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   %97 = xor i32 %96, %67
+VisitInstr:   store i32 %97, ptr %72, align 4
+Check LatCell: 0
+In Meet:   store i32 %97, ptr %72, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %97, ptr %72, align 4
+VisitInstr:   br label %98
+BranchInst:   br label %98
+In AddEdge: 0x55746cbae880, 0x55746cbb14b0, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br label %99
+BranchInst:   br label %99
+In AddEdge: 0x55746cbb0cd0, 0x55746cbb1570, 0
+Adding edge:  -> 
+Visiting BB: 
+VisitInstr:   br label %99
+BranchInst:   br label %99
+In AddEdge: 0x55746cbb0cd0, 0x55746cbb1570, 0
+Visiting BB: 
+VisitInstr:   store i32 %75, ptr %10, align 4
+Check LatCell: 0
+In Meet:   store i32 %75, ptr %10, align 4, Lat1: (1, 0x0), Lat2: (-1, 0x0)
+Meet:   store i32 %75, ptr %10, align 4
+VisitInstr:   br label %90, !llvm.loop !6
+BranchInst:   br label %90, !llvm.loop !6
+In AddEdge: 0x55746cbb1500, 0x55746cbb17e0, 0
+Adding edge:  -> 
+UnitSCCP: 0 instructions removed, 0 basic blocks unreachable, 0 instructions simplified
